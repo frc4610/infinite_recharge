@@ -82,6 +82,11 @@ public class RobotContainer {
     mainDrive.schedule(true);
   }
 
+  public void turnLEDOff()
+  {
+    visionSensor.vLEDoff();
+  }
+
   public static void initMotor(TalonSRX motor, double peak)
   {
     motor.configPeakOutputForward(peak);

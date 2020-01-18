@@ -20,7 +20,6 @@ public class limeLight extends SubsystemBase {
    * Creates a new limeLight.
    */
   public limeLight() {
-    vLEDoff();
     yValueOff = 0;
     xValueOff = 0;
   }
