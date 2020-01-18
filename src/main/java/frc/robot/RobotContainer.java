@@ -53,7 +53,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driver2.whenPressed(new visionTarget(visionSensor), false);
+    driver2.whileHeld(new visionTarget(visionSensor), true);
     configureButtonBindings();
   }
 
