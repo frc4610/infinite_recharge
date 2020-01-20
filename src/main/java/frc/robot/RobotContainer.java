@@ -37,12 +37,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //Subsytems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveBase driveBase = new DriveBase();
+  private final static DriveBase driveBase = new DriveBase();
   private final limeLight visionSensor = new limeLight();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final tankDrive mainDrive = new tankDrive(driveBase);
+  private final static tankDrive mainDrive = new tankDrive(driveBase);
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
@@ -57,7 +57,7 @@ public class RobotContainer {
     // Configure the button bindings
     driver1.whenPressed(new vLED(visionSensor, true), false);
     driver1.whenReleased(new vLED(visionSensor, false), false);
-    driver2.whileHeld(new visionTarget(visionSensor), false);
+    driver2.whileHeld(new visionTarget(visionSensor, driveBase), false);
     configureButtonBindings();
   }
 
@@ -81,7 +81,7 @@ public class RobotContainer {
     return m_autoCommand;
   } 
 
-  public void startTankDrive()
+  public static void startTankDrive()
   {
     mainDrive.schedule(true);
   }
