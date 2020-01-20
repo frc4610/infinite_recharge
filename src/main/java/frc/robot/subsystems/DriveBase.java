@@ -32,8 +32,8 @@ public class DriveBase extends SubsystemBase {
     backRightDrive = new VictorSPX(4);
     backLeftDrive.follow(frontLeftDrive);
     backRightDrive.follow(frontRightDrive);
-    frontRightDrive.setInverted(true);
-    backRightDrive.setInverted(true);
+    frontLeftDrive.setInverted(true);
+    backLeftDrive.setInverted(true);
     RobotContainer.initMotor(frontLeftDrive, peak);
     RobotContainer.initMotor(frontRightDrive, peak);
     RobotContainer.initMotor(backLeftDrive, peak);

@@ -15,11 +15,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.navX;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -30,20 +32,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveBase driveBase = new DriveBase();
+  private final static DriveBase driveBase = new DriveBase();
   private final navX gyro = new navX();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final tankDrive mainDrive = new tankDrive(driveBase);
+  private final  ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final static tankDrive mainDrive = new tankDrive(driveBase);
 
   public static Joystick driver = new Joystick(0);
+  public static JoystickButton driver3 = new JoystickButton(driver, 3);
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+    driver3.whenPressed(new navXTurn(gyro, driveBase), true);
+    // Configure the button bindingss
     configureButtonBindings();
   }
 
@@ -67,7 +71,7 @@ public class RobotContainer {
     return m_autoCommand;
   }
 
-  public void startTankDrive()
+  public static void startTankDrive()
   {
     mainDrive.schedule(true);
   }
