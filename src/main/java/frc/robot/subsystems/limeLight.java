@@ -20,6 +20,7 @@ public class limeLight extends SubsystemBase {
    * Creates a new limeLight.
    */
   public limeLight() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     yValueOff = 0;
     xValueOff = 0;
   }
@@ -33,11 +34,18 @@ public class limeLight extends SubsystemBase {
   }
 
   /**
+   * Turns the limelight's LEDs on
+   */
+  public void vLEDon()
+  {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
+  /**
    * 
    */
   public void visionStoreValues()
   {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry tx = table.getEntry("tx");
@@ -73,7 +81,7 @@ public class limeLight extends SubsystemBase {
    */
   public double getDistance(double h1, double h2, double a1)
   {
-    return (h2 - h1)/java.lang.Math.tan(a1+Math.toRadians(yValueOff));
+    return (h2 - h1)/(Math.tan(a1+Math.toRadians(yValueOff)));
   }
 
   @Override

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
+import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -45,6 +46,7 @@ public class RobotContainer {
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
+  public static JoystickButton driver1 = new JoystickButton(driver, 1);
   public static JoystickButton driver2 = new JoystickButton(driver, 2);
 
 
@@ -53,7 +55,9 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driver2.whileHeld(new visionTarget(visionSensor), true);
+    driver1.whenPressed(new vLED(visionSensor, true), false);
+    driver1.whenReleased(new vLED(visionSensor, false), false);
+    driver2.whileHeld(new visionTarget(visionSensor), false);
     configureButtonBindings();
   }
 
