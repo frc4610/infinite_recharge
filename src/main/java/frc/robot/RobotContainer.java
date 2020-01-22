@@ -86,6 +86,11 @@ public class RobotContainer {
     mainDrive.schedule(true);
   }
 
+  public static boolean tankOverride()
+  {
+    return (Math.abs(driver.getRawAxis(1)) > .02)|| (Math.abs(driver.getRawAxis(3)) > .02);
+  }
+
   public void turnLEDOff()
   {
     visionSensor.vLEDoff();

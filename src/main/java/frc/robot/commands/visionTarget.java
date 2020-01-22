@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,8 +54,8 @@ public class visionTarget extends CommandBase {
     xValueOff = limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
-    leftSpeed += Constants.kp * xValueOff;
-    rightSpeed -= Constants.kp * xValueOff;
+    leftSpeed -= Constants.kp * xValueOff;
+    rightSpeed += Constants.kp * xValueOff;
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
   }
 
@@ -71,7 +69,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!RobotContainer.driver1.get())
+    if(!RobotContainer.driver1.get()||RobotContainer.tankOverride()|| Math.abs(xValueOff) < .05)
     {
       return true;
     }
