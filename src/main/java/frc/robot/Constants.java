@@ -16,4 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static double groundToPowerPortIn = 98.25;
+    public static double groundToLimeLensIn = 27.25;
+    public static double groundToLimeLensDeg = 15;
+    public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
 }
