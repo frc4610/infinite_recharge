@@ -57,7 +57,7 @@ public class RobotContainer {
     // Configure the button bindings
     driver1.whenPressed(new vLED(visionSensor, true), false);
     driver1.whenReleased(new vLED(visionSensor, false), false);
-    driver2.whileHeld(new visionTarget(visionSensor, driveBase), false);
+    driver2.whileHeld(new visionTarget(visionSensor, driveBase), true);
     configureButtonBindings();
   }
 
@@ -88,7 +88,7 @@ public class RobotContainer {
 
   public static boolean tankOverride()
   {
-    return (Math.abs(driver.getRawAxis(1)) > .02)|| (Math.abs(driver.getRawAxis(3)) > .02);
+    return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
   }
 
   public void turnLEDOff()
