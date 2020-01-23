@@ -86,7 +86,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get())||RobotContainer.tankOverride())
+    if((!RobotContainer.driverXButton.get())||(!RobotContainer.driverAButton.get())||RobotContainer.tankOverride())
     {
       return true;
     }
