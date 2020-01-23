@@ -63,7 +63,7 @@ public class RobotContainer {
     // Configure the button bindings
     driverXButton.whenPressed(new vLED(visionSensor, true), false);
     driverXButton.whenReleased(new vLED(visionSensor, false), false);
-    driverAButton.whileHeld(new visionTarget(visionSensor, driveBase), false);
+    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     configureButtonBindings();
   }
