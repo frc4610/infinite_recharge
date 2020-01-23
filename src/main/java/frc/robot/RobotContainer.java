@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,6 +40,7 @@ public class RobotContainer {
   //Subsytems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final static DriveBase driveBase = new DriveBase();
+  private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
 
   //Commands
@@ -48,6 +51,8 @@ public class RobotContainer {
   public static Joystick driver = new Joystick(0);
   public static JoystickButton driver1 = new JoystickButton(driver, 1);
   public static JoystickButton driver2 = new JoystickButton(driver, 2);
+  public static JoystickButton driver3 = new JoystickButton(driver, 3);
+
 
 
   /**
@@ -58,6 +63,7 @@ public class RobotContainer {
     driver1.whenPressed(new vLED(visionSensor, true), false);
     driver1.whenReleased(new vLED(visionSensor, false), false);
     driver2.whileHeld(new visionTarget(visionSensor, driveBase), true);
+    driver3.whenPressed(new navXTurn(gyro, driveBase), true);
     configureButtonBindings();
   }
 
