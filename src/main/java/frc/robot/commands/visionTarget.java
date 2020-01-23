@@ -72,7 +72,7 @@ public class visionTarget extends CommandBase {
     }
     else 
     {
-      driveBase.move(ControlMode.PercentOutput , 0, 0);
+      driveBase.stopDrivebase();
     }
   }
 
