@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,18 +56,24 @@ public class visionTarget extends CommandBase {
     xValueOff = -limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
-    if(limeL.getXValueOff() > 1.0)
+    if(RobotContainer.driverRightBumper.get())
     {
-      leftSpeed += Constants.kp*xValueOff - Constants.minPower;
-      rightSpeed -= Constants.kp*xValueOff - Constants.minPower;
+      if(limeL.getXValueOff() > 1.0)
+      {
+        leftSpeed += Constants.kp*xValueOff - Constants.minPower;
+        rightSpeed -= Constants.kp*xValueOff - Constants.minPower;
+      }
+      else if(limeL.getXValueOff() < 1.0)
+      {
+        leftSpeed += Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed -= Constants.kp*xValueOff + Constants.minPower;
+      }
+      driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
     }
-    else if(limeL.getXValueOff() < 1.0)
+    else 
     {
-      leftSpeed += Constants.kp*xValueOff + Constants.minPower;
-      rightSpeed -= Constants.kp*xValueOff + Constants.minPower;
+      driveBase.move(ControlMode.PercentOutput , 0, 0);
     }
-    
-    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.
@@ -78,7 +86,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driver1.get())||RobotContainer.tankOverride())
+    if((!RobotContainer.driverXButton.get())||RobotContainer.tankOverride())
     {
       return true;
     }

@@ -49,9 +49,10 @@ public class RobotContainer {
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
-  public static JoystickButton driver1 = new JoystickButton(driver, 1);
-  public static JoystickButton driver2 = new JoystickButton(driver, 2);
-  public static JoystickButton driver3 = new JoystickButton(driver, 3);
+  public static JoystickButton driverXButton = new JoystickButton(driver, 1);
+  public static JoystickButton driverAButton = new JoystickButton(driver, 2);
+  public static JoystickButton driverBButton = new JoystickButton(driver, 3);
+  public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
 
 
 
@@ -60,10 +61,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driver1.whenPressed(new vLED(visionSensor, true), false);
-    driver1.whenReleased(new vLED(visionSensor, false), false);
-    driver2.whileHeld(new visionTarget(visionSensor, driveBase), true);
-    driver3.whenPressed(new navXTurn(gyro, driveBase), true);
+    driverXButton.whenPressed(new vLED(visionSensor, true), false);
+    driverXButton.whenReleased(new vLED(visionSensor, false), false);
+    driverAButton.whileHeld(new visionTarget(visionSensor, driveBase), false);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     configureButtonBindings();
   }
 
