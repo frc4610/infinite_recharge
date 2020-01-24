@@ -54,24 +54,17 @@ public class visionTarget extends CommandBase {
     xValueOff = limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
-    if(RobotContainer.driverRightBumper.get() && limeL.hasValidTarget() && Math.abs(xValueOff) < .05)
-    {
       if(Math.abs(xValueOff) > 1.0)
       {
-        leftSpeed = Constants.kp*xValueOff - Constants.minPower;
-        rightSpeed = Constants.kp*xValueOff - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff- Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff- Constants.minPower;
       }
       else if(Math.abs(xValueOff) <= 1.0)
       {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed = Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
       }
       driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
-    }
-    else 
-    {
-      driveBase.stopDrivebase();
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -84,7 +77,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get())||(!RobotContainer.driverAButton.get())||RobotContainer.tankOverride())
+    if((!RobotContainer.driverXButton.get())||(!RobotContainer.driverAButton.get()))
     {
       return true;
     }
