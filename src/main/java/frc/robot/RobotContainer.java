@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
@@ -23,6 +24,7 @@ import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
 
@@ -42,10 +44,11 @@ public class RobotContainer {
   private final static DriveBase driveBase = new DriveBase();
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
+  public final encoder mainEncoders = new encoder();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final static tankDrive mainDrive = new tankDrive(driveBase);
+  public final static tankDrive mainDrive = new tankDrive(driveBase);
 
 
   //OI Devices
@@ -53,6 +56,7 @@ public class RobotContainer {
   public static JoystickButton driver1 = new JoystickButton(driver, 1);
   public static JoystickButton driver2 = new JoystickButton(driver, 2);
   public static JoystickButton driver3 = new JoystickButton(driver, 3);
+  public static JoystickButton driver4 = new JoystickButton(driver, 4);
 
 
 
@@ -65,6 +69,8 @@ public class RobotContainer {
     driver1.whenReleased(new vLED(visionSensor, false), false);
     driver2.whileHeld(new visionTarget(visionSensor), false);
     driver3.whenPressed(new navXTurn(gyro, driveBase), true);
+    driver4.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
+
 
     configureButtonBindings();
   }

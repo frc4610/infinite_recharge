@@ -9,4 +9,8 @@
 # Version 0.3
 1. Can turn set number of degrees
 2. Tank Drive resumes post-turn
-
+# Version 0.4
+1. Verify encoder data
+2. Robot moves set distance
+3. Tank drive resumes after the distance is moved
+4. 
