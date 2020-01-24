@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,20 +51,20 @@ public class visionTarget extends CommandBase {
   public void execute() {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
-    xValueOff = -limeL.getXValueOff();
+    xValueOff = limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
-    if(RobotContainer.driverRightBumper.get())
+    if(RobotContainer.driverRightBumper.get() && limeL.hasValidTarget() && Math.abs(xValueOff) < .05)
     {
-      if(limeL.getXValueOff() > 1.0)
+      if(Math.abs(xValueOff) > 1.0)
       {
-        leftSpeed += Constants.kp*xValueOff - Constants.minPower;
-        rightSpeed -= Constants.kp*xValueOff - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff - Constants.minPower;
+        rightSpeed = Constants.kp*xValueOff - Constants.minPower;
       }
-      else if(limeL.getXValueOff() < 1.0)
+      else if(Math.abs(xValueOff) <= 1.0)
       {
-        leftSpeed += Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed -= Constants.kp*xValueOff + Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed = Constants.kp*xValueOff + Constants.minPower;
       }
       driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
     }
