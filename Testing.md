@@ -12,5 +12,5 @@
 # Version 0.4
 1. Limelight can determine and correct aim. When active, robot should automatically turn to face target
 2. Tank drive works after limelight is done
-3. Tank drive can override vision targeting, and all other driving functions
+3. Vision targeting stops when button a or x is released
 
