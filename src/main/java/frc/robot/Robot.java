@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -47,8 +46,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("DistanceL", m_robotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("DistanceR", m_robotContainer.mainEncoders.getDistanceRight());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -108,6 +105,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+ 
   }
 
   @Override

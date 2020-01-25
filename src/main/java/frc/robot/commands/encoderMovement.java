@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
@@ -15,6 +16,7 @@ import frc.robot.subsystems.encoder;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
+  private static final double kDistanceRequired = 120;
   private encoder EncoderPair;
   private double DistanceL;
   private double DistanceR;
@@ -51,22 +53,24 @@ public class encoderMovement extends CommandBase {
   public void execute() {
     DistanceL = EncoderPair.getDistanceLeft();
     DistanceR = EncoderPair.getDistanceRight();
-    driveBase.move(ControlMode.PercentOutput, .5, -.5);
+    SmartDashboard.putNumber("DistanceL", DistanceL);
+    SmartDashboard.putNumber("DistanceR", DistanceR);
+    if(DistanceL <=kDistanceRequired && DistanceR <= kDistanceRequired){
+      driveBase.move(ControlMode.PercentOutput, .25, .25);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveBase.move(ControlMode.PercentOutput, 0, 0);
-    EncoderPair.resetencoderL();
-    EncoderPair.resetencoderR();
     RobotContainer.startTankDrive();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(DistanceL >= 36||DistanceR >= 36){
+    if(DistanceL >= kDistanceRequired||DistanceR >= kDistanceRequired){
       return true;
     }
     else{
