@@ -73,7 +73,6 @@ public class RobotContainer {
     driver3.whenPressed(new navXTurn(gyro, driveBase), true);
     driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
     driverLeftTrigger.whenPressed(new intakePivot(intake, .5), true);
-
     configureButtonBindings();
   }
 
