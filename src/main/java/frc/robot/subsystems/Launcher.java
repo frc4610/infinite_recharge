@@ -22,15 +22,15 @@ public class Launcher extends SubsystemBase {
    * Creates a new Launcher.
    */
   public Launcher() {
-    indexLeft = new CANSparkMax(3, MotorType.kBrushless);
+    indexLeft = new CANSparkMax(1, MotorType.kBrushless);
     indexRight = new CANSparkMax(4, MotorType.kBrushless);
     indexRight.follow(indexLeft);
     indexRight.setInverted(true);
 
-    feedController = new CANSparkMax(2, MotorType.kBrushless);
+    feedController = new CANSparkMax(0, MotorType.kBrushless);
 
-    launcherLeft = new CANSparkMax(0, MotorType.kBrushless);
-    launcherRight = new CANSparkMax(1, MotorType.kBrushless);
+    launcherLeft = new CANSparkMax(2, MotorType.kBrushless);
+    launcherRight = new CANSparkMax(3, MotorType.kBrushless);
     launcherRight.follow(launcherLeft);
     launcherRight.setInverted(true);
   }
