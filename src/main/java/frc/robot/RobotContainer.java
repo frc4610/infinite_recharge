@@ -47,12 +47,12 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final static tankDrive mainDrive = new tankDrive(driveBase);
 
-
   //OI Devices
   public static Joystick driver = new Joystick(0);
-  public static JoystickButton driver1 = new JoystickButton(driver, 1);
-  public static JoystickButton driver2 = new JoystickButton(driver, 2);
-  public static JoystickButton driver3 = new JoystickButton(driver, 3);
+  public static JoystickButton driverXButton = new JoystickButton(driver, 1);
+  public static JoystickButton driverAButton = new JoystickButton(driver, 2);
+  public static JoystickButton driverBButton = new JoystickButton(driver, 3);
+  public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
 
 
 
@@ -61,11 +61,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driver1.whenPressed(new vLED(visionSensor, true), false);
-    driver1.whenReleased(new vLED(visionSensor, false), false);
-    driver2.whileHeld(new visionTarget(visionSensor), false);
-    driver3.whenPressed(new navXTurn(gyro, driveBase), true);
-
+    driverXButton.whenPressed(new vLED(visionSensor, true), false);
+    driverXButton.whenReleased(new vLED(visionSensor, false), false);
+    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     configureButtonBindings();
   }
 
@@ -92,6 +91,11 @@ public class RobotContainer {
   public static void startTankDrive()
   {
     mainDrive.schedule(true);
+  }
+
+  public static boolean tankOverride()
+  {
+    return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
   }
 
   public void turnLEDOff()

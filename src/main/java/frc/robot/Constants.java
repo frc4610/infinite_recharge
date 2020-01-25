@@ -20,4 +20,6 @@ public final class Constants {
     public static double groundToLimeLensIn = 27.25;
     public static double groundToLimeLensDeg = 15;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
+    public static float kp = .04f;
+    public static float minPower = .01f;
 }
