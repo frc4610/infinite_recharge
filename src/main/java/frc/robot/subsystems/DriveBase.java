@@ -51,6 +51,15 @@ public class DriveBase extends SubsystemBase {
     frontRightDrive.set(mode, speedR);
   }
 
+  /**
+   * Stops the drivebase entirely
+   */
+  public void stopDrivebase()
+  {
+    frontLeftDrive.neutralOutput();
+    frontRightDrive.neutralOutput();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
