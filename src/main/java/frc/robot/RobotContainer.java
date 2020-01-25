@@ -42,9 +42,9 @@ public class RobotContainer {
   //Subsytems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final static DriveBase driveBase = new DriveBase();
-  private final navX gyro = new navX();
+  private static final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
-  public final encoder mainEncoders = new encoder();
+  public static final encoder mainEncoders = new encoder();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -101,6 +101,15 @@ public class RobotContainer {
   public static boolean tankOverride()
   {
     return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
+  }
+
+  /**
+   * Determines if the robot is blocked/being pushed
+   * @return If the robot is blocked
+   */
+  public static boolean robotBlocked()
+  {
+    return !(mainEncoders.drivebaseIsMoving() == gyro.getMoving());
   }
 
   public void turnLEDOff()

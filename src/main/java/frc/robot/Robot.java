@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("Is Robot Blocked?", RobotContainer.robotBlocked());
   }
 
   @Override

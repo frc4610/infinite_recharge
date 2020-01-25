@@ -39,13 +39,24 @@ public class encoder extends SubsystemBase {
   public double getDistanceRight(){
     return encoderR.getDistance();
   }
+
   public void resetencoderL(){
     encoderL.reset();
   }
+
   public void resetencoderR(){
     encoderR.reset();
   }
 
+  /**
+   * Determines if the drivebase is moving based on encoders
+   * @return If the drivebase is moving
+   */
+  public boolean drivebaseIsMoving()
+  {
+    return encoderL.getRate() > .01 || encoderR.getRate() > .01;
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

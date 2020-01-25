@@ -37,6 +37,15 @@ public class navX extends SubsystemBase {
     return gyro.getAngle();
   }
 
+  /**
+   * Uses the navx to determine the acceleration of the robot
+   * @return The robot is moving, in any direction
+   */
+  public boolean getMoving()
+  {
+    return gyro.getWorldLinearAccelX() > .01 || gyro.getWorldLinearAccelY() > .01 || gyro.getWorldLinearAccelZ() > .01;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
