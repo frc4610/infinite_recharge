@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    intakingNEO = new CANSparkMax(0, MotorType.kBrushless);
+    intakingNEO = new CANSparkMax(5, MotorType.kBrushless);
     articulationTalon = new TalonSRX(0);
     articulationTalon.setSelectedSensorPosition(0);
   }
