@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.launchSystem;
+import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
@@ -25,6 +26,7 @@ import frc.robot.commands.vLED;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
 
@@ -45,17 +47,19 @@ public class RobotContainer {
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
+  public final encoder mainEncoders = new encoder();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final static tankDrive mainDrive = new tankDrive(driveBase);
-
+  public final static tankDrive mainDrive = new tankDrive(driveBase);
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
-  public static JoystickButton driver1 = new JoystickButton(driver, 1);
-  public static JoystickButton driver2 = new JoystickButton(driver, 2);
-  public static JoystickButton driver3 = new JoystickButton(driver, 3);
+  public static JoystickButton driverXButton = new JoystickButton(driver, 1);
+  public static JoystickButton driverAButton = new JoystickButton(driver, 2);
+  public static JoystickButton driverBButton = new JoystickButton(driver, 3);
+  public static JoystickButton driverYButton = new JoystickButton(driver, 4);
+  public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
   public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
 
 
@@ -65,12 +69,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driver1.whenPressed(new vLED(visionSensor, true), false);
-    driver1.whenReleased(new vLED(visionSensor, false), false);
-    driver2.whileHeld(new visionTarget(visionSensor), false);
-    driver3.whenPressed(new navXTurn(gyro, driveBase), true);
+    driverXButton.whenPressed(new vLED(visionSensor, true), false);
+    driverXButton.whenReleased(new vLED(visionSensor, false), false);
+    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
+    driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
-
     configureButtonBindings();
   }
 
@@ -97,6 +101,11 @@ public class RobotContainer {
   public static void startTankDrive()
   {
     mainDrive.schedule(true);
+  }
+
+  public static boolean tankOverride()
+  {
+    return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
   }
 
   public void turnLEDOff()

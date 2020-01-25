@@ -24,4 +24,6 @@ public final class Constants {
     public static double feedNEOSpeed = .5;
     public static double launchNEOSpeed = 1;//eventually change to be calculated by vision systems
     public static double indexNEOSpeed = .5;
+    public static float kp = .04f;
+    public static float minPower = .01f;
 }
