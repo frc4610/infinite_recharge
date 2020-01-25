@@ -20,4 +20,8 @@ public final class Constants {
     public static double groundToLimeLensIn = 27.25;
     public static double groundToLimeLensDeg = 15;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
+    public static double windSpeedNEO = .04;//increases by this speed once per 20ms
+    public static double feedNEOSpeed = .5;
+    public static double launchNEOSpeed = 1;//eventually change to be calculated by vision systems
+    public static double indexNEOSpeed = .5;
 }
