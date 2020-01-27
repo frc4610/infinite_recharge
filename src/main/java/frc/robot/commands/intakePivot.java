@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class intakePivot extends CommandBase {
@@ -44,6 +45,6 @@ public class intakePivot extends CommandBase {
   @Override
   public boolean isFinished() {
     //add stop when the intake pivots to the position
-    return false;
+    return !RobotContainer.driverLeftTrigger.get();
   }
 }
