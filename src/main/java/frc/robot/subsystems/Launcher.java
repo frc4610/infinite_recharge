@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,21 +24,24 @@ public class Launcher extends SubsystemBase {
    */
   public Launcher() {
     indexLeft = new CANSparkMax(1, MotorType.kBrushless);
+    indexLeft.setInverted(true);
     indexRight = new CANSparkMax(4, MotorType.kBrushless);
-    indexRight.follow(indexLeft);
-    indexRight.setInverted(true);
+    //indexRight.setIdleMode(IdleMode.kCoast);
 
-    feedController = new CANSparkMax(0, MotorType.kBrushless);
+    feedController = new CANSparkMax(8, MotorType.kBrushless);
 
-    launcherLeft = new CANSparkMax(2, MotorType.kBrushless);
-    launcherRight = new CANSparkMax(3, MotorType.kBrushless);
-    launcherRight.follow(launcherLeft);
+    launcherLeft = new CANSparkMax(3, MotorType.kBrushless);
+    launcherRight = new CANSparkMax(2, MotorType.kBrushless);
     launcherRight.setInverted(true);
+    //launcherRight.setIdleMode(IdleMode.kCoast);
+    //launcherRight.follow(launcherLeft);
+    
   }
 
   public void index(double speed)
   {
     indexLeft.set(speed);
+    indexRight.set(speed);
   }
 
   public void feed(double speed)
@@ -48,13 +52,16 @@ public class Launcher extends SubsystemBase {
   public void launch(double speed)
   {
     launcherLeft.set(speed);
+    launcherRight.set(speed);
   }
 
   public void stopLaunching()
   {
-    feedController.set(0);
+    indexRight.set(0);
     indexLeft.set(0);
     launcherLeft.set(0);
+    launcherRight.set(0);
+    feedController.set(0);
   }
 
   @Override
