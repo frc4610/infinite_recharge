@@ -63,6 +63,7 @@ public class RobotContainer {
   public static JoystickButton driverLeftBumper = new JoystickButton(driver, 5);
   public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
   public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
+  public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
 
 
 
@@ -78,6 +79,7 @@ public class RobotContainer {
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
     driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
     driverLeftTrigger.whenPressed(new intakePivot(intake, .5), true);
+    driverBackButton.whenPressed(new intakePivot(intake, -.5), true);
     configureButtonBindings();
   }
 
