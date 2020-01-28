@@ -118,6 +118,11 @@ public class RobotContainer {
     visionSensor.vLEDoff();
   }
 
+  public double pivotEncoder()
+  {
+    return intake.getPivotEncoderVaule();
+  }
+
   public static void initMotor(TalonSRX motor, double peak)
   {
     motor.configPeakOutputForward(peak);
