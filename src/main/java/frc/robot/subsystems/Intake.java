@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase {
     intakingNEO = new CANSparkMax(5, MotorType.kBrushless);
     intakingNEO.setInverted(true);
     articulationTalon = new TalonSRX(7);//positive is inward
+    articulationTalon.configPeakOutputReverse(1);
     articulationTalon.setSelectedSensorPosition(0);
   }
 

@@ -45,6 +45,13 @@ public class intakePivot extends CommandBase {
   @Override
   public boolean isFinished() {
     //add stop when the intake pivots to the position
-    return !RobotContainer.driverLeftTrigger.get();
+    if(pivotSpeed > 0)
+    {
+      return !RobotContainer.driverLeftTrigger.get();
+    }
+    else{
+      return !RobotContainer.driverBackButton.get();
+    }
+    
   }
 }
