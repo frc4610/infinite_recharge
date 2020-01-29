@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -24,8 +25,10 @@ public class Intake extends SubsystemBase {
     intakingNEO = new CANSparkMax(5, MotorType.kBrushless);
     intakingNEO.setInverted(true);
     articulationTalon = new TalonSRX(7);//positive is inward
-    articulationTalon.configPeakOutputReverse(1);
-    articulationTalon.setSelectedSensorPosition(0);
+    articulationTalon.configPeakOutputReverse(-1);
+    articulationTalon.configClosedloopRamp(1, 0);
+    articulationTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    //articulationTalon.setSelectedSensorPosition(0);
   }
 
   public void pivotIntake(double position)
@@ -41,6 +44,17 @@ public class Intake extends SubsystemBase {
   public int getPivotEncoderVaule()
   {
     return articulationTalon.getSelectedSensorPosition();
+  }
+
+  public void resetPivotEncoder()
+  {
+    articulationTalon.setSelectedSensorPosition(0);
+  }
+
+  public void neutralMotors()
+  {
+    articulationTalon.neutralOutput();
+    intakingNEO.set(0);
   }
 
   @Override

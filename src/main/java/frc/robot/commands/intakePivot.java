@@ -13,13 +13,13 @@ import frc.robot.subsystems.Intake;
 
 public class intakePivot extends CommandBase {
   private Intake pivotIntake;
-  private double pivotSpeed;
+  private double pivotPos;
   /**
    * Creates a new intakePivot.
    */
-  public intakePivot(Intake intake, double speed) {
+  public intakePivot(Intake intake, double position) {
     pivotIntake = intake;
-    pivotSpeed = speed;
+    pivotPos = position;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,31 +27,31 @@ public class intakePivot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //pivotIntake.resetPivotEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivotIntake.pivotIntake(pivotSpeed);
+    pivotIntake.pivotIntake(pivotPos);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pivotIntake.pivotIntake(0);
+    pivotIntake.neutralMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //add stop when the intake pivots to the position
-    if(pivotSpeed > 0)
+    if(pivotPos <= 0)
     {
-      return !RobotContainer.driverLeftTrigger.get();
+      return pivotIntake.getPivotEncoderVaule() <= 30;
     }
-    else{
-      return !RobotContainer.driverBackButton.get();
+    else
+    {
+      return pivotIntake.getPivotEncoderVaule() >= 900;
     }
-    
   }
 }
