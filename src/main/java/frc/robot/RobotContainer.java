@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.launchSystem;
+import frc.robot.commands.intakeCells;
+import frc.robot.commands.intakePivot;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
@@ -26,6 +28,7 @@ import frc.robot.commands.vLED;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
@@ -47,6 +50,7 @@ public class RobotContainer {
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
+  private final Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
 
   //Commands
@@ -59,8 +63,11 @@ public class RobotContainer {
   public static JoystickButton driverAButton = new JoystickButton(driver, 2);
   public static JoystickButton driverBButton = new JoystickButton(driver, 3);
   public static JoystickButton driverYButton = new JoystickButton(driver, 4);
+  public static JoystickButton driverLeftBumper = new JoystickButton(driver, 5);
   public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
+  public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
   public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
+  public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
 
 
 
@@ -74,6 +81,9 @@ public class RobotContainer {
     driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
+    driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
+    driverLeftTrigger.whenPressed(new intakePivot(intake, -800), true);
+    driverLeftTrigger.whenReleased(new intakePivot(intake, 0), true);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     configureButtonBindings();
   }
@@ -111,6 +121,11 @@ public class RobotContainer {
   public void turnLEDOff()
   {
     visionSensor.vLEDoff();
+  }
+
+  public double pivotEncoder()
+  {
+    return intake.getPivotEncoderVaule();
   }
 
   public static void initMotor(TalonSRX motor, double peak)
