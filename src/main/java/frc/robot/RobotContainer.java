@@ -78,8 +78,10 @@ public class RobotContainer {
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
     driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
-    driverLeftTrigger.whenPressed(new intakePivot(intake, -.1), true);
-    driverLeftTrigger.whenReleased(new intakePivot(intake, .1), true);
+    //driverLeftTrigger.whenPressed(new intakePivot(intake, -.1), true);
+    //driverLeftTrigger.whenReleased(new intakePivot(intake, .1), true);
+    driverLeftTrigger.whenPressed(new intakePivot(intake, -800), true);
+    driverLeftTrigger.whenReleased(new intakePivot(intake, 0), true);
     configureButtonBindings();
   }
 

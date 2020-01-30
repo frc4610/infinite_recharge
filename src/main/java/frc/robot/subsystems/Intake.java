@@ -26,14 +26,19 @@ public class Intake extends SubsystemBase {
     intakingNEO.setInverted(true);
     articulationTalon = new TalonSRX(7);//positive is inward
     articulationTalon.configPeakOutputReverse(-1);
-    articulationTalon.configClosedloopRamp(1, 0);
+    articulationTalon.configClosedloopRamp(.5, 0);
     articulationTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    articulationTalon.config_kF(0, 0.15, 10);
+		articulationTalon.config_kP(0, 0.45, 10);
+		articulationTalon.config_kI(0, 0.00005, 10);
+    articulationTalon.config_kD(0, 0.25, 10);
     //articulationTalon.setSelectedSensorPosition(0);
   }
 
   public void pivotIntake(double position)
   {
-    articulationTalon.set(ControlMode.PercentOutput, position);// change to position output once value is recorded
+    //articulationTalon.set(ControlMode.PercentOutput, position);// change to position output once value is recorded
+    articulationTalon.set(ControlMode.Position, position);
   }
 
   public void intakeCells(double speed)

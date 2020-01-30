@@ -45,13 +45,13 @@ public class intakePivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pivotPos <= 0)
+    if(pivotPos <= -800)
     {
-      return pivotIntake.getPivotEncoderVaule() <= 30;
+      return pivotIntake.getPivotEncoderVaule() <= -800;
     }
     else
     {
-      return pivotIntake.getPivotEncoderVaule() >= 900;
+      return pivotIntake.getPivotEncoderVaule() >= 0;
     }
   }
 }
