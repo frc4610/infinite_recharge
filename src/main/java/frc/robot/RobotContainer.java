@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
 import frc.robot.commands.encoderMovement;
@@ -26,6 +27,7 @@ import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
@@ -47,6 +49,7 @@ public class RobotContainer {
   private final static DriveBase driveBase = new DriveBase();
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
+  private final Launcher launcher = new Launcher();
   private final Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
 
@@ -63,6 +66,7 @@ public class RobotContainer {
   public static JoystickButton driverLeftBumper = new JoystickButton(driver, 5);
   public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
   public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
+  public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
   public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
 
 
@@ -78,10 +82,9 @@ public class RobotContainer {
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
     driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
-    //driverLeftTrigger.whenPressed(new intakePivot(intake, -.1), true);
-    //driverLeftTrigger.whenReleased(new intakePivot(intake, .1), true);
     driverLeftTrigger.whenPressed(new intakePivot(intake, -800), true);
     driverLeftTrigger.whenReleased(new intakePivot(intake, 0), true);
+    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     configureButtonBindings();
   }
 
