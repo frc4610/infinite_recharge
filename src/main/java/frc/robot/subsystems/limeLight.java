@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class limeLight extends SubsystemBase {
   private double xValueOff;
   private double yValueOff;
+  private boolean validTarget;
   /**
    * Creates a new limeLight.
    */
@@ -42,15 +43,17 @@ public class limeLight extends SubsystemBase {
   }
 
   /**
-   * 
+   * Stores tx, ty, and tv values from the limelight pipeline
    */
   public void visionStoreValues()
   {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry tv = table.getEntry("tv");
     xValueOff = tx.getDouble(0);
     yValueOff = ty.getDouble(0);
+    validTarget = tv.getDouble(0) == 1.0;
   }
 
   /**
@@ -71,6 +74,14 @@ public class limeLight extends SubsystemBase {
     return yValueOff;
   }
 
+  /**
+   * Does the limelight have a valid target?
+   * @return Whether or not the limelight can see any valid targets
+   */
+  public boolean hasValidTarget()
+  {
+    return validTarget;
+  }
   /**
    * Runs vision targeting to determine distance from target
    * 

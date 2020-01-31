@@ -13,11 +13,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
-  private static final double kDistanceRequired = 120;
+  private static final double kDistanceRequired = 60;
   private encoder EncoderPair;
+  private navX TurnCorrection;
+  private double Straighten;
   private double DistanceL;
   private double DistanceR;
   private DriveBase driveBase;
@@ -29,11 +32,14 @@ public class encoderMovement extends CommandBase {
    * 
    * 
    */
-  public encoderMovement(DriveBase tempDrive, encoder Encoder){
+  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection){
     driveBase = tempDrive;
     EncoderPair = Encoder;
+    TurnCorrection = driveCorrection;
     addRequirements(tempDrive);
     addRequirements(Encoder);
+    addRequirements(driveCorrection);
+    
   }
    
 
@@ -44,6 +50,8 @@ public class encoderMovement extends CommandBase {
   public void initialize() {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
+    TurnCorrection.resetGyro();
+
     
     
   }
@@ -53,13 +61,20 @@ public class encoderMovement extends CommandBase {
   public void execute() {
     DistanceL = EncoderPair.getDistanceLeft();
     DistanceR = EncoderPair.getDistanceRight();
+    Straighten = TurnCorrection.getYaw();
     SmartDashboard.putNumber("DistanceL", DistanceL);
     SmartDashboard.putNumber("DistanceR", DistanceR);
-    if(DistanceL <=kDistanceRequired && DistanceR <= kDistanceRequired){
-      driveBase.move(ControlMode.PercentOutput, .25, .25);
+    SmartDashboard.putNumber("Yaw", Straighten);
+    if(Straighten >= 2.5){
+      driveBase.move(ControlMode.PercentOutput, .25, .5);
+    }
+    else if(Straighten <= -2.5){
+      driveBase.move(ControlMode.PercentOutput, .5, .25);
+    }
+    else{
+      driveBase.move(ControlMode.PercentOutput, .75, .75);
     }
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -70,7 +85,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(DistanceL >= kDistanceRequired||DistanceR >= kDistanceRequired){
+    if(Math.abs(DistanceL) >= kDistanceRequired||(Math.abs(DistanceR)) >= kDistanceRequired){
       return true;
     }
     else{
