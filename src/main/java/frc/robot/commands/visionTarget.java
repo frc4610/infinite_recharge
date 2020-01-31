@@ -14,14 +14,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.limeLight;
 
 public class visionTarget extends CommandBase {
   private limeLight limeL;
+  private DriveBase driveBase;
+  private Launcher launcher;
+
   private double distanceToPowerPort;
   private double xValueOff;
-
-  private DriveBase driveBase;
+  private double launchSpeed;
+  private double maxSpeed;
+  private double windSpeed;
   private double leftSpeed;
   private double rightSpeed;
 
@@ -30,14 +35,20 @@ public class visionTarget extends CommandBase {
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher) 
   {
     leftSpeed = 0;
     rightSpeed = 0;
     driveBase = tdriveBase;
     limeL = plimeL;
+    launcher = tLauncher;
+
+    addRequirements(tLauncher);
     addRequirements(tdriveBase);
     addRequirements(plimeL);
+
+    launchSpeed = 0;
+    windSpeed = Constants.windSpeedNEO;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -54,17 +65,34 @@ public class visionTarget extends CommandBase {
     xValueOff = limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
-      if(Math.abs(xValueOff) > 1.0)
+
+    if(Math.abs(xValueOff) > 1.0)
       {
         leftSpeed = Constants.kp*xValueOff - Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
-      else if(Math.abs(xValueOff) <= 1.0)
+    else if(Math.abs(xValueOff) <= 1.0)
       {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
       }
-      driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
+    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
+
+    if(Math.abs(xValueOff)<= .2)
+    {
+      launchSpeed = calculateLaunchPercentOutput();
+      if(launchSpeed < maxSpeed)
+      {
+        launchSpeed += windSpeed;//slowly increase the power to the shooter
+      }
+      launcher.launch(launchSpeed);
+      launcher.index(Constants.indexNEOSpeed);
+      launcher.feed(Constants.feedNEOSpeed);
+    }
+    else
+    {
+      launcher.stopLaunching();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -72,6 +100,7 @@ public class visionTarget extends CommandBase {
   public void end(boolean interrupted) {
     RobotContainer.startTankDrive();
     limeL.vLEDoff();
+    launcher.stopLaunching();
   }
 
   // Returns true when the command should end.
@@ -85,6 +114,9 @@ public class visionTarget extends CommandBase {
     {
       return false;
     }
-    
   }
+  private double calculateLaunchPercentOutput()
+    {
+      return (Math.sqrt((Constants.gravityFeetSeconds*distanceToPowerPort*distanceToPowerPort)/(2*(distanceToPowerPort*Math.tan(Constants.launchAngleRad)-Constants.heightDifferenceLauncher)*Math.cos(Constants.launchAngleRad)*Math.cos(Constants.launchAngleRad))))/Constants.launchWheelRadius;
+    }
 }
