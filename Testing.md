@@ -11,8 +11,9 @@
 2. Tank Drive resumes post-turn
 # Version 0.4
 1. Verify encoder data
-2. Robot moves set distance and straightens itself
-3. Tank drive resumes after the distance is moved
-4. Limelight can determine and correct aim. When active, robot should automatically turn to face target
-5. Tank drive works after limelight is done
-6. Vision targeting stops when button 'a' or 'x' is released
+2. Robot moves set distance and straightens itself, smoothly
+3. Robot turns a set number of degrees and resumes tank drive
+4. Tank drive resumes after the distance is moved
+5. Limelight can determine and correct aim. When active, robot should automatically turn to face target
+6. Tank drive works after limelight is done
+7. Vision targeting stops when button 'a' or 'x' is released

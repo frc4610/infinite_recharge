@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
@@ -40,6 +39,7 @@ public class encoderMovement extends CommandBase {
     addRequirements(Encoder);
     addRequirements(driveCorrection);
     
+    
   }
    
 
@@ -61,19 +61,11 @@ public class encoderMovement extends CommandBase {
   public void execute() {
     DistanceL = EncoderPair.getDistanceLeft();
     DistanceR = EncoderPair.getDistanceRight();
-    Straighten = TurnCorrection.getYaw();
-    SmartDashboard.putNumber("DistanceL", DistanceL);
-    SmartDashboard.putNumber("DistanceR", DistanceR);
-    SmartDashboard.putNumber("Yaw", Straighten);
-    if(Straighten >= 2.5){
-      driveBase.move(ControlMode.PercentOutput, .25, .5);
-    }
-    else if(Straighten <= -2.5){
-      driveBase.move(ControlMode.PercentOutput, .5, .25);
-    }
-    else{
-      driveBase.move(ControlMode.PercentOutput, .75, .75);
-    }
+    Straighten = TurnCorrection.getYaw() * .02;
+    double Lspeed = .75 - Straighten;
+    double Rspeed = .75 + Straighten;
+    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
+    
   }
   // Called once the command ends or is interrupted.
   @Override
@@ -85,7 +77,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(DistanceL) >= kDistanceRequired||(Math.abs(DistanceR)) >= kDistanceRequired){
+    if(Math.abs(DistanceL) >= kDistanceRequired && (Math.abs(DistanceR)) >= kDistanceRequired){
       return true;
     }
     else{

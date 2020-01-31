@@ -47,7 +47,6 @@ public class encoder extends SubsystemBase {
   public void resetencoderR(){
     encoderR.reset();
   }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
