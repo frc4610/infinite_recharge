@@ -78,12 +78,12 @@ public class visionTarget extends CommandBase {
       }
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
-    if(Math.abs(xValueOff)<= .2)
+    if(Math.abs(xValueOff)<= 1.05)
     {
-      launchSpeed = calculateLaunchPercentOutput();
+      maxSpeed = calculateLaunchPercentOutput();
       if(launchSpeed < maxSpeed)
       {
-        launchSpeed += windSpeed;//slowly increase the power to the shooter
+        launchSpeed += maxSpeed*windSpeed;//slowly increase the power to the shooter
       }
       launcher.launch(launchSpeed);
       launcher.index(Constants.indexNEOSpeed);
@@ -93,6 +93,7 @@ public class visionTarget extends CommandBase {
     {
       launcher.stopLaunching();
     }
+    SmartDashboard.putNumber("Power", maxSpeed);
   }
 
   // Called once the command ends or is interrupted.

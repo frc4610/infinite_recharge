@@ -43,7 +43,7 @@ public class launchSystem extends CommandBase {
     launcher.index(indexSpeed);
     if(launcherSpeed < maxSpeed)
      {
-        launcherSpeed += windSpeed;//slowly increase the power to the shooter
+        launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
      }
      launcher.launch(launcherSpeed);
   }
