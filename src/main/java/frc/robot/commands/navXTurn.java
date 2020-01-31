@@ -38,10 +38,8 @@ public class navXTurn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {;
-    yaw = gyro.getYaw() * .02;
-    double Ltank = 1 - yaw;
-    double Rtank = -1 + yaw;
-    driveBase.move(ControlMode.PercentOutput, Ltank, Rtank);
+    yaw = gyro.getYaw();
+    driveBase.move(ControlMode.PercentOutput, 1, -1);
   }
 
   // Called once the command ends or is interrupted.
