@@ -27,8 +27,9 @@ public final class Constants {
     public static float kp = .04f;
     public static float minPower = .01f;
     public static double gravityFeetSeconds = 32.17405;
+    public static double gravityInchesSeconds = 12*gravityFeetSeconds;
     public static double heightDifferenceLauncher = 76.25;
-    public static double launchAngleDeg = 39;
-    public static double launchAngleRad = Math.toRadians(launchAngleDeg);
+    public static double launchAngleDeg = 60;
+    public static double launchAngleRad = 1.0472;
     public static double launchWheelRadius = 3;
 }

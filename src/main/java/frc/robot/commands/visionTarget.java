@@ -78,14 +78,14 @@ public class visionTarget extends CommandBase {
       }
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
-    if(Math.abs(xValueOff)<= 1.05)
+    if(Math.abs(xValueOff) <= 1.35)
     {
       maxSpeed = calculateLaunchPercentOutput();
       if(launchSpeed < maxSpeed)
       {
-        launchSpeed += maxSpeed*windSpeed;//slowly increase the power to the shooter
+        launchSpeed += 1;//slowly increase the power to the shooter
       }
-      launcher.launch(launchSpeed);
+      launcher.launch(1);
       launcher.index(Constants.indexNEOSpeed);
       launcher.feed(Constants.feedNEOSpeed);
     }
@@ -118,6 +118,6 @@ public class visionTarget extends CommandBase {
   }
   private double calculateLaunchPercentOutput()
     {
-      return (Math.sqrt((Constants.gravityFeetSeconds*distanceToPowerPort*distanceToPowerPort)/(2*(distanceToPowerPort*Math.tan(Constants.launchAngleRad)-Constants.heightDifferenceLauncher)*Math.cos(Constants.launchAngleRad)*Math.cos(Constants.launchAngleRad))))/Constants.launchWheelRadius;
+      return (Math.sqrt((Constants.gravityInchesSeconds*distanceToPowerPort*distanceToPowerPort)/(2*((distanceToPowerPort*Math.tan(Constants.launchAngleRad))-Constants.heightDifferenceLauncher)*Math.cos(Constants.launchAngleRad)*Math.cos(Constants.launchAngleRad))))/1725;
     }
 }
