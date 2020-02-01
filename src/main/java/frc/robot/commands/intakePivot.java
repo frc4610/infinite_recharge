@@ -27,14 +27,21 @@ public class intakePivot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(RobotContainer.pivotEncoder() < 2)
+    if(RobotContainer.pivotEncoder() < 2 && RobotContainer.pivotDirection())
     {
       RobotContainer.togglePivot(RobotContainer.pivotEncoder()+1);
     }
     else
     {
-      RobotContainer.togglePivot(0);
+      RobotContainer.invertPivotDirection();
+      RobotContainer.togglePivot(RobotContainer.pivotEncoder()-1);
+      if(RobotContainer.pivotEncoder() == 0)
+      {
+        RobotContainer.invertPivotDirection();
+      }
     }
+
+    
     //pivotIntake.resetPivotEncoder();
   }
 

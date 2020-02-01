@@ -80,12 +80,14 @@ public class RobotContainer {
 
   //Tracker
   private static double toReachPosition;
+  private static boolean pivotForward;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    pivotForward = true;
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase), false);
@@ -140,6 +142,16 @@ public class RobotContainer {
   public static void togglePivot(double toSet)
   {
     toReachPosition = toSet;
+  }
+
+  public static void invertPivotDirection()
+  {
+    pivotForward = !pivotForward;
+  }
+
+  public static boolean pivotDirection()
+  {
+    return pivotForward;
   }
 
   public double pivotPosition()
