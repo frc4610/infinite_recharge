@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Launcher;
@@ -18,6 +19,7 @@ public class launchSystem extends CommandBase {
   private double launcherSpeed;
   private double maxSpeed;
   private double windSpeed;
+  private Timer timer;
   /**
    * Creates a new launchSystem.
    */
@@ -27,6 +29,7 @@ public class launchSystem extends CommandBase {
     feedSpeed = FeedSpeed;
     maxSpeed = launchSpeed;
     windSpeed = Constants.windSpeedNEO;
+    timer = new Timer();
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -34,18 +37,23 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    launcher.feed(feedSpeed);
-    launcher.index(indexSpeed);
+    if(timer.get() > Constants.feedDelay)
+    {
+      launcher.feed(feedSpeed);
+      launcher.index(indexSpeed);
+    }
+    
     if(launcherSpeed < maxSpeed)
      {
         launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
      }
-     launcher.launch(launcherSpeed);
+     launcher.launch(.7);
   }
 
   // Called once the command ends or is interrupted.

@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -21,6 +22,7 @@ public class visionTarget extends CommandBase {
   private limeLight limeL;
   private DriveBase driveBase;
   private Launcher launcher;
+  private Timer timer;
 
   private double distanceToPowerPort;
   private double xValueOff;
@@ -42,6 +44,7 @@ public class visionTarget extends CommandBase {
     driveBase = tdriveBase;
     limeL = plimeL;
     launcher = tLauncher;
+    timer = new Timer();
 
     addRequirements(tLauncher);
     addRequirements(tdriveBase);
@@ -55,6 +58,7 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -78,19 +82,23 @@ public class visionTarget extends CommandBase {
       }
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
-    if(Math.abs(xValueOff) <= 1.35)
+    if(Math.abs(xValueOff) <= 1.35&&(distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
-      maxSpeed = calculateLaunchPercentOutput();
+      maxSpeed = .7;
       if(launchSpeed < maxSpeed)
       {
-        launchSpeed += 1;//slowly increase the power to the shooter
+        launchSpeed += maxSpeed*windSpeed;//slowly increase the power to the shooter
       }
-      launcher.launch(1);
-      launcher.index(Constants.indexNEOSpeed);
-      launcher.feed(Constants.feedNEOSpeed);
+      if(timer.get() >= Constants.feedDelay)
+      {
+        launcher.index(Constants.indexNEOSpeed);
+        launcher.feed(Constants.feedNEOSpeed);
+      }
+      launcher.launch(launchSpeed);
     }
     else
     {
+      timer.reset();
       launcher.stopLaunching();
     }
     SmartDashboard.putNumber("Power", maxSpeed);
@@ -99,6 +107,7 @@ public class visionTarget extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    timer.stop();
     RobotContainer.startTankDrive();
     limeL.vLEDoff();
     launcher.stopLaunching();
