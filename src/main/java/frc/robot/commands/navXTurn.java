@@ -15,15 +15,17 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
+  private static double kTurnDesired;
   private navX gyro;
   private double yaw;
   private DriveBase driveBase;
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyrNavX, DriveBase tempdrive) {
+  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant) {
     gyro = gyrNavX;
     driveBase = tempdrive;
+    kTurnDesired = kTurnWant;
     addRequirements(gyrNavX);
     addRequirements(tempdrive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -37,9 +39,14 @@ public class navXTurn extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {;
+  public void execute() {
     yaw = gyro.getYaw();
-    driveBase.move(ControlMode.PercentOutput, 1, -1);
+    if(yaw > 0){
+      driveBase.move(ControlMode.PercentOutput, .5, -.5);
+    }
+    else if(yaw < 0){
+      driveBase.move(ControlMode.PercentOutput, -.5, .5);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -53,7 +60,7 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(yaw >= 90){
+    if(yaw >= Math.abs(kTurnDesired)){
       return true;
     }
     else
