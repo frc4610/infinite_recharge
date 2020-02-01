@@ -18,7 +18,7 @@ public class DriveBase extends SubsystemBase {
   private VictorSPX leftVictor;
   private VictorSPX rightVictor;
   private TalonSRX leftTalon;
-  private TalonSRX rightTalon; 
+  private TalonSRX rightTalon;
   private double peak;
   /**
    * Creates a new DriveBase.

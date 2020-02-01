@@ -16,4 +16,8 @@
 4. Tank drive resumes after the distance is moved
 5. Limelight can determine and correct aim. When active, robot should automatically turn to face target
 6. Tank drive works after limelight is done
-7. Vision targeting stops when button 'a' or 'x' is released
+7. Vision targeting stops when button 'a' or 'x' is releasedargeting stops when button 'a' or 'x' is released
+# Version 0.5
+1. Intake can pivot from inside to outside the robot, at correct positioning
+2. Intake can intake power cells
+3. Intake commands interrupt each other
