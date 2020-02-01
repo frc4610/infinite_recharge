@@ -94,7 +94,7 @@ public class RobotContainer {
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
-    operatorBButton.whenPressed(new intakePivot(intake, Constants.encoderCountsToPos1*toReachPosition), true);
+    operatorBButton.whileHeld(new intakePivot(intake, Constants.encoderCountsToPos1*toReachPosition), true);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     configureButtonBindings();
   }
