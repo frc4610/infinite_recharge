@@ -21,3 +21,6 @@
 1. Intake can pivot from inside to outside the robot, at correct positioning
 2. Intake can intake power cells
 3. Intake commands interrupt each other
+4. Control scheme is all correct
+5. Robot can turn to 90, 180, or -90 degrees when corresponding buttons are pressed
+6. Can move 5 feet forward when button is pressed
