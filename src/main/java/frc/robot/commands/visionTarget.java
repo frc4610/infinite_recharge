@@ -117,7 +117,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get())||(!RobotContainer.driverAButton.get()))
+    if((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get()))
     {
       return true;
     }
@@ -126,8 +126,4 @@ public class visionTarget extends CommandBase {
       return false;
     }
   }
-  private double calculateLaunchPercentOutput()
-    {
-      return (Math.sqrt((Constants.gravityInchesSeconds*distanceToPowerPort*distanceToPowerPort)/(2*((distanceToPowerPort*Math.tan(Constants.launchAngleRad))-Constants.heightDifferenceLauncher)*Math.cos(Constants.launchAngleRad)*Math.cos(Constants.launchAngleRad))))/1725;
-    }
 }
