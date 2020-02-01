@@ -27,6 +27,14 @@ public class intakePivot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(RobotContainer.pivotEncoder() < 2)
+    {
+      RobotContainer.togglePivot(RobotContainer.pivotEncoder()+1);
+    }
+    else
+    {
+      RobotContainer.togglePivot(0);
+    }
     //pivotIntake.resetPivotEncoder();
   }
 
@@ -45,13 +53,13 @@ public class intakePivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pivotPos <= -800)
+    if(pivotPos <= 0)
     {
-      return pivotIntake.getPivotEncoderVaule() <= -800;
+      return pivotIntake.getPivotEncoderVaule() <= pivotPos;
     }
     else
     {
-      return pivotIntake.getPivotEncoderVaule() >= 0;
+      return pivotIntake.getPivotEncoderVaule() >= pivotPos;
     }
   }
 }
