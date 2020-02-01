@@ -21,9 +21,17 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+
   private Command m_autonomousCommand;
 
   public RobotContainer m_robotContainer;
+
+  private double DistanceL;
+  private double DistanceR;
+  private double Lspeed;
+  private double Rspeed;
+  private double Straighten;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -109,6 +117,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("DistanceL", DistanceL);
+    SmartDashboard.putNumber("DistanceR", DistanceR);
+    SmartDashboard.putNumber("Lspeed", Lspeed);
+    SmartDashboard.putNumber("Rspeed", Rspeed);
+    SmartDashboard.putNumber("Yaw", Straighten);
   }
 
   @Override

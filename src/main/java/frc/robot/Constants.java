@@ -18,13 +18,20 @@ package frc.robot;
 public final class Constants {
     public static double encoderCountsToPos1 = -400;
     public static double groundToPowerPortIn = 98.25;
-    public static double groundToLimeLensIn = 27.25;
-    public static double groundToLimeLensDeg = 15;
+    public static double groundToLimeLensIn = 26;
+    public static double groundToLimeLensDeg = 32.8;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
-    public static double windSpeedNEO = .04;//increases by this speed once per 20ms
+    public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
+    public static double feedDelay = .75;
     public static double feedNEOSpeed = .5;
-    public static double launchNEOSpeed = 1;//eventually change to be calculated by vision systems
-    public static double indexNEOSpeed = .5;
+    public static double launchNEOSpeed = .3;//eventually change to be calculated by vision systems
+    public static double indexNEOSpeed = .3;
     public static float kp = .04f;
     public static float minPower = .01f;
+    public static double gravityFeetSeconds = 32.17405;
+    public static double gravityInchesSeconds = 12*gravityFeetSeconds;
+    public static double heightDifferenceLauncher = 76.25;
+    public static double launchAngleDeg = 60;
+    public static double launchAngleRad = 1.0472;
+    public static double launchWheelRadius = 3;
 }
