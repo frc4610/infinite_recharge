@@ -62,11 +62,11 @@ public class intakePivot extends CommandBase {
   public boolean isFinished() {
     if(pivotPos <= 0)
     {
-      return pivotIntake.getPivotEncoderVaule() <= pivotPos;
+      return pivotIntake.getPivotEncoderVaule() <= -800;
     }
     else
     {
-      return pivotIntake.getPivotEncoderVaule() >= pivotPos;
+      return pivotIntake.getPivotEncoderVaule() >= 0;
     }
   }
 }

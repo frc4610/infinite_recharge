@@ -27,14 +27,14 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() 
   {
     peak = 1;
-    leftVictor = new VictorSPX(3);
-    rightVictor = new VictorSPX(11);
-    leftTalon = new TalonSRX(4);
-    rightTalon = new TalonSRX(6);
+    leftVictor = new VictorSPX(11);
+    rightVictor = new VictorSPX(3);
+    leftTalon = new TalonSRX(6);
+    rightTalon = new TalonSRX(4);
     leftTalon.follow(leftVictor);
     rightTalon.follow(rightVictor);
-    leftVictor.setInverted(true);
-    leftTalon.setInverted(true);
+    rightVictor.setInverted(true);
+    rightTalon.setInverted(true);
     RobotContainer.initMotor(leftVictor, peak);
     RobotContainer.initMotor(rightVictor, peak);
     RobotContainer.initMotor(leftTalon, peak);
