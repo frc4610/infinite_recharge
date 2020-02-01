@@ -16,7 +16,7 @@ import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
-  private static final double kDistanceRequired = 60;
+  private static  double kDistanceRequired;
   private encoder EncoderPair;
   private navX TurnCorrection;
   private double Straighten;
@@ -31,10 +31,11 @@ public class encoderMovement extends CommandBase {
    * 
    * 
    */
-  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection){
+  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
     driveBase = tempDrive;
     EncoderPair = Encoder;
     TurnCorrection = driveCorrection;
+    kDistanceRequired = distance;
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(driveCorrection);
