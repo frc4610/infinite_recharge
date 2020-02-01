@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class intakePivot extends CommandBase {
@@ -27,21 +26,6 @@ public class intakePivot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(RobotContainer.pivotEncoder() < 2 && RobotContainer.pivotDirection())
-    {
-      RobotContainer.togglePivot(RobotContainer.pivotEncoder()+1);
-    }
-    else
-    {
-      RobotContainer.invertPivotDirection();
-      RobotContainer.togglePivot(RobotContainer.pivotEncoder()-1);
-      if(RobotContainer.pivotEncoder() == 0)
-      {
-        RobotContainer.invertPivotDirection();
-      }
-    }
-
-    
     //pivotIntake.resetPivotEncoder();
   }
 
@@ -60,7 +44,7 @@ public class intakePivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pivotPos <= 0)
+    if(pivotPos <= -800)
     {
       return pivotIntake.getPivotEncoderVaule() <= -800;
     }

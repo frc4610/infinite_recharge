@@ -36,7 +36,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    RobotContainer.togglePivot(1);
   }
 
   /**
@@ -50,7 +49,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("DistanceL", m_robotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", m_robotContainer.mainEncoders.getDistanceRight());
-    SmartDashboard.putNumber("Pivot Value", m_robotContainer.pivotEncoder());
+    SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

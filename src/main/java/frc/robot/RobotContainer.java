@@ -78,24 +78,21 @@ public class RobotContainer {
   public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
   public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
 
-  //Tracker
-  private static double toReachPosition;
-  private static boolean pivotForward;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
-    pivotForward = true;
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase), false);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
-    operatorYButton.whenPressed(new intakeCells(intake, .5), true);
-    operatorBButton.whileHeld(new intakePivot(intake, Constants.encoderCountsToPos1*toReachPosition), true);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .5), true);
+    operatorBButton.whenPressed(new intakePivot(intake, -800), true);
+    operatorBButton.whenReleased(new intakePivot(intake, 0), true);
     configureButtonBindings();
   }
 
@@ -139,25 +136,6 @@ public class RobotContainer {
     return intake.getPivotEncoderVaule();
   }
 
-  public static void togglePivot(double toSet)
-  {
-    toReachPosition = toSet;
-  }
-
-  public static void invertPivotDirection()
-  {
-    pivotForward = !pivotForward;
-  }
-
-  public static boolean pivotDirection()
-  {
-    return pivotForward;
-  }
-
-  public double pivotPosition()
-  {
-    return toReachPosition;
-  }
   public static void initMotor(TalonSRX motor, double peak)
   {
     motor.configPeakOutputForward(peak);
