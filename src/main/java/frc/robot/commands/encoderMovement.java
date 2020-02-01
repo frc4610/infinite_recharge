@@ -12,10 +12,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
+  private static final double kDistanceRequired = 60;
   private encoder EncoderPair;
+  private navX TurnCorrection;
+  private double Straighten;
   private double DistanceL;
   private double DistanceR;
   private DriveBase driveBase;
@@ -27,11 +31,15 @@ public class encoderMovement extends CommandBase {
    * 
    * 
    */
-  public encoderMovement(DriveBase tempDrive, encoder Encoder){
+  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection){
     driveBase = tempDrive;
     EncoderPair = Encoder;
+    TurnCorrection = driveCorrection;
     addRequirements(tempDrive);
     addRequirements(Encoder);
+    addRequirements(driveCorrection);
+    
+    
   }
    
 
@@ -42,6 +50,8 @@ public class encoderMovement extends CommandBase {
   public void initialize() {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
+    TurnCorrection.resetGyro();
+
     
     
   }
@@ -51,22 +61,23 @@ public class encoderMovement extends CommandBase {
   public void execute() {
     DistanceL = EncoderPair.getDistanceLeft();
     DistanceR = EncoderPair.getDistanceRight();
-    driveBase.move(ControlMode.PercentOutput, .5, -.5);
+    Straighten = TurnCorrection.getYaw() * .02;
+    double Lspeed = .75 - Straighten;
+    double Rspeed = .75 + Straighten;
+    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
+    
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveBase.move(ControlMode.PercentOutput, 0, 0);
-    EncoderPair.resetencoderL();
-    EncoderPair.resetencoderR();
     RobotContainer.startTankDrive();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(DistanceL >= 36||DistanceR >= 36){
+    if(Math.abs(DistanceL) >= kDistanceRequired && (Math.abs(DistanceR)) >= kDistanceRequired){
       return true;
     }
     else{

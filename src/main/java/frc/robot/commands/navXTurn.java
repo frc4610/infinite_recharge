@@ -39,7 +39,7 @@ public class navXTurn extends CommandBase {
   @Override
   public void execute() {;
     yaw = gyro.getYaw();
-    driveBase.move(ControlMode.PercentOutput, .35, -.35);
+    driveBase.move(ControlMode.PercentOutput, 1, -1);
   }
 
   // Called once the command ends or is interrupted.
