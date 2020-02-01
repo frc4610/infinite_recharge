@@ -78,7 +78,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(DistanceL) >= kDistanceRequired && (Math.abs(DistanceR)) >= kDistanceRequired){
+    if(Math.abs(DistanceL) >= Math.abs(kDistanceRequired) && (Math.abs(DistanceR)) >= Math.abs(kDistanceRequired)){
       return true;
     }
     else{
