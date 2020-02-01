@@ -108,6 +108,7 @@ public class visionTarget extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     timer.stop();
+    timer.reset();
     RobotContainer.startTankDrive();
     limeL.vLEDoff();
     launcher.stopLaunching();
