@@ -79,7 +79,7 @@ public class RobotContainer {
 
     driverXButton.whenPressed(new vLED(visionSensor, true), false);
     driverXButton.whenReleased(new vLED(visionSensor, false), false);
-    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
+    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase, launcher), false);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
     driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
     driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);

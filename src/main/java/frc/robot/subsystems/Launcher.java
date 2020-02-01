@@ -39,7 +39,7 @@ public class Launcher extends SubsystemBase {
 
   public void index(double speed)
   {
-    indexLeft.set(speed);
+    indexLeft.set(speed-.1);
     indexRight.set(speed);
   }
 
