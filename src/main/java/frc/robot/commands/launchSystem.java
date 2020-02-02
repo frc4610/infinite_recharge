@@ -53,7 +53,7 @@ public class launchSystem extends CommandBase {
      {
         launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
      }
-     launcher.launch(.7);
+     launcher.launch(Constants.launchNEOSpeed);
   }
 
   // Called once the command ends or is interrupted.

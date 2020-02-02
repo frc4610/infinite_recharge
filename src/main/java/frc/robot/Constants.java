@@ -23,8 +23,8 @@ public final class Constants {
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
     public static double feedDelay = .75;
-    public static double feedNEOSpeed = .5;
-    public static double launchNEOSpeed = .3;//eventually change to be calculated by vision systems
+    public static double feedNEOSpeed = .65;
+    public static double launchNEOSpeed = .80;//eventually change to be calculated by vision systems
     public static double indexNEOSpeed = .3;
     public static float kp = .04f;
     public static float minPower = .01f;
