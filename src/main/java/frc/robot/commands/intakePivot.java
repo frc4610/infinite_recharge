@@ -8,11 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class intakePivot extends CommandBase {
   private Intake pivotIntake;
   private double pivotPos;
+  private boolean isGoingMiddle;
   /**
    * Creates a new intakePivot.
    */
@@ -26,13 +29,22 @@ public class intakePivot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    isGoingMiddle = false;
     //pivotIntake.resetPivotEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivotIntake.pivotIntake(pivotPos);
+    if((RobotContainer.operatorLeftTrigger.get() && RobotContainer.operatorRightTrigger.get())||isGoingMiddle)
+    {
+      pivotIntake.pivotIntake(0);
+      isGoingMiddle = true;
+    }
+    else
+    {
+      pivotIntake.pivotIntake(pivotPos);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -44,13 +56,13 @@ public class intakePivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pivotPos <= -800)
+    if(RobotContainer.operatorLeftTrigger.get() || RobotContainer.operatorRightTrigger.get())
     {
-      return pivotIntake.getPivotEncoderVaule() <= -800;
+      return false;
     }
     else
     {
-      return pivotIntake.getPivotEncoderVaule() >= 0;
+      return true;
     }
   }
 }

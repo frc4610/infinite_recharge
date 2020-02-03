@@ -16,7 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static double encoderCountsToPos1 = -400;
+    public static double middleIntakeEncoderPosition = -335;
+    public static double bottomIntakeEncoderPosition = -790;
     public static double groundToPowerPortIn = 98.25;
     public static double groundToLimeLensIn = 26;
     public static double groundToLimeLensDeg = 32.8;
