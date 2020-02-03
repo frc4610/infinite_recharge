@@ -74,6 +74,8 @@ public class RobotContainer {
   public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
   public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
   public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
+  public static JoystickButton operatorLeftBumper = new JoystickButton(driver, 5);
+  public static JoystickButton operatorRightBumper = new JoystickButton(driver, 6);
   public static JoystickButton operatorLeftTrigger = new JoystickButton(operator, 7);
   public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
   public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
@@ -93,8 +95,8 @@ public class RobotContainer {
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
-    operatorLeftTrigger.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
-    operatorRightTrigger.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
+    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
+    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
     configureButtonBindings();
   }
 
