@@ -32,12 +32,14 @@ public class visionTarget extends CommandBase {
   private double leftSpeed;
   private double rightSpeed;
 
+  private boolean launch;
+
   /**
    * Creates a new visionTarget.
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Launch) 
   {
     leftSpeed = 0;
     rightSpeed = 0;
@@ -45,7 +47,7 @@ public class visionTarget extends CommandBase {
     limeL = plimeL;
     launcher = tLauncher;
     timer = new Timer();
-
+    launch = Launch;
     addRequirements(tLauncher);
     addRequirements(tdriveBase);
     addRequirements(plimeL);
@@ -80,9 +82,8 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
       }
-    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
-    if(Math.abs(xValueOff) <= 1.35&&(distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 1.35 && launch && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -101,6 +102,19 @@ public class visionTarget extends CommandBase {
       timer.reset();
       launcher.stopLaunching();
     }
+
+    if(Math.abs(xValueOff) <= 1.35 && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
+    {
+      leftSpeed = -.1 * Constants.kp * xValueOff;
+      rightSpeed = -.1 * Constants.kp * xValueOff;
+    }
+    else if(Math.abs(xValueOff) <= 1.35 && distanceToPowerPort < Constants.distanceToPowerportMinIn)
+    {
+      leftSpeed = .1 * Constants.kp * xValueOff;
+      rightSpeed = .1 * Constants.kp * xValueOff;
+    }
+    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
+
     SmartDashboard.putNumber("Power", maxSpeed);
   }
 
