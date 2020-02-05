@@ -24,6 +24,7 @@ import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
+import frc.robot.commands.climb;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
+import frc.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -50,6 +52,7 @@ public class RobotContainer {
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
+  private final Climber climber = new Climber();
   private final static Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
 
@@ -98,6 +101,8 @@ public class RobotContainer {
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
+    operatorLeftTrigger.whileHeld(new climb(climber, .5), true);
+    operatorRightTrigger.whileHeld(new climb(climber, -.5), true);
     configureButtonBindings();
   }
 
