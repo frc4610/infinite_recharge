@@ -22,13 +22,17 @@ public class navXTurn extends CommandBase {
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant) {
+  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant){
     gyro = gyrNavX;
     driveBase = tempdrive;
     kTurnDesired = kTurnWant;
+    addRequirements(kTurnWant);
     addRequirements(gyrNavX);
     addRequirements(tempdrive);
     // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  private void addRequirements(double kTurnWant) {
   }
 
   // Called when the command is initially scheduled.
@@ -60,12 +64,12 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(yaw) >= Math.abs(kTurnDesired)){
+    if(Math.abs(gyro.getYaw()) >= Math.abs(kTurnDesired)){
       return true;
     }
     else
     {
-    return false;
+      return false;
     }
   }
 }
