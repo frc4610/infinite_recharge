@@ -52,9 +52,6 @@ public class encoderMovement extends CommandBase {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
     TurnCorrection.resetGyro();
-
-    
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

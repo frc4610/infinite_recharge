@@ -88,11 +88,12 @@ public class RobotContainer {
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
-    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, true), false);
     driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
+    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
