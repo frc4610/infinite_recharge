@@ -35,7 +35,7 @@ public class intakePivot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if((RobotContainer.operatorLeftTrigger.get() && RobotContainer.operatorRightTrigger.get())||isGoingMiddle)
+    if((RobotContainer.operatorLeftBumper.get() && RobotContainer.operatorRightBumper.get())||isGoingMiddle)
     {
       pivotIntake.pivotIntake(0);
       isGoingMiddle = true;
@@ -55,7 +55,7 @@ public class intakePivot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.operatorLeftTrigger.get() || RobotContainer.operatorRightTrigger.get())
+    if(RobotContainer.operatorLeftBumper.get() || RobotContainer.operatorRightBumper.get())
     {
       return false;
     }

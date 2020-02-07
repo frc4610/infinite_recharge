@@ -74,8 +74,8 @@ public class RobotContainer {
   public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
   public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
   public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
-  public static JoystickButton operatorLeftBumper = new JoystickButton(driver, 5);
-  public static JoystickButton operatorRightBumper = new JoystickButton(driver, 6);
+  public static JoystickButton operatorLeftBumper = new JoystickButton(operator, 5);
+  public static JoystickButton operatorRightBumper = new JoystickButton(operator, 6);
   public static JoystickButton operatorLeftTrigger = new JoystickButton(operator, 7);
   public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
   public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
