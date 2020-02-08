@@ -33,6 +33,7 @@ public class visionTarget extends CommandBase {
   private double rightSpeed;
 
   private boolean launch;
+  private boolean positioningMovment;
 
   /**
    * Creates a new visionTarget.
@@ -51,7 +52,6 @@ public class visionTarget extends CommandBase {
     addRequirements(tLauncher);
     addRequirements(tdriveBase);
     addRequirements(plimeL);
-
     launchSpeed = 0;
     windSpeed = Constants.windSpeedNEO;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -60,6 +60,7 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    positioningMovment = false;
     timer.start();
   }
 
@@ -72,15 +73,16 @@ public class visionTarget extends CommandBase {
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
-    if(Math.abs(xValueOff) > 1.0)
+    if(Math.abs(xValueOff) > 2)
       {
-        leftSpeed = Constants.kp*xValueOff - Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff;// - Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff;// - Constants.minPower;
       }
-    else if(Math.abs(xValueOff) <= 1.0)
+    else if(Math.abs(xValueOff) <= 2)
       {
+        positioningMovment = true;
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
     if(Math.abs(xValueOff) <= 1.35 && launch && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
@@ -92,10 +94,10 @@ public class visionTarget extends CommandBase {
       }
       if(timer.get() >= Constants.feedDelay)
       {
-        launcher.index(Constants.indexNEOSpeed);
-        launcher.feed(Constants.feedNEOSpeed);
+        //launcher.index(Constants.indexNEOSpeed);
+        //launcher.feed(Constants.feedNEOSpeed);
       }
-      launcher.launch(launchSpeed);
+      //launcher.launch(launchSpeed);
     }
     else
     {
@@ -103,15 +105,22 @@ public class visionTarget extends CommandBase {
       launcher.stopLaunching();
     }
 
-    if(Math.abs(xValueOff) <= 1.35 && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
+    if(Math.abs(xValueOff) <= 5 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
     {
-      leftSpeed = -.1 * Constants.kp * xValueOff;
-      rightSpeed = -.1 * Constants.kp * xValueOff;
+      leftSpeed = (.3 * Constants.kp * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
+      rightSpeed = (.3 * Constants.kp * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
+      SmartDashboard.putBoolean("Running", true);
     }
-    else if(Math.abs(xValueOff) <= 1.35 && distanceToPowerPort < Constants.distanceToPowerportMinIn)
+    else if(Math.abs(xValueOff) <= 5 && positioningMovment && distanceToPowerPort < Constants.distanceToPowerportMinIn)
     {
-      leftSpeed = .1 * Constants.kp * xValueOff;
-      rightSpeed = .1 * Constants.kp * xValueOff;
+      leftSpeed = (-.3 * Constants.kp * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
+      rightSpeed = (-.3 * Constants.kp * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
+      SmartDashboard.putBoolean("Running", true);
+    }
+    else
+    {
+      positioningMovment = false;
+      SmartDashboard.putBoolean("Running", false);
     }
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
