@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   private double Lspeed;
   private double Rspeed;
   private double Straighten;
+  private double rcw;
 
 
   /**
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lspeed", Lspeed);
     SmartDashboard.putNumber("Rspeed", Rspeed);
     SmartDashboard.putNumber("Yaw", Straighten);
+    SmartDashboard.putNumber("rcw", rcw);
   }
 
   @Override

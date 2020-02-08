@@ -52,6 +52,7 @@ public class RobotContainer {
   private final Launcher launcher = new Launcher();
   private final static Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
+  public final navXTurn turnSpeed = PID();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -101,11 +102,15 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
+  private navXTurn PID() {
+    return null;
+  }
+
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
   }
