@@ -15,41 +15,53 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  private static double kTurnDesired;
-  private navX gyro;
-  private double yaw;
-  private DriveBase driveBase;
+  double P = .005;
+  double I = 0;
+  double D = 0;
+  double integral, previous_error = 0;
+  double setpoint;
+  navX gyro;
+  DriveBase driveBase;
+  private double rcw;
+
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant){
-    gyro = gyrNavX;
+  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint){
+    this.gyro = (navX) gyro;
     driveBase = tempdrive;
-    kTurnDesired = kTurnWant;
-    addRequirements(kTurnWant);
-    addRequirements(gyrNavX);
-    addRequirements(tempdrive);
+    setpoint = Setpoint;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  private void addRequirements(double kTurnWant) {
-  }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     gyro.resetGyro();
   }
 
+  public void setSetpoint(int setpoint) {
+    this.setpoint = setpoint;
+  }
+
+  public void PID() {
+    double error = setpoint - Math.abs(gyro.getYaw()); // Error = Target - Actual
+    this.integral += (error * .01);
+    double derivative = (error - this.previous_error);
+    this.rcw = (P * error) + (I * this.integral) + (D * derivative);
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    yaw = gyro.getYaw();
-    if(kTurnDesired > 0){
-      driveBase.move(ControlMode.PercentOutput, .5, -.5);
+    PID();
+    if(setpoint > 0){
+    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
     }
-    else if(kTurnDesired < 0){
-      driveBase.move(ControlMode.PercentOutput, -.5, .5);
+
+    else if(setpoint < 0){
+      driveBase.move(ControlMode.PercentOutput, -rcw, rcw);
     }
   }
 
@@ -60,11 +72,11 @@ public class navXTurn extends CommandBase {
     gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
-
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(gyro.getYaw()) >= Math.abs(kTurnDesired)){
+    if(Math.abs(gyro.getAngle()) >= Math.abs(setpoint)){
       return true;
     }
     else
