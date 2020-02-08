@@ -107,14 +107,14 @@ public class visionTarget extends CommandBase {
 
     if(Math.abs(xValueOff) <= 5 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
     {
-      leftSpeed = (.3 * Constants.kp * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
-      rightSpeed = (.3 * Constants.kp * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
+      leftSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
+      rightSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
       SmartDashboard.putBoolean("Running", true);
     }
     else if(Math.abs(xValueOff) <= 5 && positioningMovment && distanceToPowerPort < Constants.distanceToPowerportMinIn)
     {
-      leftSpeed = (-.3 * Constants.kp * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
-      rightSpeed = (-.3 * Constants.kp * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
+      leftSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
+      rightSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
       SmartDashboard.putBoolean("Running", true);
     }
     else
