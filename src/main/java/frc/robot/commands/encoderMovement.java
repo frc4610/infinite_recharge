@@ -17,7 +17,8 @@ import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
   private double setpoint;
-  private  double P = .01;
+  private double averageEncoder;
+  private  double P = .03;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
@@ -48,7 +49,8 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    error = setpoint - EncoderPair.getDistanceLeft();
+    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
+    error = setpoint - averageEncoder;
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
     TurnCorrection.resetGyro();
@@ -57,8 +59,9 @@ public class encoderMovement extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
     Straighten = TurnCorrection.getYaw() * .02;
-    error = setpoint - EncoderPair.getDistanceLeft();
+    error = setpoint - averageEncoder;
     this.rcw = (P *error);
     double Lspeed = rcw - Straighten;
     double Rspeed = rcw + Straighten;

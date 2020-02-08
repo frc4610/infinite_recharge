@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -25,7 +26,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public RobotContainer m_robotContainer;
-
+  public static SendableChooser<String> goal;
   private double DistanceL;
   private double DistanceR;
   private double Lspeed;
@@ -39,6 +40,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    goal = new SendableChooser<>();
+    goal.addOption("Drive Forward", "df");
+    goal.setDefaultOption("Drive Forward", "df");
+    goal.addOption("Launch from current pos", "Launch from current pos");
+    SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -55,6 +61,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
     SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());

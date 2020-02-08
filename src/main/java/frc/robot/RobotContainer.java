@@ -14,9 +14,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.autoDriveOff;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
@@ -34,6 +31,7 @@ import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -52,8 +50,6 @@ public class RobotContainer {
   public final static Launcher launcher = new Launcher();
   public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
-
-  private SendableChooser<String> goal;
   //Commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
@@ -102,10 +98,6 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  private navXTurn PID() {
-    return null;
-  }
-
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by instantiating a {@link GenericHID} or one of its subclasses
@@ -122,19 +114,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    goal = new SendableChooser<>();
-    goal.addOption("Drive Forward", "df");
-    goal.setDefaultOption("Drive Forward", "df");
-    goal.addOption("Launch from current pos", "l");
-    SmartDashboard.putData("Auto Goal", goal);
+    
     // An ExampleCommand will run in autonomous
-    if(SmartDashboard.getString("Auto Goal", "df").equals("l"))
+    if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
-      return new autoDriveOff();
+      return new SequentialCommandGroup(new vLED(RobotContainer.visionSensor, true),
+      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
+      new vLED(RobotContainer.visionSensor, false),
+      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 24));
     }
     else
     {
-      return new autoDriveOff();
+      return new encoderMovement(driveBase, mainEncoders, gyro, 24);
     }
   } 
 

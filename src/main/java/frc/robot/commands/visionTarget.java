@@ -85,7 +85,7 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 1.35 && !isAuto && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 1.35  && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -132,7 +132,10 @@ public class visionTarget extends CommandBase {
   public void end(boolean interrupted) {
     timer.stop();
     timer.reset();
-    RobotContainer.startTankDrive();
+    if(!isAuto)
+    {
+      RobotContainer.startTankDrive();
+    }
     limeL.vLEDoff();
     launcher.stopLaunching();
   }
@@ -140,7 +143,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get()) && !isAuto)
+    if(((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get())) && !isAuto)
     {
       return true;
     }
