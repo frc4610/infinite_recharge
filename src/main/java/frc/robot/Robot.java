@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   private double Lspeed;
   private double Rspeed;
   private double Straighten;
+  private double rcw;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -121,6 +122,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lspeed", Lspeed);
     SmartDashboard.putNumber("Rspeed", Rspeed);
     SmartDashboard.putNumber("Yaw", Straighten);
+    SmartDashboard.putNumber("rcw", rcw);
   }
 
   @Override
