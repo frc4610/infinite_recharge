@@ -75,6 +75,8 @@ public class RobotContainer {
   public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
   public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
   public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
+  public static JoystickButton operatorLeftBumper = new JoystickButton(operator, 5);
+  public static JoystickButton operatorRightBumper = new JoystickButton(operator, 6);
   public static JoystickButton operatorLeftTrigger = new JoystickButton(operator, 7);
   public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
   public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
@@ -87,15 +89,16 @@ public class RobotContainer {
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
-    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher), false);
-    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), false);
-    driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), false);
-    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
+    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
+    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
-    operatorBButton.whenPressed(new intakePivot(intake, -800), true);
-    operatorBButton.whenReleased(new intakePivot(intake, 0), true);
+    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
+    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
     configureButtonBindings();
   }
 

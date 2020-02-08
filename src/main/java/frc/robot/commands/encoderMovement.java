@@ -16,8 +16,8 @@ import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
-  double P = 0.004;
-  double setpoint;
+  private double setpoint;
+  private  double P = .0075;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
@@ -53,11 +53,7 @@ public class encoderMovement extends CommandBase {
   public void initialize() {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
-    TurnCorrection.resetGyro(); 
-  }
-
-  public void setSetpoint(int setpoint) {
-    this.setpoint = setpoint;
+    TurnCorrection.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
