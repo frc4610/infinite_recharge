@@ -16,7 +16,9 @@ import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
-  private static  double kDistanceRequired;
+  double P = 0.004;
+  double setpoint;
+  private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
   private double Straighten;
@@ -33,9 +35,9 @@ public class encoderMovement extends CommandBase {
    */
   public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
     driveBase = tempDrive;
-    EncoderPair = Encoder;
+    this.EncoderPair = Encoder;
     TurnCorrection = driveCorrection;
-    kDistanceRequired = distance;
+    setpoint = distance;
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(driveCorrection);
@@ -51,10 +53,11 @@ public class encoderMovement extends CommandBase {
   public void initialize() {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
-    TurnCorrection.resetGyro();
+    TurnCorrection.resetGyro(); 
+  }
 
-    
-    
+  public void setSetpoint(int setpoint) {
+    this.setpoint = setpoint;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,9 +66,11 @@ public class encoderMovement extends CommandBase {
     DistanceL = EncoderPair.getDistanceLeft();
     DistanceR = EncoderPair.getDistanceRight();
     Straighten = TurnCorrection.getYaw() * .02;
+    double error = setpoint - EncoderPair.getDistanceLeft();
+    this.rcw = (P *error);
     double Lspeed = .75 - Straighten;
     double Rspeed = .75 + Straighten;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
+    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
     
   }
   // Called once the command ends or is interrupted.
@@ -78,7 +83,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(DistanceL) >= kDistanceRequired && (Math.abs(DistanceR)) >= kDistanceRequired){
+    if(Math.abs(DistanceL) >= setpoint && (Math.abs(DistanceR)) >= setpoint){
       return true;
     }
     else{

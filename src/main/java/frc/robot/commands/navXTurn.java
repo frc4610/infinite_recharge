@@ -15,11 +15,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  double P = 0.004;
-  double I = 0;
-  double D = 0;
-  double integral = 0; 
-  double previous_error = 0;
+  double P = 0.0075;
   double setpoint;
   navX gyro;
   DriveBase driveBase;
@@ -42,15 +38,9 @@ public class navXTurn extends CommandBase {
     gyro.resetGyro();
   }
 
-  public void setSetpoint(int setpoint) {
-    this.setpoint = setpoint;
-  }
-
   public void PID() {
-    double error = setpoint - Math.abs(gyro.getYaw()); // Error = Target - Actual
-    this.integral += (error * .01);
-    double derivative = (error - this.previous_error);
-    this.rcw = (P * error) + (I * this.integral) + (D * derivative); //Equation for power(rcw = power)
+    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
+    this.rcw = (P * error); //Equation for power(rcw = power)
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,7 +53,6 @@ public class navXTurn extends CommandBase {
   // Called once the command ends or is interrupted.+
   @Override
   public void end(boolean interrupted) {
-    driveBase.move(ControlMode.PercentOutput, 0, 0);
     gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
@@ -71,7 +60,7 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(gyro.getYaw()) >= Math.abs(setpoint)) {
+    if(!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()){
       return true;
     }
     else
