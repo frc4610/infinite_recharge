@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.climb;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
@@ -24,7 +25,7 @@ import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
-
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Launcher;
@@ -52,6 +53,7 @@ public class RobotContainer {
   private final Launcher launcher = new Launcher();
   private final static Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
+  private final Climber climber = new Climber();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -98,6 +100,8 @@ public class RobotContainer {
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
+    operatorLeftTrigger.whenPressed(new climb(climber, .5), true);
+    operatorRightTrigger.whenPressed(new climb(climber, .5), true);
     configureButtonBindings();
   }
 
