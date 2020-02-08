@@ -34,18 +34,33 @@ public class encoder extends SubsystemBase {
     //12.57 inches per revolution (4 inch wheels)
     //Distance per pulse= 0.0061 inches (4 inch wheels)
   }
+
+  /**
+   * Gets the distance in inches for the left drive encoder
+   * @return The left distance in inches
+   */
   public double getDistanceLeft(){
     return encoderL.getDistance();
   }
 
+  /**
+   * Gets the distance in inches for the right drive encoder
+   * @return The right distance in inches
+   */
   public double getDistanceRight(){
     return encoderR.getDistance();
   }
 
+  /**
+   * Resets left drive encoder
+   */
   public void resetencoderL(){
     encoderL.reset();
   }
 
+  /**
+   * Resets right drive encoder
+   */
   public void resetencoderR(){
     encoderR.reset();
   }

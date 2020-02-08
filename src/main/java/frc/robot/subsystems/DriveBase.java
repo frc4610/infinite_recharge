@@ -42,7 +42,7 @@ public class DriveBase extends SubsystemBase {
   }
 
   /**
-   * 
+   * Sets the drivebase to move
    * @param mode Control mode to control drivebase
    * @param speedL Input, usually speed, of left side of drivebase
    * @param speedR Input, usually speed, of right side of drivebase

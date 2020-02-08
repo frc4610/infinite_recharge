@@ -122,11 +122,18 @@ public class RobotContainer {
     return m_autoCommand;
   } 
 
+  /**
+   * Begins tank drive on the drivebase
+   */
   public static void startTankDrive()
   {
     mainDrive.schedule(true);
   }
 
+  /**
+   * Determines if the driver is attempting to control the robot
+   * @return If the driver is trying to override other functions
+   */
   public static boolean tankOverride()
   {
     return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
@@ -141,22 +148,42 @@ public class RobotContainer {
     return !(mainEncoders.drivebaseIsMoving() == gyro.getMoving());
   }
 
+  /**
+   * Turns the limelight LED off
+   */
   public void turnLEDOff()
   {
     visionSensor.vLEDoff();
   }
 
+  /**
+   * Gets the vaule from the pivot encoder
+   * @return The raw value of the pivot encoder
+   */
   public static double pivotEncoder()
   {
     return intake.getPivotEncoderVaule();
   }
 
+  /**
+   * Intitalizes a motor, with neutral mode brake
+   * 
+   * @param motor Motor to initalize
+   * @param peak Maximum output of motor
+   */
   public static void initMotor(TalonSRX motor, double peak)
   {
     motor.configPeakOutputForward(peak);
     motor.configPeakOutputReverse(-peak);
     motor.setNeutralMode(NeutralMode.Brake);
   }
+  
+  /**
+   * Intitalizes a motor, with neutral mode brake
+   * 
+   * @param motor Motor to initalize
+   * @param peak Maximum output of motor
+   */
   public static void initMotor(VictorSPX motor, double peak)
   {
     motor.configPeakOutputForward(peak);

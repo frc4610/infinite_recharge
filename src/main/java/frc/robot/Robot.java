@@ -55,8 +55,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("DistanceL", m_robotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("DistanceR", m_robotContainer.mainEncoders.getDistanceRight());
+    SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
+    SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
     SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,

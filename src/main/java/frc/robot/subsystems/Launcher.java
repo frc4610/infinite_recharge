@@ -38,23 +38,38 @@ public class Launcher extends SubsystemBase {
     
   }
 
+  /**
+   * Runs the index, with the left side slightly slower than the right
+   * @param speed Speed in percent output to run the index
+   */
   public void index(double speed)
   {
     indexLeft.set(speed-.1);
     indexRight.set(speed);
   }
 
+  /**
+   * Runs the feeder, try to wind up rather than set straight to the target
+   * @param speed Speed in percent output to run the feeder
+   */
   public void feed(double speed)
   {
     feedController.set(speed);
   }
 
+  /**
+   * Runs the launcher, try to wind up rather than set straight to the target
+   * @param speed Speed in percent output to run the launcher
+   */
   public void launch(double speed)
   {
     launcherLeft.set(speed);
     launcherRight.set(speed);
   }
 
+  /**
+   * Stops the index, feed, and launcher
+   */
   public void stopLaunching()
   {
     indexRight.set(0);

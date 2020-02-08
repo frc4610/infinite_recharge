@@ -73,6 +73,7 @@ public class visionTarget extends CommandBase {
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
+    //Aims the robot at 
     if(Math.abs(xValueOff) > 2)
       {
         leftSpeed = Constants.kp*xValueOff;// - Constants.minPower;
@@ -85,6 +86,7 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
+    //Launches a power cell once in range
     if(Math.abs(xValueOff) <= 1.35 && launch && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
       maxSpeed = .7;
@@ -105,6 +107,7 @@ public class visionTarget extends CommandBase {
       launcher.stopLaunching();
     }
 
+    //Moves into a set firing range
     if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
     {
       leftSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;

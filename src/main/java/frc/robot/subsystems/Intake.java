@@ -35,27 +35,44 @@ public class Intake extends SubsystemBase {
     //articulationTalon.setSelectedSensorPosition(0);
   }
 
+  /**
+   * Moves the pivot to a specified encoder position
+   * @param position The encoder position to get to the pivot
+   */
   public void pivotIntake(double position)
   {
-    //articulationTalon.set(ControlMode.PercentOutput, position);// change to position output once value is recorded
     articulationTalon.set(ControlMode.Position, position);
   }
 
+  /**
+   * Runs the intake
+   * @param speed Speed to intake at
+   */
   public void intakeCells(double speed)
   {
     intakingNEO.set(speed);
   }
 
+  /**
+   * Gets the value of the pivot encoder
+   * @return The pivot encoder's raw position
+   */
   public int getPivotEncoderVaule()
   {
     return articulationTalon.getSelectedSensorPosition();
   }
 
+  /**
+   * Resets the pivot encoder
+   */
   public void resetPivotEncoder()
   {
     articulationTalon.setSelectedSensorPosition(0);
   }
 
+  /**
+   * Neutrals all the intake motors
+   */
   public void neutralMotors()
   {
     articulationTalon.neutralOutput();
