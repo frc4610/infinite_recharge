@@ -17,13 +17,12 @@ import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
   private double setpoint;
-  private  double P = .0075;
+  private  double P = .01;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
   private double Straighten;
-  private double DistanceL;
-  private double DistanceR;
+  private double error;
   private DriveBase driveBase;
 
   /**
@@ -41,8 +40,6 @@ public class encoderMovement extends CommandBase {
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(driveCorrection);
-    
-    
   }
    
 
@@ -51,6 +48,7 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = setpoint - EncoderPair.getDistanceLeft();
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
     TurnCorrection.resetGyro();
@@ -59,14 +57,12 @@ public class encoderMovement extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DistanceL = EncoderPair.getDistanceLeft();
-    DistanceR = EncoderPair.getDistanceRight();
     Straighten = TurnCorrection.getYaw() * .02;
-    double error = setpoint - EncoderPair.getDistanceLeft();
+    error = setpoint - EncoderPair.getDistanceLeft();
     this.rcw = (P *error);
-    double Lspeed = .75 - Straighten;
-    double Rspeed = .75 + Straighten;
-    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
+    double Lspeed = rcw - Straighten;
+    double Rspeed = rcw + Straighten;
+    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
     
   }
   // Called once the command ends or is interrupted.
@@ -79,7 +75,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(DistanceL) >= setpoint && (Math.abs(DistanceR)) >= setpoint){
+    if(error <= .5){
       return true;
     }
     else{

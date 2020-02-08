@@ -75,8 +75,8 @@ public class visionTarget extends CommandBase {
 
     if(Math.abs(xValueOff) > 2)
       {
-        leftSpeed = Constants.kp*xValueOff;// - Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff;// - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff;
+        rightSpeed = -Constants.kp*xValueOff;
       }
     else if(Math.abs(xValueOff) <= 2)
       {
