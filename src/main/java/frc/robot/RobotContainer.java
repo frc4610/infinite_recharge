@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.autoDriveOff;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
@@ -46,12 +47,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //Subsytems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final static DriveBase driveBase = new DriveBase();
-  private final navX gyro = new navX();
+  public final static DriveBase driveBase = new DriveBase();
+  public final  static navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
   private final static Intake intake = new Intake();
-  public final encoder mainEncoders = new encoder();
+  public final static encoder mainEncoders = new encoder();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -118,7 +119,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new autoDriveOff();
   } 
 
   public static void startTankDrive()
