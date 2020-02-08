@@ -15,10 +15,11 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  double P = .005;
+  double P = 0.004;
   double I = 0;
   double D = 0;
-  double integral, previous_error = 0;
+  double integral = 0; 
+  double previous_error = 0;
   double setpoint;
   navX gyro;
   DriveBase driveBase;
@@ -49,23 +50,17 @@ public class navXTurn extends CommandBase {
     double error = setpoint - Math.abs(gyro.getYaw()); // Error = Target - Actual
     this.integral += (error * .01);
     double derivative = (error - this.previous_error);
-    this.rcw = (P * error) + (I * this.integral) + (D * derivative);
+    this.rcw = (P * error) + (I * this.integral) + (D * derivative); //Equation for power(rcw = power)
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     PID();
-    if(setpoint > 0){
     driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
-    }
-
-    else if(setpoint < 0){
-      driveBase.move(ControlMode.PercentOutput, -rcw, rcw);
-    }
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted.+
   @Override
   public void end(boolean interrupted) {
     driveBase.move(ControlMode.PercentOutput, 0, 0);
@@ -76,7 +71,7 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(gyro.getAngle()) >= Math.abs(setpoint)){
+    if(Math.abs(gyro.getYaw()) >= Math.abs(setpoint)) {
       return true;
     }
     else
