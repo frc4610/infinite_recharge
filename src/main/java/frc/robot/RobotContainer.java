@@ -14,8 +14,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-
-import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.autoDriveOff;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
@@ -27,7 +27,6 @@ import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
@@ -46,16 +45,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //Subsytems
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final static DriveBase driveBase = new DriveBase();
-  public final  static navX gyro = new navX();
-  private final limeLight visionSensor = new limeLight();
-  private final Launcher launcher = new Launcher();
-  private final static Intake intake = new Intake();
+  public final static navX gyro = new navX();
+  public final static limeLight visionSensor = new limeLight();
+  public final static Launcher launcher = new Launcher();
+  public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
 
+  private SendableChooser<String> goal;
   //Commands
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
 
   //OI Devices
@@ -89,12 +89,12 @@ public class RobotContainer {
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
-    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
-    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
+    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
@@ -118,8 +118,20 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    goal = new SendableChooser<>();
+    goal.addOption("Drive Forward", "df");
+    goal.setDefaultOption("Drive Forward", "df");
+    goal.addOption("Launch from current pos", "l");
+    SmartDashboard.putData("Auto Goal", goal);
     // An ExampleCommand will run in autonomous
-    return new autoDriveOff();
+    if(SmartDashboard.getString("Auto Goal", "df").equals("l"))
+    {
+      return new autoDriveOff();
+    }
+    else
+    {
+      return new autoDriveOff();
+    }
   } 
 
   public static void startTankDrive()

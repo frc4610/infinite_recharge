@@ -32,7 +32,7 @@ public class visionTarget extends CommandBase {
   private double leftSpeed;
   private double rightSpeed;
 
-  private boolean launch;
+  private boolean isAuto;
   private boolean positioningMovment;
 
   /**
@@ -40,7 +40,7 @@ public class visionTarget extends CommandBase {
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Launch) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Auto) 
   {
     leftSpeed = 0;
     rightSpeed = 0;
@@ -48,7 +48,7 @@ public class visionTarget extends CommandBase {
     limeL = plimeL;
     launcher = tLauncher;
     timer = new Timer();
-    launch = Launch;
+    isAuto = Auto;
     addRequirements(tLauncher);
     addRequirements(tdriveBase);
     addRequirements(plimeL);
@@ -85,7 +85,7 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 1.35 && launch && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 1.35 && !isAuto && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -140,7 +140,11 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get()))
+    if((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get()) && !isAuto)
+    {
+      return true;
+    }
+    else if(isAuto && Math.abs(xValueOff) <= 1.35 && (distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
     {
       return true;
     }

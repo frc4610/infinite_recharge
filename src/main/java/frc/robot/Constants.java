@@ -22,8 +22,8 @@ public final class Constants {
     public static double groundToLimeLensIn = 26;
     public static double groundToLimeLensDeg = 32.8;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
-    public static double distanceToPowerportMaxIn = 125;//temporary change, fix to 23 feet later
-    public static double distanceToPowerportMinIn = 100;//temporary change, fix to 10 feet later
+    public static double distanceToPowerportMaxIn = (23*12);//temporary change, fix to 23 feet later
+    public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
     public static double feedDelay = .75;
     public static double feedNEOSpeed = .65;
