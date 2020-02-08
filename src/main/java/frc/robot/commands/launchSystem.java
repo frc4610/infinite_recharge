@@ -45,15 +45,15 @@ public class launchSystem extends CommandBase {
   public void execute() {
     if(timer.get() > Constants.feedDelay)
     {
-      launcher.feed(feedSpeed);
-      launcher.index(indexSpeed);
+      //launcher.feed(feedSpeed);
+      //launcher.index(indexSpeed);
     }
     
     if(launcherSpeed < maxSpeed)
      {
         launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
      }
-     launcher.launch(.7);
+     launcher.launch(Constants.launchNEOSpeed);
   }
 
   // Called once the command ends or is interrupted.

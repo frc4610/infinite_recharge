@@ -41,10 +41,10 @@ public class navXTurn extends CommandBase {
   @Override
   public void execute() {
     yaw = gyro.getYaw();
-    if(yaw > 0){
+    if(kTurnDesired > 0){
       driveBase.move(ControlMode.PercentOutput, .5, -.5);
     }
-    else if(yaw < 0){
+    else if(kTurnDesired < 0){
       driveBase.move(ControlMode.PercentOutput, -.5, .5);
     }
   }
@@ -60,7 +60,7 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(yaw >= Math.abs(kTurnDesired)){
+    if(Math.abs(yaw) >= Math.abs(kTurnDesired)){
       return true;
     }
     else
