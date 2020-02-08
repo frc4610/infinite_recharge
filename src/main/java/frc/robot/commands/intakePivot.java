@@ -7,65 +7,61 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Intake;
 
-public class navXTurn extends CommandBase {
-  private static double kTurnDesired;
-  private navX gyro;
-  private double yaw;
-  private DriveBase driveBase;
+public class intakePivot extends CommandBase {
+  private Intake pivotIntake;
+  private double pivotPos;
+  private boolean isGoingMiddle;
   /**
-   * Creates a new navXTurn.
+   * Creates a new intakePivot.
    */
-  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant) {
-    gyro = gyrNavX;
-    driveBase = tempdrive;
-    kTurnDesired = kTurnWant;
-    addRequirements(gyrNavX);
-    addRequirements(tempdrive);
+  public intakePivot(Intake intake, double position) {
+    pivotIntake = intake;
+    pivotPos = position;
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    gyro.resetGyro();
+    isGoingMiddle = false;
+    //pivotIntake.resetPivotEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    yaw = gyro.getYaw();
-    if(kTurnDesired > 0){
-      driveBase.move(ControlMode.PercentOutput, .5, -.5);
+    if((RobotContainer.operatorLeftBumper.get() && RobotContainer.operatorRightBumper.get())||isGoingMiddle)
+    {
+      pivotIntake.pivotIntake(0);
+      isGoingMiddle = true;
     }
-    else if(kTurnDesired < 0){
-      driveBase.move(ControlMode.PercentOutput, -.5, .5);
+    else
+    {
+      pivotIntake.pivotIntake(pivotPos);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveBase.move(ControlMode.PercentOutput, 0, 0);
-    gyro.resetGyro();
-    RobotContainer.startTankDrive();
+    pivotIntake.neutralMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(yaw) >= Math.abs(kTurnDesired)){
-      return true;
+    if(RobotContainer.operatorLeftBumper.get() || RobotContainer.operatorRightBumper.get())
+    {
+      return false;
     }
     else
     {
-    return false;
+      return true;
     }
   }
 }

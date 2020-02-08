@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.launchSystem;
+import frc.robot.commands.intakeCells;
+import frc.robot.commands.intakePivot;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
@@ -24,6 +27,8 @@ import frc.robot.commands.vLED;
 
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
@@ -44,7 +49,10 @@ public class RobotContainer {
   private final static DriveBase driveBase = new DriveBase();
   private static final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
+  private final Launcher launcher = new Launcher();
+  private final static Intake intake = new Intake();
   public static final encoder mainEncoders = new encoder();
+
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -56,8 +64,22 @@ public class RobotContainer {
   public static JoystickButton driverAButton = new JoystickButton(driver, 2);
   public static JoystickButton driverBButton = new JoystickButton(driver, 3);
   public static JoystickButton driverYButton = new JoystickButton(driver, 4);
+  public static JoystickButton driverLeftBumper = new JoystickButton(driver, 5);
   public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
+  public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
+  public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
+  public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
 
+  public static Joystick operator = new Joystick(1);
+  public static JoystickButton operatorXButton = new JoystickButton(operator, 1);
+  public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
+  public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
+  public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
+  public static JoystickButton operatorLeftBumper = new JoystickButton(operator, 5);
+  public static JoystickButton operatorRightBumper = new JoystickButton(operator, 6);
+  public static JoystickButton operatorLeftTrigger = new JoystickButton(operator, 7);
+  public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
+  public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
 
 
   /**
@@ -65,11 +87,18 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    driverXButton.whenPressed(new vLED(visionSensor, true), false);
-    driverXButton.whenReleased(new vLED(visionSensor, false), false);
-    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
-    driverBButton.whenPressed(new navXTurn(gyro, driveBase), true);
-    driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders), false);
+    driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
+    driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
+    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
+    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
+    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
+    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .5), true);
+    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
+    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
     configureButtonBindings();
   }
 
@@ -115,6 +144,11 @@ public class RobotContainer {
   public void turnLEDOff()
   {
     visionSensor.vLEDoff();
+  }
+
+  public static double pivotEncoder()
+  {
+    return intake.getPivotEncoderVaule();
   }
 
   public static void initMotor(TalonSRX motor, double peak)

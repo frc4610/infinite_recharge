@@ -8,16 +8,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
-  private VictorSPX frontLeftDrive;
-  private VictorSPX frontRightDrive;
-  private VictorSPX backLeftDrive;
-  private VictorSPX backRightDrive;
+  private VictorSPX leftVictor;
+  private VictorSPX rightVictor;
+  private TalonSRX leftTalon;
+  private TalonSRX rightTalon;
   private double peak;
   /**
    * Creates a new DriveBase.
@@ -26,18 +27,18 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() 
   {
     peak = 1;
-    frontLeftDrive = new VictorSPX(9);
-    frontRightDrive = new VictorSPX(2);
-    backLeftDrive = new VictorSPX(0);
-    backRightDrive = new VictorSPX(4);
-    backLeftDrive.follow(frontLeftDrive);
-    backRightDrive.follow(frontRightDrive);
-    frontLeftDrive.setInverted(true);
-    backLeftDrive.setInverted(true);
-    RobotContainer.initMotor(frontLeftDrive, peak);
-    RobotContainer.initMotor(frontRightDrive, peak);
-    RobotContainer.initMotor(backLeftDrive, peak);
-    RobotContainer.initMotor(backRightDrive, peak);
+    leftVictor = new VictorSPX(11);
+    rightVictor = new VictorSPX(3);
+    leftTalon = new TalonSRX(6);
+    rightTalon = new TalonSRX(4);
+    leftTalon.follow(leftVictor);
+    rightTalon.follow(rightVictor);
+    leftVictor.setInverted(true);
+    leftTalon.setInverted(true);
+    RobotContainer.initMotor(leftVictor, peak);
+    RobotContainer.initMotor(rightVictor, peak);
+    RobotContainer.initMotor(leftTalon, peak);
+    RobotContainer.initMotor(rightTalon, peak);
   }
 
   /**
@@ -47,8 +48,8 @@ public class DriveBase extends SubsystemBase {
    * @param speedR Input, usually speed, of right side of drivebase
    */
   public void move(ControlMode mode , double speedL, double speedR){
-    frontLeftDrive.set(mode, speedL);
-    frontRightDrive.set(mode, speedR);
+    leftVictor.set(mode, speedL);
+    rightVictor.set(mode, speedR);
   }
 
   /**
@@ -56,8 +57,8 @@ public class DriveBase extends SubsystemBase {
    */
   public void stopDrivebase()
   {
-    frontLeftDrive.neutralOutput();
-    frontRightDrive.neutralOutput();
+    leftVictor.neutralOutput();
+    rightVictor.neutralOutput();
   }
 
   @Override
