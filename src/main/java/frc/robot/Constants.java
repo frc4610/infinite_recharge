@@ -26,6 +26,7 @@ public final class Constants {
     public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
     public static double feedDelay = .75;
+    public static double autoLaunchDelay = 3;
     public static double feedNEOSpeed = .65;
     public static double launchNEOSpeed = .80;//eventually change to be calculated by vision systems
     public static double indexNEOSpeed = .3;

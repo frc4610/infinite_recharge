@@ -94,10 +94,10 @@ public class visionTarget extends CommandBase {
       }
       if(timer.get() >= Constants.feedDelay)
       {
-        //launcher.index(Constants.indexNEOSpeed);
+        launcher.index(Constants.indexNEOSpeed);
         //launcher.feed(Constants.feedNEOSpeed);
       }
-      //launcher.launch(launchSpeed);
+      launcher.launch(launchSpeed);
     }
     else
     {
@@ -147,7 +147,7 @@ public class visionTarget extends CommandBase {
     {
       return true;
     }
-    else if(isAuto && Math.abs(xValueOff) <= 1.35 && (distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
+    else if(isAuto && Math.abs(xValueOff) <= 1.35 && timer.get() >= Constants.autoLaunchDelay &&(distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
     {
       return true;
     }
