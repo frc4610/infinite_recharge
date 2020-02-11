@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.NavXandEncoderReset;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
@@ -47,7 +48,7 @@ public class RobotContainer {
   //Subsytems
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final static DriveBase driveBase = new DriveBase();
-  private final navX gyro = new navX();
+  final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
   private final static Intake intake = new Intake();
@@ -69,6 +70,7 @@ public class RobotContainer {
   public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
   public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
   public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
+  public static JoystickButton driverStartButton = new JoystickButton(driver, 10);
 
   public static Joystick operator = new Joystick(1);
   public static JoystickButton operatorXButton = new JoystickButton(operator, 1);
@@ -96,6 +98,7 @@ public class RobotContainer {
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
     driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
+    driverStartButton.whenPressed(new NavXandEncoderReset(gyro, mainEncoders), false);
     operatorYButton.whenPressed(new intakeCells(intake, .5), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
