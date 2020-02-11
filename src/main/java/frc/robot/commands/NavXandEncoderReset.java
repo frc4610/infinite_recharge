@@ -26,6 +26,9 @@ public class NavXandEncoderReset extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("Gyro value = " + gyro.getYaw());
+    System.out.println("Left Encoder value = " + EncoderPair.getDistanceLeft());
+    System.out.println("Right Encoder value = " + EncoderPair.getDistanceRight());
     gyro.resetGyro();
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
@@ -45,6 +48,6 @@ public class NavXandEncoderReset extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
