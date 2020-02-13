@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,9 +17,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -27,6 +29,7 @@ public class Robot extends TimedRobot {
 
   public RobotContainer m_robotContainer;
   public static SendableChooser<String> goal;
+  public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
   private double Lspeed;
@@ -90,6 +93,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 

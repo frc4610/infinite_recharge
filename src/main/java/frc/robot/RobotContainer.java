@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
+import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
@@ -118,14 +119,16 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
-      return new SequentialCommandGroup(new vLED(RobotContainer.visionSensor, true),
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(RobotContainer.visionSensor, true),
       new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false),
       new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 24));
     }
     else
     {
-      return new encoderMovement(driveBase, mainEncoders, gyro, 24);
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+        new encoderMovement(driveBase, mainEncoders, gyro, 24));
     }
   } 
 
