@@ -20,16 +20,18 @@ public class launchSystem extends CommandBase {
   private double maxSpeed;
   private double windSpeed;
   private Timer timer;
+  private boolean isAuto;
   /**
    * Creates a new launchSystem.
    */
-  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, double launchSpeed) {
+  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, double launchSpeed, boolean auto) {
     launcher = tLauncher;
     indexSpeed = IndexSpeed;
     feedSpeed = FeedSpeed;
     maxSpeed = launchSpeed;
     windSpeed = Constants.windSpeedNEO;
     timer = new Timer();
+    isAuto = auto;
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -65,6 +67,13 @@ public class launchSystem extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(!isAuto)
+    {
     return false;
+    }
+    else
+    {
+      return timer.get() > 3;
+    }
   }
 }

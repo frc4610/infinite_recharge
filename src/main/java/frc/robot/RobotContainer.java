@@ -92,7 +92,7 @@ public class RobotContainer {
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
     driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
-    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
+    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
