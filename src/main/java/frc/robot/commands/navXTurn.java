@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
@@ -20,14 +21,19 @@ public class navXTurn extends CommandBase {
   navX gyro;
   DriveBase driveBase;
   private double rcw;
+  private Timer timer;
+  private boolean isAuto;
 
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint){
+  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint, boolean auto){
     this.gyro = (navX) gyro;
     driveBase = tempdrive;
+    timer = new Timer();
     setpoint = Setpoint;
+    isAuto = auto;
+    addRequirements(tempdrive);
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -35,6 +41,7 @@ public class navXTurn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
     gyro.resetGyro();
   }
 
@@ -53,6 +60,8 @@ public class navXTurn extends CommandBase {
   // Called once the command ends or is interrupted.+
   @Override
   public void end(boolean interrupted) {
+    timer.reset();
+    timer.stop();
     gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
@@ -60,12 +69,12 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()){
+    if((!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()) && !isAuto){
       return true;
     }
     else
     {
-      return false;
+      return timer.get() > 3;
     }
   }
 }
