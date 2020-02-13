@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
+import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
@@ -86,15 +87,15 @@ public class RobotContainer {
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, false), false);
-    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
-    driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
-    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
+    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90, false), true);
+    driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
+    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
     driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
-    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
-    operatorYButton.whenPressed(new intakeCells(intake, .5), true);
-    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
-    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
+    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
+    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
+    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     configureButtonBindings();
   }
 
@@ -118,14 +119,16 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
-      return new SequentialCommandGroup(new vLED(RobotContainer.visionSensor, true),
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(RobotContainer.visionSensor, true),
       new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false),
       new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 24));
     }
     else
     {
-      return new encoderMovement(driveBase, mainEncoders, gyro, 24);
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+        new encoderMovement(driveBase, mainEncoders, gyro, 24));
     }
   } 
 
