@@ -16,12 +16,13 @@ import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
-  private static  double kDistanceRequired;
+  private double setpoint;
+  private  double P = .01;
+  private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
   private double Straighten;
-  private double DistanceL;
-  private double DistanceR;
+  private double error;
   private DriveBase driveBase;
 
   /**
@@ -33,14 +34,12 @@ public class encoderMovement extends CommandBase {
    */
   public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
     driveBase = tempDrive;
-    EncoderPair = Encoder;
+    this.EncoderPair = Encoder;
     TurnCorrection = driveCorrection;
-    kDistanceRequired = distance;
+    setpoint = distance;
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(driveCorrection);
-    
-    
   }
    
 
@@ -49,22 +48,20 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = setpoint - EncoderPair.getDistanceLeft();
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
     TurnCorrection.resetGyro();
-
-    
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    DistanceL = EncoderPair.getDistanceLeft();
-    DistanceR = EncoderPair.getDistanceRight();
     Straighten = TurnCorrection.getYaw() * .02;
-    double Lspeed = .75 - Straighten;
-    double Rspeed = .75 + Straighten;
+    error = setpoint - EncoderPair.getDistanceLeft();
+    this.rcw = (P *error);
+    double Lspeed = rcw - Straighten;
+    double Rspeed = rcw + Straighten;
     driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
     
   }
@@ -78,7 +75,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(DistanceL) >= Math.abs(kDistanceRequired) && (Math.abs(DistanceR)) >= Math.abs(kDistanceRequired)){
+    if(error <= .5){
       return true;
     }
     else{

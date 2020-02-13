@@ -50,8 +50,9 @@ public class RobotContainer {
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
   private final Launcher launcher = new Launcher();
-  private final Intake intake = new Intake();
+  private final static Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
+  public final navXTurn turnSpeed = PID();
 
   //Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -69,6 +70,16 @@ public class RobotContainer {
   public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
   public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
 
+  public static Joystick operator = new Joystick(1);
+  public static JoystickButton operatorXButton = new JoystickButton(operator, 1);
+  public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
+  public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
+  public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
+  public static JoystickButton operatorLeftBumper = new JoystickButton(operator, 5);
+  public static JoystickButton operatorRightBumper = new JoystickButton(operator, 6);
+  public static JoystickButton operatorLeftTrigger = new JoystickButton(operator, 7);
+  public static JoystickButton operatorRightTrigger = new JoystickButton(operator, 8);
+  public static JoystickButton operatorBackButton = new JoystickButton(operator, 9);
 
 
   /**
@@ -76,24 +87,30 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-
-    driverXButton.whenPressed(new vLED(visionSensor, true), false);
-    driverXButton.whenReleased(new vLED(visionSensor, false), false);
-    driverAButton.whenPressed(new visionTarget(visionSensor, driveBase), false);
+    driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
+    driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90), true);
-    driverYButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, -60), false);
-    driverLeftBumper.whenPressed(new intakeCells(intake, .5), true);
-    driverLeftTrigger.whenPressed(new intakePivot(intake, -800), true);
-    driverLeftTrigger.whenReleased(new intakePivot(intake, 0), true);
+    driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180), true);
+    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
+    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .5), true);
+    operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition), true);
+    operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition), true);
     configureButtonBindings();
   }
 
+  private navXTurn PID() {
+    return null;
+  }
+
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
   }
@@ -124,7 +141,7 @@ public class RobotContainer {
     visionSensor.vLEDoff();
   }
 
-  public double pivotEncoder()
+  public static double pivotEncoder()
   {
     return intake.getPivotEncoderVaule();
   }

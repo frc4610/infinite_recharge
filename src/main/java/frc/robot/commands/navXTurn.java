@@ -15,57 +15,57 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  private static double kTurnDesired;
-  private navX gyro;
-  private double yaw;
-  private DriveBase driveBase;
+  double P = 0.0075;
+  double setpoint;
+  navX gyro;
+  DriveBase driveBase;
+  private double rcw;
+
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyrNavX, DriveBase tempdrive, double kTurnWant) {
-    gyro = gyrNavX;
+  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint){
+    this.gyro = (navX) gyro;
     driveBase = tempdrive;
-    kTurnDesired = kTurnWant;
-    addRequirements(gyrNavX);
-    addRequirements(tempdrive);
+    setpoint = Setpoint;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     gyro.resetGyro();
   }
 
+  public void PID() {
+    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
+    this.rcw = (P * error); //Equation for power(rcw = power)
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    yaw = gyro.getYaw();
-    if(yaw > 0){
-      driveBase.move(ControlMode.PercentOutput, .5, -.5);
-    }
-    else if(yaw < 0){
-      driveBase.move(ControlMode.PercentOutput, -.5, .5);
-    }
+    PID();
+    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted.+
   @Override
   public void end(boolean interrupted) {
-    driveBase.move(ControlMode.PercentOutput, 0, 0);
     gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
-
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(yaw >= Math.abs(kTurnDesired)){
+    if(!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()){
       return true;
     }
     else
     {
-    return false;
+      return false;
     }
   }
 }

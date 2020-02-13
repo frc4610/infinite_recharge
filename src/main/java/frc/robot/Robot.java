@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   private double Lspeed;
   private double Rspeed;
   private double Straighten;
+  private double rcw;
 
 
   /**
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("DistanceL", m_robotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", m_robotContainer.mainEncoders.getDistanceRight());
-    SmartDashboard.putNumber("Pivot Value", m_robotContainer.pivotEncoder());
+    SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lspeed", Lspeed);
     SmartDashboard.putNumber("Rspeed", Rspeed);
     SmartDashboard.putNumber("Yaw", Straighten);
+    SmartDashboard.putNumber("rcw", rcw);
   }
 
   @Override

@@ -28,6 +28,7 @@ public class Launcher extends SubsystemBase {
     //indexRight.setIdleMode(IdleMode.kCoast);
 
     feedController = new CANSparkMax(8, MotorType.kBrushless);
+    feedController.setInverted(true);
 
     launcherLeft = new CANSparkMax(3, MotorType.kBrushless);
     launcherRight = new CANSparkMax(2, MotorType.kBrushless);
@@ -39,7 +40,7 @@ public class Launcher extends SubsystemBase {
 
   public void index(double speed)
   {
-    indexLeft.set(speed);
+    indexLeft.set(speed-.1);
     indexRight.set(speed);
   }
 

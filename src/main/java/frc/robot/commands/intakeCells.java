@@ -45,6 +45,6 @@ public class intakeCells extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.driverLeftBumper.get();
+    return !RobotContainer.operatorYButton.get();
   }
 }
