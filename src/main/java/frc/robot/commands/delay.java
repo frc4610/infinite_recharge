@@ -9,30 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Launcher;
 
-public class launchSystem extends CommandBase {
-  private Launcher launcher;
-  private double indexSpeed;
-  private double feedSpeed;
-  private double launcherSpeed;
-  private double maxSpeed;
-  private double windSpeed;
+public class delay extends CommandBase {
   private Timer timer;
-  private boolean isAuto;
+  private double delayTime;
   /**
-   * Creates a new launchSystem.
+   * Creates a new delay.
    */
-  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, double launchSpeed, boolean auto) {
-    launcher = tLauncher;
-    indexSpeed = IndexSpeed;
-    feedSpeed = FeedSpeed;
-    maxSpeed = launchSpeed;
-    windSpeed = Constants.windSpeedNEO;
+  public delay(double delaySeconds) {
     timer = new Timer();
-    isAuto = auto;
-    addRequirements(tLauncher);
+    delayTime = delaySeconds;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -45,35 +31,18 @@ public class launchSystem extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(timer.get() > Constants.feedDelay)
-    {
-      //launcher.feed(feedSpeed);
-      //launcher.index(indexSpeed);
-    }
-    
-    if(launcherSpeed < maxSpeed)
-     {
-        launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
-     }
-     launcher.launch(Constants.launchNEOSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    launcher.stopLaunching();
+    timer.stop();
+    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!isAuto)
-    {
-    return false;
-    }
-    else
-    {
-      return timer.get() > 3;
-    }
+    return timer.get() >= delayTime;
   }
 }
