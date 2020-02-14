@@ -49,7 +49,7 @@ public class RobotContainer {
   private final static DriveBase driveBase = new DriveBase();
   private final navX gyro = new navX();
   private final limeLight visionSensor = new limeLight();
-  private final Launcher launcher = new Launcher();
+  final Launcher launcher = new Launcher();
   private final Intake intake = new Intake();
   public final encoder mainEncoders = new encoder();
 
@@ -141,4 +141,8 @@ public class RobotContainer {
     motor.configPeakOutputReverse(-peak);
     motor.setNeutralMode(NeutralMode.Brake);
   }
+
+public double launcher() {
+	return 0;
+}
 }
