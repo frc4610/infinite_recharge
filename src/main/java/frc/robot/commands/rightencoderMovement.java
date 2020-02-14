@@ -15,7 +15,7 @@ import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
 
-public class encoderMovement extends CommandBase {
+public class rightencoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
   private  double P = .03;
@@ -33,7 +33,7 @@ public class encoderMovement extends CommandBase {
    * 
    * 
    */
-  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
+  public rightencoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
     TurnCorrection = driveCorrection;

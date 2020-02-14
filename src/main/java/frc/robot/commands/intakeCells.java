@@ -14,12 +14,18 @@ import frc.robot.subsystems.Intake;
 public class intakeCells extends CommandBase {
   private Intake cellIntake;
   private double intakeSpeed;
+  private boolean isAuto;
   /**
    * Creates a new intakeCells.
+   * 
+   * @param intake Intake to use
+   * @param speed Speed to set
+   * @param auto Is autonoumous? If true, stops immeditaly and doesnt set back to zero at end
    */
-  public intakeCells(Intake intake, double speed) {
+  public intakeCells(Intake intake, double speed, boolean auto) {
     cellIntake = intake;
     intakeSpeed = speed;
+    isAuto= auto;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,7 +33,7 @@ public class intakeCells extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    cellIntake.intakeCells(intakeSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,12 +45,22 @@ public class intakeCells extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if(!isAuto)
+    {
     cellIntake.intakeCells(0);
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.driverLeftBumper.get();
+    if(!isAuto)
+    {
+    return !RobotContainer.operatorYButton.get();
+    }
+    else
+    {
+      return true;
+    }
   }
 }
