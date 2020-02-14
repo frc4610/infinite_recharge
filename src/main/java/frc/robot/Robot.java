@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
     SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
+    SmartDashboard.putNumber( "IR Value", m_robotContainer.launcher.GetIR());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

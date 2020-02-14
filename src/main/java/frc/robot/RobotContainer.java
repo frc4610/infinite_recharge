@@ -164,4 +164,8 @@ public class RobotContainer {
     motor.configPeakOutputReverse(-peak);
     motor.setNeutralMode(NeutralMode.Brake);
   }
+
+public double launcher() {
+	return 0;
+}
 }
