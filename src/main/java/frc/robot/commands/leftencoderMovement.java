@@ -17,12 +17,11 @@ import frc.robot.RobotContainer;
 
 public class leftencoderMovement extends CommandBase {
   private double setpoint;
-  private double averageEncoder;
+  private double target;
   private  double P = .03;
   private double rcw;
   private encoder EncoderPair;
-  private navX TurnCorrection;
-  private double Straighten;
+  private navX gyro;
   private double error;
   private DriveBase driveBase;
 
@@ -33,14 +32,13 @@ public class leftencoderMovement extends CommandBase {
    * 
    * 
    */
-  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double distance){
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
-    TurnCorrection = driveCorrection;
     setpoint = distance;
+    gyro = Gyro;
     addRequirements(tempDrive);
     addRequirements(Encoder);
-    addRequirements(driveCorrection);
   }
    
 
@@ -49,30 +47,25 @@ public class leftencoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
-    error = setpoint - averageEncoder;
     EncoderPair.resetencoderL();
-    EncoderPair.resetencoderR();
-    TurnCorrection.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
-    Straighten = TurnCorrection.getYaw() * .02;
-    error = setpoint - averageEncoder;
+    target = EncoderPair.getDistanceLeft();
+    error = setpoint - target;
     this.rcw = (P *error);
-    double Lspeed = rcw - Straighten;
-    double Rspeed = rcw + Straighten;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
+    double Lspeed = rcw;
+    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
     
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveBase.move(ControlMode.PercentOutput, 0, 0);
-    RobotContainer.startTankDrive();
+    EncoderPair.resetencoderL();
+    EncoderPair.resetencoderR();
   }
 
   // Returns true when the command should end.

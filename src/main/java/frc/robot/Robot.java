@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
+    goal.addOption("Launch, Regrab Trench, Launch", "Launch, Regrab Trench, Launch");
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
@@ -97,6 +98,7 @@ public class Robot extends TimedRobot {
     pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotContainer.gyro.resetGyro();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

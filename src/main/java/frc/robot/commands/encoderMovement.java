@@ -13,17 +13,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
-import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private  double P = .03;
+  private  double P = .015;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
   private double Straighten;
   private double error;
+  private double desiredangle;
   private DriveBase driveBase;
 
   /**
@@ -33,11 +33,12 @@ public class encoderMovement extends CommandBase {
    * 
    * 
    */
-  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double distance){
+  public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double anglewanted, double distance){
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
     TurnCorrection = driveCorrection;
     setpoint = distance;
+    desiredangle = anglewanted;
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(driveCorrection);
@@ -49,18 +50,15 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
-    error = setpoint - averageEncoder;
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
-    TurnCorrection.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceLeft())/2;
-    Straighten = TurnCorrection.getYaw() * .02;
+    averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
+    Straighten = (TurnCorrection.getYaw() - desiredangle) * 0.02;
     error = setpoint - averageEncoder;
     this.rcw = (P *error);
     double Lspeed = rcw - Straighten;
@@ -72,7 +70,6 @@ public class encoderMovement extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveBase.move(ControlMode.PercentOutput, 0, 0);
-    RobotContainer.startTankDrive();
   }
 
   // Returns true when the command should end.
