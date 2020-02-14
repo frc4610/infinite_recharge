@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    RobotContainer.lights.setLEDRainbow();
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());

@@ -27,6 +27,7 @@ import frc.robot.commands.vLED;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.limeLight;
@@ -51,6 +52,7 @@ public class RobotContainer {
   public final static Launcher launcher = new Launcher();
   public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
+  public final static LEDStrip lights = new LEDStrip();
   //Commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
