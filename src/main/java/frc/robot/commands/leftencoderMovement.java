@@ -20,8 +20,8 @@ public class leftencoderMovement extends CommandBase {
   private double target;
   private  double P = .03;
   private double rcw;
-  private navX gyro;
   private encoder EncoderPair;
+  private navX gyro;
   private double error;
   private DriveBase driveBase;
 

@@ -130,12 +130,16 @@ public class RobotContainer {
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
       new vLED(RobotContainer.visionSensor, true),
-      //new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
+      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
       new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 180, 72),
+      new intakeCells(intake, 0, true),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
       new vLED(RobotContainer.visionSensor, true),
+      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false));
     }
     else

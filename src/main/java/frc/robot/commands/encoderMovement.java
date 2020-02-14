@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
-import frc.robot.RobotContainer;
 
 public class encoderMovement extends CommandBase {
   private double setpoint;

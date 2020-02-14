@@ -14,9 +14,9 @@ import frc.robot.subsystems.Launcher;
 
 public class launchSystem extends CommandBase {
   private Launcher launcher;
+  private double launcherSpeed;
   private double indexSpeed;
   private double feedSpeed;
-  private double launcherSpeed;
   private double maxSpeed;
   private double windSpeed;
   private Timer timer;
