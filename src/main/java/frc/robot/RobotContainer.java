@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.launchSystem;
+import frc.robot.commands.leftencoderMovement;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
 import frc.robot.commands.delay;
@@ -90,7 +91,7 @@ public class RobotContainer {
     driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90, false), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
-    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, 60), false);
+    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
     driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
@@ -123,12 +124,24 @@ public class RobotContainer {
       new vLED(RobotContainer.visionSensor, true),
       new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false),
-      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 24));
+      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 0, 24));
+    }
+    else if(Robot.goal.getSelected().equals("Launch, Regrab Trench, Launch"))
+    {
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(RobotContainer.visionSensor, true),
+      //new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
+      new vLED(RobotContainer.visionSensor, false),
+      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 180, 72),
+      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new vLED(RobotContainer.visionSensor, true),
+      new vLED(RobotContainer.visionSensor, false));
     }
     else
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
-        new encoderMovement(driveBase, mainEncoders, gyro, 24));
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
     }
   } 
 
