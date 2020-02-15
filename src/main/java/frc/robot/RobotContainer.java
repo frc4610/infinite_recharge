@@ -32,6 +32,7 @@ import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
+import frc.robot.subsystems.raspberryCameras;
 import frc.robot.subsystems.limeLight;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,6 +56,7 @@ public class RobotContainer {
   public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
   public final static Climber climber = new Climber();
+  public final static raspberryCameras raspberries = new raspberryCameras();
   //Commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);

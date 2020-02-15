@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
-import frc.robot.RobotContainer;
 
 public class leftencoderMovement extends CommandBase {
   private double setpoint;
@@ -21,7 +20,6 @@ public class leftencoderMovement extends CommandBase {
   private  double P = .03;
   private double rcw;
   private encoder EncoderPair;
-  private navX gyro;
   private double error;
   private DriveBase driveBase;
 
@@ -36,7 +34,6 @@ public class leftencoderMovement extends CommandBase {
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
     setpoint = distance;
-    gyro = Gyro;
     addRequirements(tempDrive);
     addRequirements(Encoder);
   }
