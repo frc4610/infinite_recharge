@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -18,13 +19,14 @@ import frc.robot.commands.launchSystem;
 import frc.robot.commands.leftencoderMovement;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
+import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
-
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
@@ -52,6 +54,7 @@ public class RobotContainer {
   public final static Launcher launcher = new Launcher();
   public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
+  public final static Climber climber = new Climber();
   //Commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
@@ -92,11 +95,13 @@ public class RobotContainer {
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
     driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
-    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    //driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
+    operatorLeftTrigger.whileHeld(new climb(climber, .5));
+    operatorRightTrigger.whileHeld(new climb(climber, -.5));
     configureButtonBindings();
   }
 
@@ -181,6 +186,13 @@ public class RobotContainer {
     motor.configPeakOutputReverse(-peak);
     motor.setNeutralMode(NeutralMode.Brake);
   }
+  public static void initMotor(TalonFX motor, double peak)
+  {
+    motor.configPeakOutputForward(peak);
+    motor.configPeakOutputReverse(-peak);
+    motor.setNeutralMode(NeutralMode.Brake);
+  }
+
 
 public double launcher() {
 	return 0;

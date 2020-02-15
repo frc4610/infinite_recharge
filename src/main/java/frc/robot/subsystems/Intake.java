@@ -22,9 +22,9 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    intakingNEO = new CANSparkMax(5, MotorType.kBrushless);
-    intakingNEO.setInverted(true);
-    articulationTalon = new TalonSRX(7);//positive is inward
+    intakingNEO = new CANSparkMax(3, MotorType.kBrushless);
+    intakingNEO.setInverted(false);
+    articulationTalon = new TalonSRX(10);//positive is inward
     articulationTalon.configPeakOutputReverse(-1);
     articulationTalon.configClosedloopRamp(.5, 0);
     articulationTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);

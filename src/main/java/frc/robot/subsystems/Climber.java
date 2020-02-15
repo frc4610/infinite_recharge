@@ -7,24 +7,24 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private TalonSRX climbTalon;
+  private CANSparkMax climbTalon;
   /**
    * Creates a new Climber.
    */
   public Climber() {
-    climbTalon = new TalonSRX(2);
+    climbTalon = new CANSparkMax(5, MotorType.kBrushless);
 
   }
 
   public void set(double speed)
   {
-    climbTalon.set(ControlMode.PercentOutput, speed);
+    climbTalon.set(speed);
   }
 
   @Override
