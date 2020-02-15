@@ -32,10 +32,8 @@ public class Robot extends TimedRobot {
   public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
-  private double Lspeed;
-  private double Rspeed;
   private double Straighten;
-  private double rcw;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -69,7 +67,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
     SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
     SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
-    SmartDashboard.putNumber( "IR Value", m_robotContainer.launcher.GetIR());
+    SmartDashboard.putNumber( "IR Value", RobotContainer.launcher.GetIR());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -133,10 +131,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putNumber("DistanceL", DistanceL);
     SmartDashboard.putNumber("DistanceR", DistanceR);
-    SmartDashboard.putNumber("Lspeed", Lspeed);
-    SmartDashboard.putNumber("Rspeed", Rspeed);
-    SmartDashboard.putNumber("Yaw", Straighten);
-    SmartDashboard.putNumber("rcw", rcw);
+    SmartDashboard.putNumber("Gyro", Straighten);
   }
 
   @Override

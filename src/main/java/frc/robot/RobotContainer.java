@@ -14,27 +14,25 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.launchSystem;
-import frc.robot.commands.leftencoderMovement;
-import frc.robot.commands.intakeCells;
-import frc.robot.commands.intakePivot;
-import frc.robot.commands.delay;
-import frc.robot.commands.encoderMovement;
-import frc.robot.commands.navXTurn;
-import frc.robot.commands.tankDrive;
-import frc.robot.commands.visionTarget;
-import frc.robot.commands.vLED;
-
-import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.Launcher;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.encoder;
-import frc.robot.subsystems.navX;
-import frc.robot.subsystems.limeLight;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.delay;
+import frc.robot.commands.encoderMovement;
+import frc.robot.commands.intakeCells;
+import frc.robot.commands.intakePivot;
+import frc.robot.commands.launchSystem;
+import frc.robot.commands.leftencoderMovement;
+import frc.robot.commands.navXTurn;
+import frc.robot.commands.tankDrive;
+import frc.robot.commands.vLED;
+import frc.robot.commands.visionTarget;
+import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.limeLight;
+import frc.robot.subsystems.navX;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
