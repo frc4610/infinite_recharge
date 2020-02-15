@@ -140,6 +140,20 @@ public class RobotContainer {
       new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
       new vLED(RobotContainer.visionSensor, false));
     }
+    else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new navXTurn(gyro, driveBase, -180, true),
+      new vLED(RobotContainer.visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+    }
     else
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),

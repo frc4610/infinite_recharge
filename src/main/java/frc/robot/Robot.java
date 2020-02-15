@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
     goal.addOption("Launch, Regrab Trench, Launch", "Launch, Regrab Trench, Launch");
+    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
