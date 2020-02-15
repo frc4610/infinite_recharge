@@ -114,8 +114,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-    // An ExampleCommand will run in autonomous
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
@@ -123,6 +121,7 @@ public class RobotContainer {
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
+      //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
@@ -138,7 +137,11 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false));
-    }
+      /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
+      The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 
+      power cells, conduct one more left sweeping turn, and fire.
+      */
+    } 
     else if(Robot.goal.getSelected().equals("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
       new vLED(visionSensor, true),
@@ -153,6 +156,10 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false));
+      /*This Auto Goal is to be chosen when parallel with the trench, facing in the direction of the Power Port.
+      The code will auto aim, launch 3 power cells, turn towards the 3 power cells, picking up the 3 power cells, 
+      doing a left sweeping turn, and firing.
+      */
     }
     else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
@@ -167,6 +174,9 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false));
+      /*This code is to be chosen when the robot is positioned directly in front of opponents
+      trench  
+      */
     }
     else if(Robot.goal.getSelected().equals("Launch, grab Sheild Generator")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
