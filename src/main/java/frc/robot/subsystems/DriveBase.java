@@ -29,13 +29,10 @@ public class DriveBase extends SubsystemBase {
     peak = 1;
     leftLeadTalon = new TalonSRX(8);
     leftLeadTalon.configClosedloopRamp(1);
-    leftLeadTalon.config_kP(0, 1);
-    //leftLeadTalon.config_kF(0, 1023);
-    //leftLeadTalon.config_kI(0, .001);
-    //leftLeadTalon.config_kD(0, 20);
+    leftLeadTalon.configOpenloopRamp(1);
     righLeadTalon = new TalonSRX(6);
     righLeadTalon.configClosedloopRamp(1);
-    righLeadTalon.config_kP(0, 1);
+    righLeadTalon.configOpenloopRamp(1);
     leftTalon = new TalonSRX(9);
     rightTalon = new TalonSRX(7);
     leftTalon.follow(leftLeadTalon);

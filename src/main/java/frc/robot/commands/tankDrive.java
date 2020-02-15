@@ -36,15 +36,7 @@ public class tankDrive extends CommandBase {
   public void execute() {
     double joyValueL = -RobotContainer.driver.getRawAxis(1);
     double joyValueR = -RobotContainer.driver.getRawAxis(3);
-    if(Math.abs(joyValueR) < .03)
-    {
-      joyValueR = 0;
-    }
-    if(Math.abs(joyValueL) < .03)
-    {
-      joyValueL = 0;
-    }
-    tDrivebase.move(ControlMode.Velocity, joyValueL*Constants.maxFalconVelocity, joyValueR*Constants.maxFalconVelocity);
+    tDrivebase.move(ControlMode.PercentOutput, joyValueL, joyValueR);
   }
 
   // Called once the command ends or is interrupted.
