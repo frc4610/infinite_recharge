@@ -74,19 +74,16 @@ public class Launcher extends SubsystemBase {
     feedController.set(0);
   }
    
-
-
-  
-
   @Override
   public void periodic() 
   {
 
   }
-  public double GetIR()
+
+  public int GetIR()
   {
     return ColorSensor.getIR();
   }
 
+ 
 }
-
