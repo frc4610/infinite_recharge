@@ -95,9 +95,9 @@ public class visionTarget extends CommandBase {
       if(timer.get() >= Constants.feedDelay)
       {
         launcher.index(Constants.indexNEOSpeed);
-        //launcher.feed(Constants.feedNEOSpeed);
+        launcher.feed(Constants.feedNEOSpeed);
       }
-      launcher.launch(launchSpeed);
+      launcher.launch(Constants.launchNEOSpeed);
     }
     else
     {

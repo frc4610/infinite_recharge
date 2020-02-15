@@ -47,8 +47,8 @@ public class launchSystem extends CommandBase {
   public void execute() {
     if(timer.get() > Constants.feedDelay)
     {
-      //launcher.feed(feedSpeed);
-      //launcher.index(indexSpeed);
+      launcher.feed(feedSpeed);
+      launcher.index(indexSpeed);
     }
     
     if(launcherSpeed < maxSpeed)
