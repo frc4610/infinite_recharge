@@ -119,26 +119,40 @@ public class RobotContainer {
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false),
-      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 0, 24));
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
     }
-    else if(Robot.goal.getSelected().equals("Launch, Regrab Trench, Launch"))
-    {
+    else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
-      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 180, 72),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false));
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+    }
+    else if(Robot.goal.getSelected().equals("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new navXTurn(gyro, driveBase, 180, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
+      new intakeCells(intake, 0, true),
+      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
     }
     else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
@@ -150,7 +164,38 @@ public class RobotContainer {
       new navXTurn(gyro, driveBase, -90, true),
       new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
       new navXTurn(gyro, driveBase, -180, true),
-      new vLED(RobotContainer.visionSensor, true),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+    }
+    else if(Robot.goal.getSelected().equals("Launch, grab Sheild Generator")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
+      new navXTurn(gyro, driveBase, 0, true),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+    }
+    else if(Robot.goal.getSelected().equals("Grab Sheild Generator, Launch")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
+      new navXTurn(gyro, driveBase, 0, true),
+      new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false));
     }
