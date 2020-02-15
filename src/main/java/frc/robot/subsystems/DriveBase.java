@@ -20,6 +20,8 @@ public class DriveBase extends SubsystemBase {
   private TalonSRX leftTalon;
   private TalonSRX rightTalon;
   private double peak;
+  private double previousLSpeed;
+  private double previousRSpeed;
   /**
    * Creates a new DriveBase.
    * 
@@ -28,11 +30,11 @@ public class DriveBase extends SubsystemBase {
   {
     peak = 1;
     leftLeadTalon = new TalonSRX(8);
-    leftLeadTalon.configClosedloopRamp(1);
-    leftLeadTalon.configOpenloopRamp(1);
+    leftLeadTalon.configClosedloopRamp(0);
+    leftLeadTalon.configOpenloopRamp(.75);
     righLeadTalon = new TalonSRX(6);
-    righLeadTalon.configClosedloopRamp(1);
-    righLeadTalon.configOpenloopRamp(1);
+    righLeadTalon.configClosedloopRamp(0);
+    righLeadTalon.configOpenloopRamp(.75);
     leftTalon = new TalonSRX(9);
     rightTalon = new TalonSRX(7);
     leftTalon.follow(leftLeadTalon);
@@ -43,6 +45,8 @@ public class DriveBase extends SubsystemBase {
     RobotContainer.initMotor(righLeadTalon, peak);
     RobotContainer.initMotor(leftTalon, peak);
     RobotContainer.initMotor(rightTalon, peak);
+    previousRSpeed =0;
+    previousLSpeed =0;
   }
 
   /**
@@ -52,6 +56,61 @@ public class DriveBase extends SubsystemBase {
    * @param speedR Input, usually speed, of right side of drivebase
    */
   public void move(ControlMode mode , double speedL, double speedR){
+    if((previousLSpeed > 0) && (speedL > 0))
+    {
+      if(previousLSpeed > speedL)
+      {
+        leftLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        leftLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else if((previousLSpeed <= 0) && (speedL <= 0))
+    {
+      if(previousLSpeed < speedL)
+      {
+        leftLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        leftLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else
+    {
+      leftLeadTalon.configOpenloopRamp(0);
+    }
+
+    if((previousRSpeed > 0) && (speedR > 0))
+    {
+      if(previousRSpeed > speedR)
+      {
+        righLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        righLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else if((previousRSpeed <= 0) && (speedR <= 0))
+    {
+      if(previousRSpeed < speedR)
+      {
+        righLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        righLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else
+    {
+      righLeadTalon.configOpenloopRamp(0);
+    }
+    previousLSpeed = speedL;
+    previousRSpeed = speedR;
     leftLeadTalon.set(mode, speedL);
     righLeadTalon.set(mode, speedR);
     SmartDashboard.putNumber("Speed", leftLeadTalon.getSelectedSensorVelocity());
