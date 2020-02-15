@@ -8,15 +8,15 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
-  private VictorSPX leftVictor;
-  private VictorSPX rightVictor;
+  private TalonSRX leftLeadTalon;
+  private TalonSRX righLeadTalon;
   private TalonSRX leftTalon;
   private TalonSRX rightTalon;
   private double peak;
@@ -27,16 +27,16 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() 
   {
     peak = 1;
-    leftVictor = new VictorSPX(3);
-    rightVictor = new VictorSPX(11);
-    leftTalon = new TalonSRX(4);
+    leftLeadTalon = new TalonSRX(8);
+    righLeadTalon = new TalonSRX(7);
+    leftTalon = new TalonSRX(9);
     rightTalon = new TalonSRX(6);
-    leftTalon.follow(leftVictor);
-    rightTalon.follow(rightVictor);
-    leftVictor.setInverted(true);
+    leftTalon.follow(leftLeadTalon);
+    rightTalon.follow(righLeadTalon);
+    leftLeadTalon.setInverted(true);
     leftTalon.setInverted(true);
-    RobotContainer.initMotor(leftVictor, peak);
-    RobotContainer.initMotor(rightVictor, peak);
+    RobotContainer.initMotor(leftLeadTalon, peak);
+    RobotContainer.initMotor(righLeadTalon, peak);
     RobotContainer.initMotor(leftTalon, peak);
     RobotContainer.initMotor(rightTalon, peak);
   }
@@ -48,8 +48,8 @@ public class DriveBase extends SubsystemBase {
    * @param speedR Input, usually speed, of right side of drivebase
    */
   public void move(ControlMode mode , double speedL, double speedR){
-    leftVictor.set(mode, speedL);
-    rightVictor.set(mode, speedR);
+    leftLeadTalon.set(mode, speedL);
+    righLeadTalon.set(mode, speedR);
   }
 
   /**
@@ -57,8 +57,8 @@ public class DriveBase extends SubsystemBase {
    */
   public void stopDrivebase()
   {
-    leftVictor.neutralOutput();
-    rightVictor.neutralOutput();
+    leftLeadTalon.neutralOutput();
+    righLeadTalon.neutralOutput();
   }
 
   @Override

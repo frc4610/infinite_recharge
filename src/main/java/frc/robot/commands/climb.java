@@ -8,59 +8,41 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climber;
 
-public class intakeCells extends CommandBase {
-  private Intake cellIntake;
-  private double intakeSpeed;
-  private boolean isAuto;
+public class climb extends CommandBase {
+  private Climber climber;
+  private double speed;
   /**
-   * Creates a new intakeCells.
-   * 
-   * @param intake Intake to use
-   * @param speed Speed to set
-   * @param auto Is autonoumous? If true, stops immeditaly and doesnt set back to zero at end
+   * Creates a new climb.
    */
-  public intakeCells(Intake intake, double speed, boolean auto) {
-    cellIntake = intake;
-    intakeSpeed = speed;
-    isAuto= auto;
-    addRequirements(intake);
+  public climb(Climber tClimb, double Speed) {
+    climber = tClimb;
+    speed = Speed;
+    addRequirements(tClimb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cellIntake.intakeCells(intakeSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    cellIntake.intakeCells(intakeSpeed);
+    climber.set(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(!isAuto)
-    {
-    cellIntake.intakeCells(0);
-    }
+    climber.set(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!isAuto)
-    {
-    return !RobotContainer.operatorYButton.get();
-    }
-    else
-    {
-      return true;
-    }
+    return false;
   }
 }

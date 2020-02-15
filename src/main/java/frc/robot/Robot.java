@@ -9,15 +9,18 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -25,13 +28,14 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public RobotContainer m_robotContainer;
-
+  public static SendableChooser<String> goal;
+  public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
   private double Lspeed;
   private double Rspeed;
   private double Straighten;
-
+  private double rcw;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -39,6 +43,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    goal = new SendableChooser<>();
+    goal.addOption("Drive Forward", "df");
+    goal.setDefaultOption("Drive Forward", "df");
+    goal.addOption("Launch from current pos", "Launch from current pos");
+    goal.addOption("Launch, Regrab Trench, Launch", "Launch, Regrab Trench, Launch");
+    SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -55,9 +65,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("DistanceL", m_robotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("DistanceR", m_robotContainer.mainEncoders.getDistanceRight());
-    SmartDashboard.putNumber("Pivot Value", m_robotContainer.pivotEncoder());
+    SmartDashboard.putData("Auto Goal", goal);
+    SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
+    SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
+    SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
     SmartDashboard.putNumber( "IR Value", m_robotContainer.launcher.GetIR());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -84,8 +95,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotContainer.gyro.resetGyro();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -123,6 +136,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lspeed", Lspeed);
     SmartDashboard.putNumber("Rspeed", Rspeed);
     SmartDashboard.putNumber("Yaw", Straighten);
+    SmartDashboard.putNumber("rcw", rcw);
   }
 
   @Override

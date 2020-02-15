@@ -9,72 +9,73 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveBase;
 
-public class navXTurn extends CommandBase {
-  double P = 0.0075;
-  double setpoint;
-  navX gyro;
-  DriveBase driveBase;
+public class leftencoderMovement extends CommandBase {
+  private double setpoint;
+  private double target;
+  private  double P = .03;
   private double rcw;
-  private Timer timer;
-  private boolean isAuto;
+  private encoder EncoderPair;
+  private navX gyro;
+  private double error;
+  private DriveBase driveBase;
 
   /**
-   * Creates a new navXTurn.
+   * Creates a new encoderMovement.
+ * @param EncoderL 
+ * @param EncoderR 
+   * 
+   * 
    */
-  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint, boolean auto){
-    this.gyro = (navX) gyro;
-    driveBase = tempdrive;
-    timer = new Timer();
-    setpoint = Setpoint;
-    isAuto = auto;
-    addRequirements(tempdrive);
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double distance){
+    driveBase = tempDrive;
+    this.EncoderPair = Encoder;
+    setpoint = distance;
+    gyro = Gyro;
+    addRequirements(tempDrive);
+    addRequirements(Encoder);
+  }
+   
 
     // Use addRequirements() here to declare subsystem dependencies.
-  }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
-    gyro.resetGyro();
-  }
-
-  public void PID() {
-    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
-    this.rcw = (P * error); //Equation for power(rcw = power)
+    EncoderPair.resetencoderL();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PID();
-    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
+    target = EncoderPair.getDistanceLeft();
+    error = setpoint - target;
+    this.rcw = (P *error);
+    double Lspeed = rcw;
+    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
+    
   }
-
-  // Called once the command ends or is interrupted.+
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.reset();
-    timer.stop();
-    gyro.resetGyro();
-    RobotContainer.startTankDrive();
+    driveBase.move(ControlMode.PercentOutput, 0, 0);
+    EncoderPair.resetencoderL();
+    EncoderPair.resetencoderR();
   }
-  
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()) && !isAuto){
+    if(error <= .5){
       return true;
     }
-    else
-    {
-      return timer.get() > 3;
+    else{
+      return false;
     }
   }
 }
