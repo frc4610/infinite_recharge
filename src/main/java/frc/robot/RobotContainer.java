@@ -193,8 +193,19 @@ public class RobotContainer {
     motor.setNeutralMode(NeutralMode.Brake);
   }
 
-
-public double launcher() {
-	return 0;
+public double launcher() 
+{
+  return 0;
 }
+  public static boolean stateOfFeed(){
+  if(launcher.GetIR() <= 25)
+   {
+      return false;
+   }
+  else
+    {
+      return true;
+    }
+  } 
+
 }
