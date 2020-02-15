@@ -8,9 +8,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -28,9 +28,16 @@ public class DriveBase extends SubsystemBase {
   {
     peak = 1;
     leftLeadTalon = new TalonSRX(8);
-    righLeadTalon = new TalonSRX(7);
+    leftLeadTalon.configClosedloopRamp(1);
+    leftLeadTalon.config_kP(0, 1);
+    //leftLeadTalon.config_kF(0, 1023);
+    //leftLeadTalon.config_kI(0, .001);
+    //leftLeadTalon.config_kD(0, 20);
+    righLeadTalon = new TalonSRX(6);
+    righLeadTalon.configClosedloopRamp(1);
+    righLeadTalon.config_kP(0, 1);
     leftTalon = new TalonSRX(9);
-    rightTalon = new TalonSRX(6);
+    rightTalon = new TalonSRX(7);
     leftTalon.follow(leftLeadTalon);
     rightTalon.follow(righLeadTalon);
     leftLeadTalon.setInverted(true);
@@ -50,6 +57,8 @@ public class DriveBase extends SubsystemBase {
   public void move(ControlMode mode , double speedL, double speedR){
     leftLeadTalon.set(mode, speedL);
     righLeadTalon.set(mode, speedR);
+    SmartDashboard.putNumber("Speed", leftLeadTalon.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("SpeedR", righLeadTalon.getSelectedSensorVelocity());
   }
 
   /**
