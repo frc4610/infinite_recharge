@@ -20,7 +20,7 @@ public final class Constants {
     public static double bottomIntakeEncoderPosition = -900;
     public static double groundToPowerPortIn = 98.25;
     public static double groundToLimeLensIn = 20.5;
-    public static double groundToLimeLensDeg = 29.5;
+    public static double groundToLimeLensDeg = 41.6;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
     public static double distanceToPowerportMaxIn = (23*12);//temporary change, fix to 23 feet later
     public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
