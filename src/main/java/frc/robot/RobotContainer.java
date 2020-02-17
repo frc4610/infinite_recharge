@@ -93,7 +93,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    slow = false;
+    slow = true;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);

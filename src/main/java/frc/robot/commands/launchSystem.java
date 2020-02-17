@@ -82,7 +82,7 @@ public class launchSystem extends CommandBase {
         launcher.feed(0);
       }
 
-      //launcher.feed(feedSpeed);
+      launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
     
