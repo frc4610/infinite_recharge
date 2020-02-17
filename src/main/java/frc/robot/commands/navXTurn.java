@@ -69,7 +69,7 @@ public class navXTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()) && !isAuto){
+    if((!RobotContainer.driverXButton.get()&&!RobotContainer.driverYButton.get()&&!RobotContainer.driverBButton.get()) && !isAuto){
       return true;
     }
     else
