@@ -23,6 +23,7 @@ import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.navXTurn;
+import frc.robot.commands.slowMode;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
@@ -61,6 +62,8 @@ public class RobotContainer {
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
 
+  private static boolean slow;
+
   //OI Devices
   public static Joystick driver = new Joystick(0);
   public static JoystickButton driverXButton = new JoystickButton(driver, 1);
@@ -89,6 +92,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    slow = false;
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
@@ -96,8 +100,8 @@ public class RobotContainer {
     driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90, false), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
-    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
-    //driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    //driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
+    driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
@@ -169,6 +173,16 @@ public class RobotContainer {
   public void turnLEDOff()
   {
     visionSensor.vLEDoff();
+  }
+
+  public static void toggleSlow()
+  {
+    slow = !slow;
+  }
+
+  public static boolean isSlow()
+  {
+    return slow;
   }
 
   public static double pivotEncoder()
