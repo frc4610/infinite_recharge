@@ -7,10 +7,15 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Launcher;
+
+
 
 public class launchSystem extends CommandBase {
   private Launcher launcher;
@@ -21,6 +26,8 @@ public class launchSystem extends CommandBase {
   private double windSpeed;
   private Timer timer;
   private boolean isAuto;
+  private boolean previousState;
+  private Timer feedTimer;
   /**
    * Creates a new launchSystem.
    */
@@ -31,7 +38,9 @@ public class launchSystem extends CommandBase {
     maxSpeed = launchSpeed;
     windSpeed = Constants.windSpeedNEO;
     timer = new Timer();
+    previousState = false;
     isAuto = auto;
+    feedTimer = new Timer();
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -39,6 +48,10 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(!RobotContainer.stateOfFeed())
+    {
+      previousState = true;
+    }
     timer.start();
   }
 
@@ -47,7 +60,23 @@ public class launchSystem extends CommandBase {
   public void execute() {
     if(timer.get() > Constants.feedDelay)
     {
-      launcher.feed(feedSpeed);
+      if(RobotContainer.stateOfFeed() && !previousState)
+      {
+        feedTimer.start();
+      }
+      else if (!RobotContainer.stateOfFeed() && previousState)
+      {
+        feedTimer.reset();
+      }
+      previousState = RobotContainer.stateOfFeed();
+      if(feedTimer.get() >= .25)
+      {
+        launcher.feed(feedSpeed);
+      }
+      else
+      {
+        launcher.feed(0);
+      }
       launcher.index(indexSpeed);
     }
     

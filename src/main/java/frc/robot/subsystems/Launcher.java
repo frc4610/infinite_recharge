@@ -47,8 +47,8 @@ public class Launcher extends SubsystemBase {
     launcherRight = new CANSparkMax(9, MotorType.kBrushless);
     launcherLeft.setOpenLoopRampRate(2);
     launcherRight.setOpenLoopRampRate(2);
-
     launcherRight.setInverted(true);
+
     ColorSensor = new ColorSensorV3(I2C.Port.kOnboard);  
     
   }
@@ -75,19 +75,20 @@ public class Launcher extends SubsystemBase {
     feedController.set(ControlMode.PercentOutput, 0);
   }
    
-
-
-  
-
   @Override
   public void periodic() 
   {
 
   }
-  public double GetIR()
+
+  public int GetIR()
   {
     return ColorSensor.getIR();
   }
 
-}
+  public double GetLauncherSpeed()
+  {
+    return launcherLeft.getEncoder().getVelocity();
 
+  }
+}
