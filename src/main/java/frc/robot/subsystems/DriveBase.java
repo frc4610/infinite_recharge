@@ -9,17 +9,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
-  private VictorSPX leftVictor;
-  private VictorSPX rightVictor;
+  private TalonSRX leftLeadTalon;
+  private TalonSRX righLeadTalon;
   private TalonSRX leftTalon;
   private TalonSRX rightTalon;
   private double peak;
+  private double previousLSpeed;
+  private double previousRSpeed;
   /**
    * Creates a new DriveBase.
    * 
@@ -27,18 +29,24 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() 
   {
     peak = 1;
-    leftVictor = new VictorSPX(11);
-    rightVictor = new VictorSPX(3);
-    leftTalon = new TalonSRX(6);
-    rightTalon = new TalonSRX(4);
-    leftTalon.follow(leftVictor);
-    rightTalon.follow(rightVictor);
-    leftVictor.setInverted(true);
+    leftLeadTalon = new TalonSRX(8);
+    leftLeadTalon.configClosedloopRamp(0);
+    leftLeadTalon.configOpenloopRamp(.75);
+    righLeadTalon = new TalonSRX(6);
+    righLeadTalon.configClosedloopRamp(0);
+    righLeadTalon.configOpenloopRamp(.75);
+    leftTalon = new TalonSRX(9);
+    rightTalon = new TalonSRX(7);
+    leftTalon.follow(leftLeadTalon);
+    rightTalon.follow(righLeadTalon);
+    leftLeadTalon.setInverted(true);
     leftTalon.setInverted(true);
-    RobotContainer.initMotor(leftVictor, peak);
-    RobotContainer.initMotor(rightVictor, peak);
+    RobotContainer.initMotor(leftLeadTalon, peak);
+    RobotContainer.initMotor(righLeadTalon, peak);
     RobotContainer.initMotor(leftTalon, peak);
     RobotContainer.initMotor(rightTalon, peak);
+    previousRSpeed =0;
+    previousLSpeed =0;
   }
 
   /**
@@ -48,8 +56,65 @@ public class DriveBase extends SubsystemBase {
    * @param speedR Input, usually speed, of right side of drivebase
    */
   public void move(ControlMode mode , double speedL, double speedR){
-    leftVictor.set(mode, speedL);
-    rightVictor.set(mode, speedR);
+    if((previousLSpeed > 0) && (speedL > 0))
+    {
+      if(previousLSpeed > speedL)
+      {
+        leftLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        leftLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else if((previousLSpeed <= 0) && (speedL <= 0))
+    {
+      if(previousLSpeed < speedL)
+      {
+        leftLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        leftLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else
+    {
+      leftLeadTalon.configOpenloopRamp(0);
+    }
+
+    if((previousRSpeed > 0) && (speedR > 0))
+    {
+      if(previousRSpeed > speedR)
+      {
+        righLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        righLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else if((previousRSpeed <= 0) && (speedR <= 0))
+    {
+      if(previousRSpeed < speedR)
+      {
+        righLeadTalon.configOpenloopRamp(0);
+      }
+      else
+      {
+        righLeadTalon.configOpenloopRamp(.75);
+      }
+    }
+    else
+    {
+      righLeadTalon.configOpenloopRamp(0);
+    }
+    previousLSpeed = speedL;
+    previousRSpeed = speedR;
+    leftLeadTalon.set(mode, speedL);
+    righLeadTalon.set(mode, speedR);
+    SmartDashboard.putNumber("Speed", leftLeadTalon.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("SpeedR", righLeadTalon.getSelectedSensorVelocity());
   }
 
   /**
@@ -57,16 +122,12 @@ public class DriveBase extends SubsystemBase {
    */
   public void stopDrivebase()
   {
-    leftVictor.neutralOutput();
-    rightVictor.neutralOutput();
+    leftLeadTalon.neutralOutput();
+    righLeadTalon.neutralOutput();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-
-public void tankdrive(int i, double rcw) {
-  
-}
 }

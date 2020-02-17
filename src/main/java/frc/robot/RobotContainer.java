@@ -8,15 +8,18 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.launchSystem;
+import frc.robot.commands.leftencoderMovement;
+import frc.robot.commands.intakeCells;
+import frc.robot.commands.intakePivot;
+import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
 import frc.robot.commands.intakeCells;
@@ -24,13 +27,16 @@ import frc.robot.commands.intakePivot;
 import frc.robot.commands.launchSystem;
 import frc.robot.commands.leftencoderMovement;
 import frc.robot.commands.navXTurn;
+import frc.robot.commands.slowMode;
 import frc.robot.commands.tankDrive;
 import frc.robot.commands.vLED;
-import frc.robot.commands.visionTarget;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.encoder;
+import frc.robot.subsystems.navX;
+import frc.robot.subsystems.raspberryCameras;
 import frc.robot.subsystems.limeLight;
 import frc.robot.subsystems.navX;
 
@@ -50,9 +56,13 @@ public class RobotContainer {
   public final static Launcher launcher = new Launcher();
   public final static Intake intake = new Intake();
   public final static encoder mainEncoders = new encoder();
+  public final static Climber climber = new Climber();
+  public final static raspberryCameras raspberries = new raspberryCameras();
   //Commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
+
+  private static boolean slow;
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
@@ -82,6 +92,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    slow = false;
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
@@ -89,12 +100,14 @@ public class RobotContainer {
     driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90, false), true);
     driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
     driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
-    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
-    driverLeftTrigger.whileHeld(new visionTarget(visionSensor, driveBase, launcher, true), false);
+    //driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
+    driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
+    operatorLeftTrigger.whileHeld(new climb(climber, .5));
+    operatorRightTrigger.whileHeld(new climb(climber, -.5));
     configureButtonBindings();
   }
 
@@ -231,6 +244,16 @@ public class RobotContainer {
     visionSensor.vLEDoff();
   }
 
+  public static void toggleSlow()
+  {
+    slow = !slow;
+  }
+
+  public static boolean isSlow()
+  {
+    return slow;
+  }
+
   public static double pivotEncoder()
   {
     return intake.getPivotEncoderVaule();
@@ -248,8 +271,26 @@ public class RobotContainer {
     motor.configPeakOutputReverse(-peak);
     motor.setNeutralMode(NeutralMode.Brake);
   }
+  public static void initMotor(TalonFX motor, double peak)
+  {
+    motor.configPeakOutputForward(peak);
+    motor.configPeakOutputReverse(-peak);
+    motor.setNeutralMode(NeutralMode.Brake);
+  }
 
-public double launcher() {
-	return 0;
+public double launcher() 
+{
+  return 0;
 }
+  public static boolean stateOfFeed(){
+  if(launcher.GetIR() <= 12)
+   {
+      return true;
+   }
+  else
+    {
+      return false;
+    }
+  } 
+
 }

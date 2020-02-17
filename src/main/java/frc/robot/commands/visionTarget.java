@@ -35,6 +35,9 @@ public class visionTarget extends CommandBase {
   private boolean isAuto;
   private boolean positioningMovment;
 
+  private boolean previousState;
+  private Timer feedTimer;
+
   /**
    * Creates a new visionTarget.
    * 
@@ -54,6 +57,7 @@ public class visionTarget extends CommandBase {
     addRequirements(plimeL);
     launchSpeed = 0;
     windSpeed = Constants.windSpeedNEO;
+    feedTimer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -95,9 +99,25 @@ public class visionTarget extends CommandBase {
       if(timer.get() >= Constants.feedDelay)
       {
         launcher.index(Constants.indexNEOSpeed);
-        //launcher.feed(Constants.feedNEOSpeed);
+        if(RobotContainer.stateOfFeed() && !previousState)
+        {
+          feedTimer.start();
+        }
+        else if (!RobotContainer.stateOfFeed() && previousState)
+        {
+          feedTimer.reset();
+        }
+        previousState = RobotContainer.stateOfFeed();
+        if(feedTimer.get() >= .25)
+        {
+         launcher.feed(Constants.feedNEOSpeed);
+        }
+        else
+        {
+          launcher.feed(0);
+        }
       }
-      launcher.launch(launchSpeed);
+      launcher.launch(Constants.launchNEOSpeed);
     }
     else
     {
