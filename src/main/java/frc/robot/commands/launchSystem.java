@@ -68,7 +68,13 @@ public class launchSystem extends CommandBase {
       {
         feedTimer.reset();
       }
+      else if(!RobotContainer.stateOfFeed() && !previousState)
+      {
+        feedTimer.start();
+      }
+
       previousState = RobotContainer.stateOfFeed();
+
       if(feedTimer.get() >= .25)
       {
         launcher.feed(feedSpeed);
@@ -77,6 +83,8 @@ public class launchSystem extends CommandBase {
       {
         launcher.feed(0);
       }
+
+      //launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
     

@@ -107,7 +107,13 @@ public class visionTarget extends CommandBase {
         {
           feedTimer.reset();
         }
+        else if(!RobotContainer.stateOfFeed() && !previousState)
+        { 
+          feedTimer.start();
+        }
+
         previousState = RobotContainer.stateOfFeed();
+        
         if(feedTimer.get() >= .25)
         {
          launcher.feed(Constants.feedNEOSpeed);
@@ -116,6 +122,8 @@ public class visionTarget extends CommandBase {
         {
           launcher.feed(0);
         }
+
+        //launcher.feed(Constants.feedNEOSpeed);
       }
       launcher.launch(Constants.launchNEOSpeed);
     }
