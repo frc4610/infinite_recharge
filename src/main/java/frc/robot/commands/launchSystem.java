@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -68,7 +66,13 @@ public class launchSystem extends CommandBase {
       {
         feedTimer.reset();
       }
+      else if(!RobotContainer.stateOfFeed() && !previousState)
+      {
+        feedTimer.start();
+      }
+
       previousState = RobotContainer.stateOfFeed();
+
       if(feedTimer.get() >= .25)
       {
         launcher.feed(feedSpeed);
@@ -77,6 +81,8 @@ public class launchSystem extends CommandBase {
       {
         launcher.feed(0);
       }
+
+      launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
     

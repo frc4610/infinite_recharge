@@ -89,7 +89,7 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 1.35  && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 2  && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -107,7 +107,13 @@ public class visionTarget extends CommandBase {
         {
           feedTimer.reset();
         }
+        else if(!RobotContainer.stateOfFeed() && !previousState)
+        { 
+          feedTimer.start();
+        }
+
         previousState = RobotContainer.stateOfFeed();
+        
         if(feedTimer.get() >= .25)
         {
          launcher.feed(Constants.feedNEOSpeed);
@@ -116,6 +122,7 @@ public class visionTarget extends CommandBase {
         {
           launcher.feed(0);
         }
+        launcher.feed(Constants.feedNEOSpeed);
       }
       launcher.launch(Constants.launchNEOSpeed);
     }
@@ -125,7 +132,7 @@ public class visionTarget extends CommandBase {
       launcher.stopLaunching();
     }
 
-    if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
+    /*if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
     {
       leftSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
       rightSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
@@ -141,7 +148,7 @@ public class visionTarget extends CommandBase {
     {
       positioningMovment = false;
       SmartDashboard.putBoolean("Running", false);
-    }
+    }*/
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
 
     SmartDashboard.putNumber("Power", maxSpeed);
