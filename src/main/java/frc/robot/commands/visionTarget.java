@@ -174,7 +174,7 @@ public class visionTarget extends CommandBase {
     {
       return true;
     }
-    else if(isAuto && Math.abs(xValueOff) <= 1.35 && timer.get() >= Constants.autoLaunchDelay &&(distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
+    else if(isAuto && timer.get() >= Constants.autoLaunchDelay)
     {
       return true;
     }
