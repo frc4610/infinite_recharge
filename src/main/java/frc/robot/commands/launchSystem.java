@@ -15,6 +15,8 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Launcher;
 
+
+
 public class launchSystem extends CommandBase {
   private Launcher launcher;
   private double launcherSpeed;
@@ -46,6 +48,10 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(!RobotContainer.stateOfFeed())
+    {
+      previousState = true;
+    }
     timer.start();
   }
 
@@ -56,18 +62,20 @@ public class launchSystem extends CommandBase {
     {
       if(RobotContainer.stateOfFeed() && !previousState)
       {
-        feedTimer.reset();
         feedTimer.start();
       }
       else if (!RobotContainer.stateOfFeed() && previousState)
       {
         feedTimer.reset();
-        feedTimer.stop();
       }
       previousState = RobotContainer.stateOfFeed();
-      if(feedTimer.get() >= .5)
+      if(feedTimer.get() >= .25)
       {
         launcher.feed(feedSpeed);
+      }
+      else
+      {
+        launcher.feed(0);
       }
       launcher.index(indexSpeed);
     }
