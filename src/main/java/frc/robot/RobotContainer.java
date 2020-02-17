@@ -109,7 +109,7 @@ public class RobotContainer {
     //driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
     driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, Constants.launchNEOSpeed, false) , true);
-    operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
+    operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     operatorLeftTrigger.whileHeld(new climb(climber, .5));
@@ -152,7 +152,7 @@ public class RobotContainer {
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new leftencoderMovement(driveBase, mainEncoders, gyro, 116),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false));
