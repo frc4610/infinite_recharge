@@ -23,23 +23,23 @@ import frc.robot.commands.intakePivot;
 import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
+import frc.robot.commands.intakeCells;
+import frc.robot.commands.intakePivot;
+import frc.robot.commands.launchSystem;
+import frc.robot.commands.leftencoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.slowMode;
 import frc.robot.commands.tankDrive;
-import frc.robot.commands.visionTarget;
 import frc.robot.commands.vLED;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.raspberryCameras;
 import frc.robot.subsystems.limeLight;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.navX;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -129,31 +129,100 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-    // An ExampleCommand will run in autonomous
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false),
-      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 0, 24));
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
+      //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
-    else if(Robot.goal.getSelected().equals("Launch, Regrab Trench, Launch"))
-    {
+    else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
-      new encoderMovement(RobotContainer.driveBase, RobotContainer.mainEncoders, RobotContainer.gyro, 180, 72),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
-      new vLED(RobotContainer.visionSensor, true),
-      new visionTarget(RobotContainer.visionSensor, RobotContainer.driveBase, RobotContainer.launcher, true),
-      new vLED(RobotContainer.visionSensor, false));
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+      /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
+      The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 
+      power cells, conduct one more left sweeping turn, and fire.
+      */
+    } 
+    else if(Robot.goal.getSelected().equals("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new navXTurn(gyro, driveBase, 180, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
+      new intakeCells(intake, 0, true),
+      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+      /*This Auto Goal is to be chosen when parallel with the trench, facing in the direction of the Power Port.
+      The code will auto aim, launch 3 power cells, turn towards the 3 power cells, picking up the 3 power cells, 
+      doing a left sweeping turn, and firing.
+      */
+    }
+    else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new navXTurn(gyro, driveBase, -180, true),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+      /*This code is to be chosen when the robot is positioned directly in front of opponents
+      trench  
+      */
+    }
+    else if(Robot.goal.getSelected().equals("Launch, grab Sheild Generator")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
+      new navXTurn(gyro, driveBase, 0, true),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
+    }
+    else if(Robot.goal.getSelected().equals("Grab Sheild Generator, Launch")){
+      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new navXTurn(gyro, driveBase, -90, true),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .5, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
+      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
+      new navXTurn(gyro, driveBase, 0, true),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, true),
+      new vLED(visionSensor, false));
     }
     else
     {
