@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,6 +48,10 @@ public class Launcher extends SubsystemBase {
     launcherRight = new CANSparkMax(9, MotorType.kBrushless);
     launcherLeft.setOpenLoopRampRate(2);
     launcherRight.setOpenLoopRampRate(2);
+    launcherRight.setClosedLoopRampRate(2);
+    launcherLeft.setClosedLoopRampRate(2);
+    launcherLeft.setIdleMode(IdleMode.kBrake);
+    launcherRight.setIdleMode(IdleMode.kBrake);
     launcherRight.setInverted(true);
 
     ColorSensor = new ColorSensorV3(I2C.Port.kOnboard);  
