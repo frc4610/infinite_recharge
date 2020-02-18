@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Stored Cell Count", RobotContainer.raspberries.cellsInStorage());
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
+    SmartDashboard.putNumber("IR Value", RobotContainer.launcher.GetIR());
     //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,

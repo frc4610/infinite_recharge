@@ -216,7 +216,7 @@ public double launcher()
   return 0;
 }
   public static boolean stateOfFeed(){
-  if(launcher.GetIR() <= 12)
+  if(launcher.GetIR() <= 15)
    {
       return true;
    }

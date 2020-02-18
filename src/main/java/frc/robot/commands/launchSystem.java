@@ -58,11 +58,11 @@ public class launchSystem extends CommandBase {
   public void execute() {
     if(timer.get() > Constants.feedDelay)
     {
-      if(RobotContainer.stateOfFeed() && !previousState)
+      if(!RobotContainer.stateOfFeed() && previousState)
       {
         feedTimer.start();
       }
-      else if (!RobotContainer.stateOfFeed() && previousState)
+      else if (RobotContainer.stateOfFeed() && !  previousState)
       {
         feedTimer.reset();
       }
