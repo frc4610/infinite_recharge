@@ -19,8 +19,8 @@ public final class Constants {
     public static double middleIntakeEncoderPosition = -335;
     public static double bottomIntakeEncoderPosition = -900;
     public static double groundToPowerPortIn = 98.25;
-    public static double groundToLimeLensIn = 20.5;
-    public static double groundToLimeLensDeg = 43.6;
+    public static double groundToLimeLensIn = 19.125;
+    public static double groundToLimeLensDeg = 17.77;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
     public static double distanceToPowerportMaxIn = (23*12);//temporary change, fix to 23 feet later
     public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
@@ -28,10 +28,12 @@ public final class Constants {
     public static double feedDelay = 1.9;
     public static double autoLaunchDelay = 3;
     public static double feedNEOSpeed = .50;
-    public static double launchNEOSpeed = .75;//eventually change to be calculated by vision systems
+    public static double baselineLaunchSpeedLower = .44;
+    public static double baselineLaunchSpeedHigher = .214;
+    public static double launchNEOSpeed = .74;
     public static double indexNEOSpeed = .8;
     public static double kp = .02;
-    public static double minPower = .01;
+    public static double minPower = .02;
     public static double gravityFeetSeconds = 32.17405;
     public static double gravityInchesSeconds = 12*gravityFeetSeconds;
     public static double heightDifferenceLauncher = 76.25;

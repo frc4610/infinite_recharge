@@ -113,7 +113,7 @@ public class RobotContainer {
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     operatorLeftTrigger.whileHeld(new climb(climber, .5));
-    operatorRightTrigger.whileHeld(new climb(climber, -.5));
+    //operatorRightTrigger.whileHeld(new climb(climber, -.5));
     configureButtonBindings();
   }
 
