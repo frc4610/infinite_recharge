@@ -32,10 +32,8 @@ public class Robot extends TimedRobot {
   public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
-  private double Lspeed;
-  private double Rspeed;
   private double Straighten;
-  private double rcw;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -48,7 +46,11 @@ public class Robot extends TimedRobot {
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
-    goal.addOption("Launch, Regrab Trench, Launch", "Launch, Regrab Trench, Launch");
+    goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
+    goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
+    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
+    goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
@@ -134,10 +136,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putNumber("DistanceL", DistanceL);
     SmartDashboard.putNumber("DistanceR", DistanceR);
-    SmartDashboard.putNumber("Lspeed", Lspeed);
-    SmartDashboard.putNumber("Rspeed", Rspeed);
-    SmartDashboard.putNumber("Yaw", Straighten);
-    SmartDashboard.putNumber("rcw", rcw);
+    SmartDashboard.putNumber("Gyro", Straighten);
   }
 
   @Override

@@ -17,7 +17,7 @@ import frc.robot.subsystems.navX;
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private  double P = .015;
+  private  double P = .00725;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;

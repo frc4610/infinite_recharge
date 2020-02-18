@@ -82,14 +82,14 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff;
         rightSpeed = -Constants.kp*xValueOff;
       }
-    else if(Math.abs(xValueOff) <= 2)
+    else
       {
         positioningMovment = true;
-        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff - Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 2  && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 3.5)
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -124,7 +124,14 @@ public class visionTarget extends CommandBase {
         }
         launcher.feed(Constants.feedNEOSpeed);
       }
-      launcher.launch(Constants.launchNEOSpeed);
+      if(distanceToPowerPort < 192)
+      {
+        launcher.launch(Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
+      }
+      else
+      {
+        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 2124));
+      }
     }
     else
     {
@@ -174,7 +181,7 @@ public class visionTarget extends CommandBase {
     {
       return true;
     }
-    else if(isAuto && Math.abs(xValueOff) <= 1.35 && timer.get() >= Constants.autoLaunchDelay &&(distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
+    else if(isAuto && timer.get() >= Constants.autoLaunchDelay)
     {
       return true;
     }

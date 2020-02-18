@@ -42,7 +42,6 @@ public class navXTurn extends CommandBase {
   @Override
   public void initialize() {
     timer.start();
-    gyro.resetGyro();
   }
 
   public void PID() {
@@ -62,7 +61,6 @@ public class navXTurn extends CommandBase {
   public void end(boolean interrupted) {
     timer.reset();
     timer.stop();
-    gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
   
