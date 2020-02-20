@@ -53,6 +53,8 @@ public class Launcher extends SubsystemBase {
     launcherLeft.setIdleMode(IdleMode.kBrake);
     launcherRight.setIdleMode(IdleMode.kBrake);
     launcherRight.setInverted(true);
+    launcherLeft.burnFlash();
+    launcherRight.burnFlash();
 
     ColorSensor = new ColorSensorV3(I2C.Port.kOnboard);  
     

@@ -8,23 +8,25 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax climbTalon;
+  private CANSparkMax climber;
   /**
    * Creates a new Climber.
    */
   public Climber() {
-    climbTalon = new CANSparkMax(5, MotorType.kBrushless);
-
+    climber = new CANSparkMax(5, MotorType.kBrushless);
+    climber.setIdleMode(IdleMode.kBrake);
+    climber.burnFlash();
   }
 
   public void set(double speed)
   {
-    climbTalon.set(speed);
+    climber.set(speed);
   }
 
   @Override
