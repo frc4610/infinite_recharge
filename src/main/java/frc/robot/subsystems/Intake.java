@@ -28,10 +28,10 @@ public class Intake extends SubsystemBase {
     articulationTalon = new TalonSRX(10);//positive is inward
     articulationTalon.setNeutralMode(NeutralMode.Brake);
     articulationTalon.configPeakOutputReverse(-1);
-    articulationTalon.configClosedloopRamp(.5, 0);
+    articulationTalon.configClosedloopRamp(.2, 0);
     articulationTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     articulationTalon.config_kF(0, 0.15, 10);
-		articulationTalon.config_kP(0, 0.45, 10);
+		articulationTalon.config_kP(0, 1, 10);
 		articulationTalon.config_kI(0, 0.00005, 10);
     articulationTalon.config_kD(0, 0.25, 10);
     //articulationTalon.setSelectedSensorPosition(0);

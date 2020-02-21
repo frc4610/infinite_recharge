@@ -17,7 +17,7 @@ package frc.robot;
  */
 public final class Constants {
     public static double middleIntakeEncoderPosition = -335;
-    public static double bottomIntakeEncoderPosition = -900;
+    public static double bottomIntakeEncoderPosition = -1100;
     public static double groundToPowerPortIn = 98.25;
     public static double groundToLimeLensIn = 19.125;
     public static double groundToLimeLensDeg = 17.77;
@@ -32,8 +32,8 @@ public final class Constants {
     public static double baselineLaunchSpeedHigher = .214;
     public static double launchNEOSpeed = .74;
     public static double indexNEOSpeed = .8;
-    public static double kp = .02;
-    public static double minPower = .02;
+    public static double kp = -.1;
+    public static double minPower = .01;
     public static double gravityFeetSeconds = 32.17405;
     public static double gravityInchesSeconds = 12*gravityFeetSeconds;
     public static double heightDifferenceLauncher = 76.25;
