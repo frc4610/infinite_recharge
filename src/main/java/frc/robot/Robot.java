@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("Manual Launch Power", .5);
     pref = Preferences.getInstance();
     goal = new SendableChooser<>();
     goal.addOption("Drive Forward", "df");
@@ -51,7 +52,6 @@ public class Robot extends TimedRobot {
     goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
     goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
     goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
-    SmartDashboard.putNumber("Manual Launch Power", .5);
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
