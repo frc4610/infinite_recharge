@@ -16,7 +16,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -27,10 +26,6 @@ import frc.robot.commands.intakePivot;
 import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
-import frc.robot.commands.intakeCells;
-import frc.robot.commands.intakePivot;
-import frc.robot.commands.launchSystem;
-import frc.robot.commands.leftencoderMovement;
 import frc.robot.commands.navXTurn;
 import frc.robot.commands.slowMode;
 import frc.robot.commands.tankDrive;
@@ -44,7 +39,6 @@ import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 import frc.robot.subsystems.raspberryCameras;
 import frc.robot.subsystems.limeLight;
-import frc.robot.subsystems.navX;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
