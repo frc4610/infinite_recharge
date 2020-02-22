@@ -129,7 +129,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false),
@@ -137,12 +138,12 @@ public class RobotContainer {
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
@@ -156,12 +157,12 @@ public class RobotContainer {
       */
     } 
     else if(Robot.goal.getSelected().equals("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch")){
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false),
       new navXTurn(gyro, driveBase, 180, true),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
@@ -175,7 +176,7 @@ public class RobotContainer {
       */
     }
     else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, 24),
@@ -192,13 +193,13 @@ public class RobotContainer {
       */
     }
     else if(Robot.goal.getSelected().equals("Launch, grab Sheild Generator")){
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, true),
       new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
       new navXTurn(gyro, driveBase, -90, true),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
       new intakeCells(intake, 0, true),
@@ -209,10 +210,10 @@ public class RobotContainer {
       new vLED(visionSensor, false));
     }
     else if(Robot.goal.getSelected().equals("Grab Sheild Generator, Launch")){
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
       new navXTurn(gyro, driveBase, -90, true),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
       new intakeCells(intake, 0, true),
@@ -224,7 +225,7 @@ public class RobotContainer {
     }
     else
     {
-      return new SequentialCommandGroup(new delay(Robot.pref.getDouble("Delay", 0)),
+      return new SequentialCommandGroup(new delay(0),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
     }
   } 
