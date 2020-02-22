@@ -17,7 +17,7 @@ import frc.robot.subsystems.navX;
 public class leftencoderMovement extends CommandBase {
   private double setpoint;
   private double target;
-  private  double P = .03;
+  private  double P = .01;
   private double rcw;
   private encoder EncoderPair;
   private double error;
