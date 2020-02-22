@@ -77,15 +77,15 @@ public class visionTarget extends CommandBase {
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
-    if(xValueOff < -1)
+    if(Math.abs(xValueOff) > 2)
       {
-        leftSpeed = (Constants.kp*xValueOff) - Constants.minPower;
-        rightSpeed = -(Constants.kp*xValueOff) + Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff;
+        rightSpeed = -Constants.kp*xValueOff;
       }
-    else if(xValueOff > 1)
+    else if(Math.abs(xValueOff) <= 2)
       {
-        leftSpeed = (Constants.kp*xValueOff) + Constants.minPower;
-        rightSpeed = -(Constants.kp*xValueOff) - Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
     if(Math.abs(xValueOff) <= 2.5)
