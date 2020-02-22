@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("Delay", 0);
     SmartDashboard.putNumber("Manual Launch Power", .5);
     goal = new SendableChooser<>();
     goal.addOption("Drive Forward", "df");
