@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +28,6 @@ public class Robot extends TimedRobot {
 
   public RobotContainer m_robotContainer;
   public static SendableChooser<String> goal;
-  public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
   private double Straighten;
@@ -41,8 +39,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("Delay", 0);
     SmartDashboard.putNumber("Manual Launch Power", .5);
-    pref = Preferences.getInstance();
     goal = new SendableChooser<>();
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
@@ -69,7 +67,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //SmartDashboard.putNumber("Stored Cell Count", RobotContainer.raspberries.cellsInStorage());
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
@@ -98,7 +95,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     RobotContainer.gyro.resetGyro();
