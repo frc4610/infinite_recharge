@@ -17,12 +17,14 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.limeLight;
+import frc.robot.subsystems.navX;
 
 public class visionTarget extends CommandBase {
   private limeLight limeL;
   private DriveBase driveBase;
   private Launcher launcher;
   private Timer timer;
+  private navX gyro;
 
   private double distanceToPowerPort;
   private double xValueOff;
@@ -42,8 +44,9 @@ public class visionTarget extends CommandBase {
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Auto) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto) 
   {
+    gyro = tGyro;
     leftSpeed = 0;
     rightSpeed = 0;
     driveBase = tdriveBase;
@@ -72,6 +75,8 @@ public class visionTarget extends CommandBase {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
     xValueOff = limeL.getXValueOff();
+    double error = gyro.getYaw() - xValueOff;
+    error *=  Constants.kp;
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
@@ -85,7 +90,7 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
-
+    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
     if(Math.abs(xValueOff) <= 2.5)
     {
       maxSpeed = .7;
@@ -138,7 +143,6 @@ public class visionTarget extends CommandBase {
       timer.reset();
       launcher.stopLaunching();
     }
-    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.
