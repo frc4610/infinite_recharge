@@ -32,6 +32,7 @@ public class visionTarget extends CommandBase {
   private double leftSpeed;
   private double rightSpeed;
 
+  private boolean aimed;
   private boolean isAuto;
 
   private boolean previousState;
@@ -56,12 +57,14 @@ public class visionTarget extends CommandBase {
     launchSpeed = 0;
     windSpeed = Constants.windSpeedNEO;
     feedTimer = new Timer();
+    addRequirements(tdriveBase);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    aimed = false;
     timer.start();
   }
 
@@ -70,22 +73,22 @@ public class visionTarget extends CommandBase {
   public void execute() {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
-    xValueOff = -limeL.getXValueOff();
+    xValueOff = limeL.getXValueOff();
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
-    if(xValueOff > .75)
+    if(xValueOff < -1)
       {
         leftSpeed = (Constants.kp*xValueOff) - Constants.minPower;
         rightSpeed = -(Constants.kp*xValueOff) + Constants.minPower;
       }
-    else if(xValueOff < .75)
+    else if(xValueOff > 1)
       {
         leftSpeed = (Constants.kp*xValueOff) + Constants.minPower;
         rightSpeed = -(Constants.kp*xValueOff) - Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 3.5)
+    if(Math.abs(xValueOff) <= 2.5)
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -123,11 +126,14 @@ public class visionTarget extends CommandBase {
       if(distanceToPowerPort < 192)
       {
         launcher.launch(Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
       }
       else
       {
-        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 2124));
+        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
       }
+      
     }
     else
     {
