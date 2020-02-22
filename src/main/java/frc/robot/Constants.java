@@ -17,25 +17,28 @@ package frc.robot;
  */
 public final class Constants {
     public static double middleIntakeEncoderPosition = -335;
-    public static double bottomIntakeEncoderPosition = -790;
+    public static double bottomIntakeEncoderPosition = -1100;
     public static double groundToPowerPortIn = 98.25;
-    public static double groundToLimeLensIn = 26;
-    public static double groundToLimeLensDeg = 32.8;
+    public static double groundToLimeLensIn = 18.75;
+    public static double groundToLimeLensDeg = 16.641;
     public static double groundToLimeLensRad = Math.toRadians(groundToLimeLensDeg);
     public static double distanceToPowerportMaxIn = (23*12);//temporary change, fix to 23 feet later
     public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
-    public static double feedDelay = .75;
+    public static double feedDelay = 1.9;
     public static double autoLaunchDelay = 3;
-    public static double feedNEOSpeed = .65;
-    public static double launchNEOSpeed = .80;//eventually change to be calculated by vision systems
-    public static double indexNEOSpeed = .3;
-    public static double kp = .04;
-    public static double minPower = .01;
+    public static double feedNEOSpeed = .80;
+    public static double baselineLaunchSpeedLower = .44;
+    public static double baselineLaunchSpeedHigher = .214;
+    public static double launchNEOSpeed = .74;
+    public static double indexNEOSpeed = .8;
+    public static double kp = .02;
+    public static double minPower = .04;
     public static double gravityFeetSeconds = 32.17405;
     public static double gravityInchesSeconds = 12*gravityFeetSeconds;
     public static double heightDifferenceLauncher = 76.25;
     public static double launchAngleDeg = 60;
     public static double launchAngleRad = 1.0472;
     public static double launchWheelRadius = 3;
+    public static double maxFalconVelocity = 22040;
 }

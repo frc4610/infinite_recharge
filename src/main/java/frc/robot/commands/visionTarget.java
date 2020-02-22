@@ -33,7 +33,9 @@ public class visionTarget extends CommandBase {
   private double rightSpeed;
 
   private boolean isAuto;
-  private boolean positioningMovment;
+
+  private boolean previousState;
+  private Timer feedTimer;
 
   /**
    * Creates a new visionTarget.
@@ -50,17 +52,17 @@ public class visionTarget extends CommandBase {
     timer = new Timer();
     isAuto = Auto;
     addRequirements(tLauncher);
-    addRequirements(tdriveBase);
     addRequirements(plimeL);
     launchSpeed = 0;
     windSpeed = Constants.windSpeedNEO;
+    feedTimer = new Timer();
+    addRequirements(tdriveBase);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    positioningMovment = false;
     timer.start();
   }
 
@@ -80,12 +82,11 @@ public class visionTarget extends CommandBase {
       }
     else if(Math.abs(xValueOff) <= 2)
       {
-        positioningMovment = true;
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
 
-    if(Math.abs(xValueOff) <= 1.35  && (distanceToPowerPort <= (23*12)||distanceToPowerPort <= (12*12)))
+    if(Math.abs(xValueOff) <= 2.5)
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -95,36 +96,49 @@ public class visionTarget extends CommandBase {
       if(timer.get() >= Constants.feedDelay)
       {
         launcher.index(Constants.indexNEOSpeed);
-        //launcher.feed(Constants.feedNEOSpeed);
+        if(RobotContainer.stateOfFeed() && !previousState)
+        {
+          feedTimer.start();
+        }
+        else if (!RobotContainer.stateOfFeed() && previousState)
+        {
+          feedTimer.reset();
+        }
+        else if(!RobotContainer.stateOfFeed() && !previousState)
+        { 
+          feedTimer.start();
+        }
+
+        previousState = RobotContainer.stateOfFeed();
+        
+        if(feedTimer.get() >= .25)
+        {
+         launcher.feed(Constants.feedNEOSpeed);
+        }
+        else
+        {
+          launcher.feed(0);
+        }
+        launcher.feed(Constants.feedNEOSpeed);
       }
-      launcher.launch(launchSpeed);
+      if(distanceToPowerPort < 192)
+      {
+        launcher.launch(Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
+      }
+      else
+      {
+        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
+      }
+      
     }
     else
     {
       timer.reset();
       launcher.stopLaunching();
     }
-
-    if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
-    {
-      leftSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
-      rightSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
-      SmartDashboard.putBoolean("Running", true);
-    }
-    else if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort < Constants.distanceToPowerportMinIn)
-    {
-      leftSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
-      rightSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
-      SmartDashboard.putBoolean("Running", true);
-    }
-    else
-    {
-      positioningMovment = false;
-      SmartDashboard.putBoolean("Running", false);
-    }
     driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
-
-    SmartDashboard.putNumber("Power", maxSpeed);
   }
 
   // Called once the command ends or is interrupted.
@@ -147,7 +161,7 @@ public class visionTarget extends CommandBase {
     {
       return true;
     }
-    else if(isAuto && Math.abs(xValueOff) <= 1.35 && timer.get() >= Constants.autoLaunchDelay &&(distanceToPowerPort <= Constants.distanceToPowerportMaxIn&&distanceToPowerPort >= Constants.distanceToPowerportMinIn))
+    else if(isAuto && timer.get() >= Constants.autoLaunchDelay)
     {
       return true;
     }

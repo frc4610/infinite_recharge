@@ -7,65 +7,95 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Launcher extends SubsystemBase {
-  private CANSparkMax indexLeft;
-  private CANSparkMax indexRight;
-  private CANSparkMax feedController;
-  private CANSparkMax launcherLeft;
-  private CANSparkMax launcherRight;
+
+  private final VictorSPX indexLeft;
+  private final VictorSPX indexRight;
+  private final VictorSPX feedController;
+  private final CANSparkMax launcherLeft;
+  private final CANSparkMax launcherRight;
+  private final ColorSensorV3 ColorSensor;
+  
   /**
    * Creates a new Launcher.
+   * 
+   *
+   * 
+   * 
+   * 
    */
   public Launcher() {
-    indexLeft = new CANSparkMax(1, MotorType.kBrushless);
+    indexLeft = new VictorSPX(13);
     indexLeft.setInverted(true);
-    indexRight = new CANSparkMax(4, MotorType.kBrushless);
-    //indexRight.setIdleMode(IdleMode.kCoast);
+    indexRight = new VictorSPX(12);
 
-    feedController = new CANSparkMax(8, MotorType.kBrushless);
-    feedController.setInverted(true);
+    // indexRight.setIdleMode(IdleMode.kCoast);
 
-    launcherLeft = new CANSparkMax(3, MotorType.kBrushless);
-    launcherRight = new CANSparkMax(2, MotorType.kBrushless);
+    feedController = new VictorSPX(11);
+    feedController.setInverted(false);
+
+    launcherLeft = new CANSparkMax(8, MotorType.kBrushless);
+    launcherRight = new CANSparkMax(9, MotorType.kBrushless);
+    launcherLeft.setOpenLoopRampRate(2);
+    launcherRight.setOpenLoopRampRate(2);
+    launcherRight.setClosedLoopRampRate(2);
+    launcherLeft.setClosedLoopRampRate(2);
+    launcherLeft.setIdleMode(IdleMode.kBrake);
+    launcherRight.setIdleMode(IdleMode.kBrake);
     launcherRight.setInverted(true);
-    //launcherRight.setIdleMode(IdleMode.kCoast);
-    //launcherRight.follow(launcherLeft);
+    launcherLeft.burnFlash();
+    launcherRight.burnFlash();
+
+    ColorSensor = new ColorSensorV3(I2C.Port.kOnboard);  
     
   }
 
-  public void index(double speed)
-  {
-    indexLeft.set(speed-.1);
-    indexRight.set(speed);
+  public void index(final double speed) {
+    indexLeft.set(ControlMode.PercentOutput, speed - .6);
+    indexRight.set(ControlMode.PercentOutput, speed);
   }
 
-  public void feed(double speed)
-  {
-    feedController.set(speed);
+  public void feed(final double speed) {
+    feedController.set(ControlMode.PercentOutput, speed);
   }
 
-  public void launch(double speed)
-  {
+  public void launch(final double speed) {
     launcherLeft.set(speed);
     launcherRight.set(speed);
   }
 
-  public void stopLaunching()
-  {
-    indexRight.set(0);
-    indexLeft.set(0);
+  public void stopLaunching() {
+    indexRight.set(ControlMode.PercentOutput, 0);
+    indexLeft.set(ControlMode.PercentOutput, 0);
     launcherLeft.set(0);
     launcherRight.set(0);
-    feedController.set(0);
+    feedController.set(ControlMode.PercentOutput, 0);
+  }
+   
+  @Override
+  public void periodic() 
+  {
+
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public int GetIR()
+  {
+    return ColorSensor.getIR();
+  }
+
+  public double GetLauncherSpeed()
+  {
+    return launcherLeft.getEncoder().getVelocity();
+
   }
 }

@@ -32,10 +32,8 @@ public class Robot extends TimedRobot {
   public static Preferences pref;
   private double DistanceL;
   private double DistanceR;
-  private double Lspeed;
-  private double Rspeed;
   private double Straighten;
-  private double rcw;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -43,10 +41,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("Manual Launch Power", .5);
+    pref = Preferences.getInstance();
     goal = new SendableChooser<>();
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
+    goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
+    goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
+    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
+    goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
@@ -66,9 +71,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     RobotContainer.lights.setLEDRainbow();
     SmartDashboard.putData("Auto Goal", goal);
-    SmartDashboard.putNumber("DistanceL", RobotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("DistanceR", RobotContainer.mainEncoders.getDistanceRight());
-    SmartDashboard.putNumber("Pivot Value", RobotContainer.pivotEncoder());
+    SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
+    //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -97,6 +101,7 @@ public class Robot extends TimedRobot {
     pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotContainer.gyro.resetGyro();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -114,6 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     RobotContainer.startTankDrive();
+    RobotContainer.startClimb();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -131,10 +137,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putNumber("DistanceL", DistanceL);
     SmartDashboard.putNumber("DistanceR", DistanceR);
-    SmartDashboard.putNumber("Lspeed", Lspeed);
-    SmartDashboard.putNumber("Rspeed", Rspeed);
-    SmartDashboard.putNumber("Yaw", Straighten);
-    SmartDashboard.putNumber("rcw", rcw);
+    SmartDashboard.putNumber("Gyro", Straighten);
   }
 
   @Override
