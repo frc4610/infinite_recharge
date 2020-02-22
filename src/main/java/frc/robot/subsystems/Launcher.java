@@ -61,7 +61,7 @@ public class Launcher extends SubsystemBase {
   }
 
   public void index(final double speed) {
-    indexLeft.set(ControlMode.PercentOutput, speed - .4);
+    indexLeft.set(ControlMode.PercentOutput, speed - .6);
     indexRight.set(ControlMode.PercentOutput, speed);
   }
 
