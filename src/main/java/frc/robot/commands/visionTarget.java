@@ -75,7 +75,7 @@ public class visionTarget extends CommandBase {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
     xValueOff = limeL.getXValueOff();
-    double error = gyro.getYaw() - xValueOff;
+    double error = xValueOff;
     error *=  Constants.kp;
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
