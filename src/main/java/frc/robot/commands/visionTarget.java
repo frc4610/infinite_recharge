@@ -32,7 +32,6 @@ public class visionTarget extends CommandBase {
   private double leftSpeed;
   private double rightSpeed;
 
-  private boolean aimed;
   private boolean isAuto;
 
   private boolean previousState;
@@ -64,7 +63,6 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    aimed = false;
     timer.start();
   }
 

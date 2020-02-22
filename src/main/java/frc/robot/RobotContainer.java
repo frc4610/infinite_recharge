@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climb;
 import frc.robot.commands.delay;
 import frc.robot.commands.encoderMovement;
+import frc.robot.commands.feedUnjam;
 import frc.robot.commands.intakeCells;
 import frc.robot.commands.intakePivot;
 import frc.robot.commands.launchSystem;
@@ -96,13 +97,10 @@ public class RobotContainer {
     slow = true;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // Configure the button bindings
+    driverAButton.whenPressed(new feedUnjam(launcher) , true);
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, false), false);
-    //driverXButton.whenPressed(new navXTurn(gyro, driveBase, -90, false), true);
-    //driverBButton.whenPressed(new navXTurn(gyro, driveBase, 90, false), true);
-    //driverYButton.whenPressed(new navXTurn(gyro, driveBase, 180, false), true);
-    //driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, gyro.getYaw(), 60), false);
     driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, false) , true);
     operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
