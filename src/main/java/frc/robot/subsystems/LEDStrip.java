@@ -22,7 +22,7 @@ public class LEDStrip extends SubsystemBase {
   public LEDStrip() {
     rainbowFirstPixel = 0;
     led = new AddressableLED(9);
-    ledBuffer = new AddressableLEDBuffer(60);
+    ledBuffer = new AddressableLEDBuffer(50);
     led.setLength(ledBuffer.getLength());
     led.setData(ledBuffer);
     led.start();
