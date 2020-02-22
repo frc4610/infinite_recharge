@@ -97,13 +97,13 @@ public class RobotContainer {
     slow = true;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // Configure the button bindings
-    driverAButton.whenPressed(new feedUnjam(launcher) , true);
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, false), false);
     driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, false) , true);
-    operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
+    operatorAButton.whenPressed(new feedUnjam(launcher, intake) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     configureButtonBindings();
