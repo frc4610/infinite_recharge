@@ -49,9 +49,9 @@ public void setLEDSolid(int setToHue)
  * @param pulseLength Pusle length: input the amount of colored pixels before a white pixel appears
  */
 public void setLEDPulse(int setToHue, int pulseLength){
-  for (var i = 0; i < ledBuffer.getLength(); i++) 
+  for (var i = 0; i < ledBuffer.getLength() + pulseFirstPixel; i++) 
   {
-    if(i % (pulseLength + 1) == 0)
+    if((pulseFirstPixel + (i % ledBuffer.getLength()))% (pulseLength + 1) == 0)
     {
       ledBuffer.setHSV(i, setToHue, 0, 100);
     }
