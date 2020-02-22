@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    RobotContainer.lights.setLEDSolid(0);
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());

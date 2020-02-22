@@ -15,7 +15,7 @@ public class LEDStrip extends SubsystemBase {
   private AddressableLED led;
   private AddressableLEDBuffer ledBuffer;
   private double rainbowFirstPixel;
-  private double pulseFirstPixel;
+  private int pulseFirstPixel;
   private int hue;
   /**
    * Creates a new LEDStrip.
@@ -51,13 +51,15 @@ public void setLEDSolid(int setToHue)
 public void setLEDPulse(int setToHue, int pulseLength){
   for (var i = 0; i < ledBuffer.getLength() + pulseFirstPixel; i++) 
   {
-    if((pulseFirstPixel + (i % ledBuffer.getLength()))% (pulseLength + 1) == 0)
+    int pixel = i + pulseFirstPixel;
+
+    if(i % (pulseLength + 1) == 0)
     {
-      ledBuffer.setHSV(i, setToHue, 0, 100);
+      ledBuffer.setHSV(pixel, setToHue, 0, 100);
     }
     else
     {
-      ledBuffer.setHSV(i, setToHue, 255, 100);
+      ledBuffer.setHSV(pixel, setToHue, 255, 100);
     }
   }
   led.setData(ledBuffer);
