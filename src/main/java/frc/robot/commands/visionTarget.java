@@ -90,7 +90,7 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
-    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
+    driveBase.move(ControlMode.PercentOutput , error, -error);
     if(Math.abs(xValueOff) <= 2.5)
     {
       maxSpeed = .7;
