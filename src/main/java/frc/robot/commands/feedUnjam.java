@@ -44,11 +44,13 @@ public class feedUnjam extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     launcher.feed(0);
+    launcher.stopLaunching();
+    intake.intakeCells(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.driverAButton.get();
+    return !RobotContainer.operatorAButton.get();
   }
 }
