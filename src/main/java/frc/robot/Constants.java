@@ -32,7 +32,7 @@ public final class Constants {
     public static double baselineLaunchSpeedHigher = .214;
     public static double launchNEOSpeed = .74;
     public static double indexNEOSpeed = .8;
-    public static double kp = .02;
+    public static double kp = .08;
     public static double minPower = .04;
     public static double gravityFeetSeconds = 32.17405;
     public static double gravityInchesSeconds = 12*gravityFeetSeconds;
