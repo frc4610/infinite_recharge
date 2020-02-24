@@ -53,7 +53,7 @@ public void setLEDPulse(int setToHue, int pulseLength){
   {
     int pixel = i + pulseFirstPixel;
 
-    if(i % (pulseLength + 1) == 0)
+    if(pixel % (pulseLength + 1) == 0)
     {
       ledBuffer.setHSV(pixel, setToHue, 0, 100);
     }
