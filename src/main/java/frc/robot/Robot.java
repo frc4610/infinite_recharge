@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public RobotContainer m_robotContainer;
-  public static SendableChooser<String> goal;
+  public static SendableChooser<String> goal = new SendableChooser<>();
   private double DistanceL;
   private double DistanceR;
   private double Straighten;
@@ -41,7 +41,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     SmartDashboard.putNumber("Delay", 0);
     SmartDashboard.putNumber("Manual Launch Power", .5);
-    goal = new SendableChooser<>();
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");

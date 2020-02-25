@@ -99,13 +99,13 @@ public class RobotContainer {
     slow = true;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // Configure the button bindings
-    driverAButton.whenPressed(new feedUnjam(launcher) , true);
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
-    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, false), false);
+    driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, gyro, false), false);
     driverLeftTrigger.whenPressed(new slowMode());
     driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, false) , true);
-    operatorYButton.whenPressed(new intakeCells(intake, .5, false), true);
+    operatorAButton.whenPressed(new feedUnjam(launcher, intake) , true);
+    operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     configureButtonBindings();
@@ -132,7 +132,7 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
@@ -141,7 +141,7 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
       new intakeCells(intake, .5, true),
@@ -149,7 +149,7 @@ public class RobotContainer {
       new intakeCells(intake, 0, true),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 116),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
       /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
       The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 
@@ -160,7 +160,7 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
       new navXTurn(gyro, driveBase, 180, true),
       new intakeCells(intake, .5, true),
@@ -168,7 +168,7 @@ public class RobotContainer {
       new intakeCells(intake, 0, true),
       new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
       /*This Auto Goal is to be chosen when parallel with the trench, facing in the direction of the Power Port.
       The code will auto aim, launch 3 power cells, turn towards the 3 power cells, picking up the 3 power cells, 
@@ -186,7 +186,7 @@ public class RobotContainer {
       new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
       new navXTurn(gyro, driveBase, -180, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
       /*This code is to be chosen when the robot is positioned directly in front of opponents
       trench  
@@ -196,7 +196,7 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
       new navXTurn(gyro, driveBase, -90, true),
@@ -206,7 +206,7 @@ public class RobotContainer {
       new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
       new navXTurn(gyro, driveBase, 0, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
     }
     else if(Robot.goal.getSelected().equals("Grab Sheild Generator, Launch")){
@@ -220,7 +220,7 @@ public class RobotContainer {
       new encoderMovement(driveBase, mainEncoders, gyro, -90, -24),
       new navXTurn(gyro, driveBase, 0, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
     }
     else
