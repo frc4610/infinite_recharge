@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDStrip extends SubsystemBase {
@@ -17,6 +18,7 @@ public class LEDStrip extends SubsystemBase {
   private double rainbowFirstPixel;
   private int pulseFirstPixel;
   private int hue;
+  private int pixel;
   /**
    * Creates a new LEDStrip.
    */
@@ -45,26 +47,26 @@ public void setLEDSolid(int setToHue)
 
 /**
  * Sets LEDS to a pulse of color, white in between pulses
- * @param setToHue Hue to set: hue 0 is red, 120 is green, and 240 is blue
+ * @param setToHue Hue to set: hue 0 is red, 60 is green, and 120 is blue (Half hue values)
  * @param pulseLength Pusle length: input the amount of colored pixels before a white pixel appears
  */
 public void setLEDPulse(int setToHue, int pulseLength){
-  for (var i = 0; i < ledBuffer.getLength() + pulseFirstPixel; i++) 
+  for (var i = 0; i < 50 + pulseFirstPixel; i++) 
   {
-    int pixel = i + pulseFirstPixel;
-
+    pixel = i + pulseFirstPixel;
+    pixel %= 50;
     if(pixel % (pulseLength + 1) == 0)
     {
-      ledBuffer.setHSV(pixel, setToHue, 0, 100);
+      ledBuffer.setHSV((i%50), setToHue, 0, 100);
     }
     else
     {
-      ledBuffer.setHSV(pixel, setToHue, 255, 100);
+      ledBuffer.setHSV((i%50), setToHue, 255, 100);
     }
   }
   led.setData(ledBuffer);
   pulseFirstPixel += 1;
-  pulseFirstPixel %= ledBuffer.getLength();
+  pulseFirstPixel %= 50;
 }
 
 public void setLEDRainbow()
