@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -17,11 +18,8 @@ import frc.robot.subsystems.Launcher;
 
 public class launchSystem extends CommandBase {
   private Launcher launcher;
-  private double launcherSpeed;
   private double indexSpeed;
   private double feedSpeed;
-  private double maxSpeed;
-  private double windSpeed;
   private Timer timer;
   private boolean isAuto;
   private boolean previousState;
@@ -30,17 +28,15 @@ public class launchSystem extends CommandBase {
   /**
    * Creates a new launchSystem.
    */
-  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, double launchSpeed, boolean auto) {
+  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, boolean auto) {
     launcher = tLauncher;
     indexSpeed = IndexSpeed;
     feedSpeed = FeedSpeed;
-    maxSpeed = launchSpeed;
-    windSpeed = Constants.windSpeedNEO;
     timer = new Timer();
     previousState = false;
     isAuto = auto;
     feedTimer = new Timer();
-    currentSpeed = launchSpeed;
+    currentSpeed = launcher.GetLauncherSpeed();
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -69,7 +65,7 @@ public class launchSystem extends CommandBase {
       }
     if(timer.get() > Constants.feedDelay)
     {
-      if(RobotContainer.stateOfFeed() && !previousState)
+      /*if(RobotContainer.stateOfFeed() && !previousState)
       {
         feedTimer.start();
       }
@@ -91,17 +87,21 @@ public class launchSystem extends CommandBase {
       else
       {
         launcher.feed(0);
-      }
+      }*/
 
       launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
-    
-    if(launcherSpeed < maxSpeed)
-     {
-        launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
-     }
-     launcher.launch(Constants.launchNEOSpeed);
+    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
+    if(launchTriggerValue > .02)
+    {
+      launcher.launch(launchTriggerValue);
+    }
+    else
+    {
+      launcher.launch(0);
+      timer.reset();
+    }
   }
 
   // Called once the command ends or is interrupted.

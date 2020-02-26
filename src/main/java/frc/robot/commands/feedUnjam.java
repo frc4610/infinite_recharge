@@ -8,17 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
 
-public class climb extends CommandBase {
-  private Climber climber;
+public class feedUnjam extends CommandBase {
+  private Launcher launcher;
+  private Intake intake;
   /**
-   * Creates a new climb.
+   * Creates a new feedUnjam.
    */
-  public climb(Climber tClimb) {
-    climber = tClimb;
-    addRequirements(tClimb);
+  public feedUnjam(Launcher tLauncher, Intake tIntake) {
+    launcher = tLauncher;
+    intake = tIntake;
+    addRequirements(tLauncher);
+    addRequirements(tIntake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,26 +35,22 @@ public class climb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double joyValueL = RobotContainer.operator.getRawAxis(1);
-    if(Math.abs(joyValueL) > .02)
-    {
-    climber.set(joyValueL);
-    }
-    else
-    {
-      climber.set(0);
-    }
+    launcher.feed(-Constants.feedNEOSpeed);
+    launcher.index(-.4);
+    intake.intakeCells(-.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.set(0);
+    launcher.feed(0);
+    launcher.stopLaunching();
+    intake.intakeCells(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !RobotContainer.operatorAButton.get();
   }
 }

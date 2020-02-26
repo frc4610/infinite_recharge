@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,8 +27,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public RobotContainer m_robotContainer;
-  public static SendableChooser<String> goal;
-  public static Preferences pref;
+  public static SendableChooser<String> goal = new SendableChooser<>();
   private double DistanceL;
   private double DistanceR;
   private double Straighten;
@@ -41,8 +39,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    pref = Preferences.getInstance();
-    goal = new SendableChooser<>();
+    SmartDashboard.putNumber("Delay", 0);
+    SmartDashboard.putNumber("Manual Launch Power", .5);
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
@@ -68,7 +66,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //SmartDashboard.putNumber("Stored Cell Count", RobotContainer.raspberries.cellsInStorage());
+    //RobotContainer.lights.setLEDPulse(0, 5);
+    RobotContainer.lights.setLEDRainbow();
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("IR Value", RobotContainer.launcher.GetIR());
@@ -98,7 +97,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    pref = Preferences.getInstance();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     RobotContainer.gyro.resetGyro();
@@ -119,6 +117,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     RobotContainer.startTankDrive();
+    RobotContainer.startClimb();
+    RobotContainer.startManualLaunch();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

@@ -17,12 +17,14 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.limeLight;
+import frc.robot.subsystems.navX;
 
 public class visionTarget extends CommandBase {
   private limeLight limeL;
   private DriveBase driveBase;
   private Launcher launcher;
   private Timer timer;
+  private navX gyro;
 
   private double distanceToPowerPort;
   private double xValueOff;
@@ -33,7 +35,6 @@ public class visionTarget extends CommandBase {
   private double rightSpeed;
 
   private boolean isAuto;
-  private boolean positioningMovment;
 
   private boolean previousState;
   private Timer feedTimer;
@@ -43,8 +44,9 @@ public class visionTarget extends CommandBase {
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Auto) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto) 
   {
+    gyro = tGyro;
     leftSpeed = 0;
     rightSpeed = 0;
     driveBase = tdriveBase;
@@ -53,18 +55,17 @@ public class visionTarget extends CommandBase {
     timer = new Timer();
     isAuto = Auto;
     addRequirements(tLauncher);
-    addRequirements(tdriveBase);
     addRequirements(plimeL);
     launchSpeed = 0;
     windSpeed = Constants.windSpeedNEO;
     feedTimer = new Timer();
+    addRequirements(tdriveBase);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    positioningMovment = false;
     timer.start();
   }
 
@@ -74,6 +75,8 @@ public class visionTarget extends CommandBase {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
     xValueOff = limeL.getXValueOff();
+    double error = xValueOff;
+    error *=  Constants.kp;
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
@@ -82,14 +85,13 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff;
         rightSpeed = -Constants.kp*xValueOff;
       }
-    else
+    else if(Math.abs(xValueOff) <= 2)
       {
-        positioningMovment = true;
-        leftSpeed = Constants.kp*xValueOff - Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff + Constants.minPower;
+        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
+        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }
-
-    if(Math.abs(xValueOff) <= 3.5)
+    driveBase.move(ControlMode.PercentOutput , error, -error);
+    if(Math.abs(xValueOff) <= 2.5)
     {
       maxSpeed = .7;
       if(launchSpeed < maxSpeed)
@@ -127,38 +129,20 @@ public class visionTarget extends CommandBase {
       if(distanceToPowerPort < 192)
       {
         launcher.launch(Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400));
       }
       else
       {
-        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 2124));
+        launcher.launch(Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
+        SmartDashboard.putNumber("Power Launch", Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277));
       }
+      
     }
     else
     {
       timer.reset();
       launcher.stopLaunching();
     }
-
-    /*if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort > Constants.distanceToPowerportMaxIn)
-    {
-      leftSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
-      rightSpeed = (.03 * (distanceToPowerPort - Constants.distanceToPowerportMaxIn)) + Constants.minPower;
-      SmartDashboard.putBoolean("Running", true);
-    }
-    else if(Math.abs(xValueOff) <= 3 && positioningMovment && distanceToPowerPort < Constants.distanceToPowerportMinIn)
-    {
-      leftSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
-      rightSpeed = (-.03 * (Constants.distanceToPowerportMinIn - distanceToPowerPort)) - Constants.minPower;
-      SmartDashboard.putBoolean("Running", true);
-    }
-    else
-    {
-      positioningMovment = false;
-      SmartDashboard.putBoolean("Running", false);
-    }*/
-    driveBase.move(ControlMode.PercentOutput , leftSpeed, rightSpeed);
-
-    SmartDashboard.putNumber("Power", maxSpeed);
   }
 
   // Called once the command ends or is interrupted.

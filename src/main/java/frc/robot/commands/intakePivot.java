@@ -65,7 +65,7 @@ public class intakePivot extends CommandBase {
     {
       return false;
     }
-    else if (isAuto && timer.get() < 3)
+    else if (isAuto && timer.get() < 1)
     {
       return false;
     }

@@ -63,6 +63,8 @@ public class Launcher extends SubsystemBase {
     launcherLeft.setIdleMode(IdleMode.kBrake);
     launcherRight.setIdleMode(IdleMode.kBrake);
     launcherRight.setInverted(true);
+    launcherLeft.burnFlash();
+    launcherRight.burnFlash();
 
     ColorSensor = new ColorSensorV3(I2C.Port.kOnboard); 
     PIDcontrollerL =  launcherLeft.getPIDController();
@@ -76,7 +78,7 @@ public class Launcher extends SubsystemBase {
   }
 
   public void index(final double speed) {
-    indexLeft.set(ControlMode.PercentOutput, -(speed - .7));
+    indexLeft.set(ControlMode.PercentOutput, speed - .6);
     indexRight.set(ControlMode.PercentOutput, speed);
   }
 
