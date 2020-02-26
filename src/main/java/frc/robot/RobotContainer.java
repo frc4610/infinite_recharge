@@ -65,25 +65,24 @@ public class RobotContainer {
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
   public final static climb mainClimb = new climb(climber);
+  public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, false);
 
   private static boolean slow;
 
   //OI Devices
   public static Joystick driver = new Joystick(0);
-  public static JoystickButton driverXButton = new JoystickButton(driver, 1);
-  public static JoystickButton driverAButton = new JoystickButton(driver, 2);
-  public static JoystickButton driverBButton = new JoystickButton(driver, 3);
+  public static JoystickButton driverXButton = new JoystickButton(driver, 3);
+  public static JoystickButton driverAButton = new JoystickButton(driver, 1);
+  public static JoystickButton driverBButton = new JoystickButton(driver, 2);
   public static JoystickButton driverYButton = new JoystickButton(driver, 4);
   public static JoystickButton driverLeftBumper = new JoystickButton(driver, 5);
   public static JoystickButton driverRightBumper = new JoystickButton(driver, 6);
-  public static JoystickButton driverLeftTrigger = new JoystickButton(driver, 7);
-  public static JoystickButton driverRightTrigger = new JoystickButton(driver, 8);
-  public static JoystickButton driverBackButton = new JoystickButton(driver, 9);
+  public static JoystickButton driverLeftJoyButton = new JoystickButton(driver, 9);
 
   public static Joystick operator = new Joystick(1);
-  public static JoystickButton operatorXButton = new JoystickButton(operator, 1);
-  public static JoystickButton operatorAButton = new JoystickButton(operator, 2);
-  public static JoystickButton operatorBButton = new JoystickButton(operator, 3);
+  public static JoystickButton operatorXButton = new JoystickButton(operator, 3);
+  public static JoystickButton operatorAButton = new JoystickButton(operator, 1);
+  public static JoystickButton operatorBButton = new JoystickButton(operator, 2);
   public static JoystickButton operatorYButton = new JoystickButton(operator, 4);
   public static JoystickButton operatorLeftBumper = new JoystickButton(operator, 5);
   public static JoystickButton operatorRightBumper = new JoystickButton(operator, 6);
@@ -102,9 +101,8 @@ public class RobotContainer {
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, gyro, false), false);
-    driverLeftTrigger.whenPressed(new slowMode());
-    driverRightTrigger.whileHeld(new launchSystem(launcher, Constants.indexNEOSpeed , Constants.feedNEOSpeed, false) , true);
-    operatorAButton.whenPressed(new feedUnjam(launcher, intake) , true);
+    driverLeftJoyButton.whenPressed(new slowMode());
+    operatorAButton.whenPressed(new feedUnjam(launcher, intake), false);
     operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
@@ -240,6 +238,10 @@ public class RobotContainer {
     mainClimb.schedule(false);
   }
 
+  public static void startManualLaunch()
+  {
+    manualLaunch.schedule(false);
+  }
   public static boolean tankOverride()
   {
     return (Math.abs(driver.getRawAxis(1)) > .02)||(Math.abs(driver.getRawAxis(3)) > .02);
