@@ -26,6 +26,7 @@ public class launchSystem extends CommandBase {
   private boolean isAuto;
   private boolean previousState;
   private Timer feedTimer;
+  private double currentSpeed;
   /**
    * Creates a new launchSystem.
    */
@@ -39,6 +40,7 @@ public class launchSystem extends CommandBase {
     previousState = false;
     isAuto = auto;
     feedTimer = new Timer();
+    currentSpeed = launchSpeed;
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -55,14 +57,23 @@ public class launchSystem extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() 
+  {
+    if(launcher.GetLauncherSpeed() >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
+      {
+        launcher.feed(Constants.feedNEOSpeed);
+      }
+    else 
+      {
+        launcher.feed(0);
+      }
     if(timer.get() > Constants.feedDelay)
     {
-      if(!RobotContainer.stateOfFeed() && previousState)
+      if(RobotContainer.stateOfFeed() && !previousState)
       {
         feedTimer.start();
       }
-      else if (RobotContainer.stateOfFeed() && !  previousState)
+      else if (!RobotContainer.stateOfFeed() && previousState)
       {
         feedTimer.reset();
       }

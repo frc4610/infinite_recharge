@@ -41,4 +41,5 @@ public final class Constants {
     public static double launchAngleRad = 1.0472;
     public static double launchWheelRadius = 3;
     public static double maxFalconVelocity = 22040;
+    public static double launchMaxVelocity = 5650;
 }

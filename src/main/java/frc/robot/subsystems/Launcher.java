@@ -9,29 +9,39 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Launcher extends SubsystemBase {
-
   private final VictorSPX indexLeft;
   private final VictorSPX indexRight;
   private final VictorSPX feedController;
   private final CANSparkMax launcherLeft;
   private final CANSparkMax launcherRight;
   private final ColorSensorV3 ColorSensor;
+  private final CANPIDController PIDcontrollerL;
+  private final CANPIDController PIDcontrollerR;
+  private final CANEncoder encoderL;
+  private final CANEncoder encoderR;
+  
+  
+    
   
   /**
    * Creates a new Launcher.
    * 
    *
    * 
-   * 
+   
    * 
    */
   public Launcher() {
@@ -54,8 +64,15 @@ public class Launcher extends SubsystemBase {
     launcherRight.setIdleMode(IdleMode.kBrake);
     launcherRight.setInverted(true);
 
-    ColorSensor = new ColorSensorV3(I2C.Port.kOnboard);  
-    
+    ColorSensor = new ColorSensorV3(I2C.Port.kOnboard); 
+    PIDcontrollerL =  launcherLeft.getPIDController();
+    PIDcontrollerR =  launcherRight.getPIDController();
+    encoderL = launcherLeft.getEncoder();
+    encoderR = launcherRight.getEncoder();
+    PIDcontrollerL.setP(1);
+    PIDcontrollerR.setP(1);
+    PIDcontrollerL.setOutputRange(-1, 1);
+    PIDcontrollerR.setOutputRange(-1, 1);
   }
 
   public void index(final double speed) {
@@ -67,9 +84,9 @@ public class Launcher extends SubsystemBase {
     feedController.set(ControlMode.PercentOutput, speed);
   }
 
-  public void launch(final double speed) {
-    launcherLeft.set(speed);
-    launcherRight.set(speed);
+  public void launch(final double Speed) {
+    PIDcontrollerL.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    PIDcontrollerR.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
   }
 
   public void stopLaunching() {
@@ -96,4 +113,5 @@ public class Launcher extends SubsystemBase {
     return launcherLeft.getEncoder().getVelocity();
 
   }
+ 
 }
