@@ -55,7 +55,7 @@ public class launchSystem extends CommandBase {
   @Override
   public void execute() 
   {
-    if(launcher.GetLauncherSpeed() >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
+    if((launcher.GetLauncherSpeed() - 5) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
       {
         launcher.feed(Constants.feedNEOSpeed);
       }
