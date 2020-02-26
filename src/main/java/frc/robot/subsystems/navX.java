@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class navX extends SubsystemBase {
-  private AHRS gyro;
+  private static AHRS gyro;
+
   /**
    * Creates a new navX.
    */
@@ -24,16 +25,17 @@ public class navX extends SubsystemBase {
   /**
    * Resets the gyro. Best used at the beginning of a match
    */
-  public void resetGyro()
-  {
+  public void resetGyro() {
     gyro.reset();
   }
+
   /**
    * Function for accessing the navx's gyro feature
-   * @return Returns yaw (z-axis) of gyro in degree. Note that this is a true value, and can be above 360
+   * 
+   * @return Returns yaw (z-axis) of gyro in degree. Note that this is a true
+   *         value, and can be above 360
    */
-  public double getYaw()
-  {
+  public static double getYaw() {
     return gyro.getAngle();
   }
 

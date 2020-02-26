@@ -16,8 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static double middleIntakeEncoderPosition = -335;
-    public static double bottomIntakeEncoderPosition = -1100;
+    public static double middleIntakeEncoderPosition = -1205;
+    public static double bottomIntakeEncoderPosition = -1400;
     public static double groundToPowerPortIn = 98.25;
     public static double groundToLimeLensIn = 18.75;
     public static double groundToLimeLensDeg = 16.641;
@@ -26,7 +26,7 @@ public final class Constants {
     public static double distanceToPowerportMinIn = (10*12);//temporary change, fix to 10 feet later
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
     public static double feedDelay = 1.9;
-    public static double autoLaunchDelay = 3;
+    public static double autoLaunchDelay = 5;
     public static double feedNEOSpeed = .80;
     public static double baselineLaunchSpeedLower = .44;
     public static double baselineLaunchSpeedHigher = .214;
@@ -41,4 +41,5 @@ public final class Constants {
     public static double launchAngleRad = 1.0472;
     public static double launchWheelRadius = 3;
     public static double maxFalconVelocity = 22040;
+    public static double overheatValue = 50;
 }

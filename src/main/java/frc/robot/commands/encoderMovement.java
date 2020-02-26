@@ -17,7 +17,7 @@ import frc.robot.subsystems.navX;
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private  double P = .00725;
+  private  double P = .005;
   private double rcw;
   private encoder EncoderPair;
   private navX TurnCorrection;
@@ -58,7 +58,7 @@ public class encoderMovement extends CommandBase {
   @Override
   public void execute() {
     averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
-    Straighten = (TurnCorrection.getYaw() - desiredangle) * 0.02;
+    Straighten = (navX.getYaw() - desiredangle) * 0.02;
     error = setpoint - averageEncoder;
     this.rcw = (P *error);
     double Lspeed = rcw - Straighten;
@@ -69,13 +69,13 @@ public class encoderMovement extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveBase.move(ControlMode.PercentOutput, 0, 0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(error <= .5){
+    if(Math.abs(error) <= 1){
       return true;
     }
     else{
