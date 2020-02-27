@@ -87,8 +87,10 @@ public class Launcher extends SubsystemBase {
   }
 
   public void launch(final double Speed) {
-    PIDcontrollerL.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
-    PIDcontrollerR.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    //PIDcontrollerL.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    //PIDcontrollerR.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    launcherRight.set(Speed);
+    launcherLeft.set(Speed);
   }
 
   public void stopLaunching() {

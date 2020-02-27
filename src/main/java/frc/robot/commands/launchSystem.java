@@ -55,7 +55,8 @@ public class launchSystem extends CommandBase {
   @Override
   public void execute() 
   {
-    if((launcher.GetLauncherSpeed() - 5) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
+    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
+    if((launcher.GetLauncherSpeed() - 0) >= Constants.launchMaxVelocity*.52)
       {
         launcher.feed(Constants.feedNEOSpeed);
       }
@@ -65,37 +66,11 @@ public class launchSystem extends CommandBase {
       }
     if(timer.get() > Constants.feedDelay)
     {
-      /*if(RobotContainer.stateOfFeed() && !previousState)
-      {
-        feedTimer.start();
-      }
-      else if (!RobotContainer.stateOfFeed() && previousState)
-      {
-        feedTimer.reset();
-      }
-      else if(!RobotContainer.stateOfFeed() && !previousState)
-      {
-        feedTimer.start();
-      }
-
-      previousState = RobotContainer.stateOfFeed();
-
-      if(feedTimer.get() >= .25)
-      {
-        launcher.feed(feedSpeed);
-      }
-      else
-      {
-        launcher.feed(0);
-      }*/
-
-      launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
-    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
     if(launchTriggerValue > .02)
     {
-      launcher.launch(launchTriggerValue);
+      launcher.launch(.52);
     }
     else
     {
