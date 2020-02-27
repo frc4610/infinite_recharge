@@ -156,6 +156,7 @@ public class visionTarget extends CommandBase {
     }
     limeL.vLEDoff();
     launcher.stopLaunching();
+    RobotContainer.startManualLaunch();
   }
 
   // Returns true when the command should end.

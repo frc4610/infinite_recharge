@@ -88,7 +88,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      launcher.launch(0);
+      launcher.stopLaunching();
       timer.reset();
     }
   }

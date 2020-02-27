@@ -240,7 +240,7 @@ public class RobotContainer {
 
   public static void startManualLaunch()
   {
-    manualLaunch.schedule(false);
+    manualLaunch.schedule(true);
   }
   public static boolean tankOverride()
   {
