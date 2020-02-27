@@ -70,7 +70,7 @@ public class launchSystem extends CommandBase {
     }
     if(launchTriggerValue > .02)
     {
-      launcher.launch(.52);
+      launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
     }
     else
     {
