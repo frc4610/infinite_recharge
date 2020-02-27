@@ -84,7 +84,7 @@ public class launchSystem extends CommandBase {
     double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
     if(launchTriggerValue > .02)
     {
-      launcher.launch(launchTriggerValue);
+      launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
     }
     else
     {
