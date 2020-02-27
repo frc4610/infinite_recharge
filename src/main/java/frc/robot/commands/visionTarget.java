@@ -80,17 +80,19 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }*/
     driveBase.move(ControlMode.PercentOutput , error, -error);
-    if(Math.abs(xValueOff) <= 2.5)
+    if(Math.abs(xValueOff) <= 3.5)
     {
-      if(distanceToPowerPort < 192)
+      if(distanceToPowerPort < 196)
       {
-        launchSpeed = Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400);
+        launchSpeed = (.03573762578441*distanceToPowerPort) + 44.595453195203;
+        //launchSpeed = Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
       }
       else
       {
-        launchSpeed = Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277);
+        launchSpeed = (.202377876*distanceToPowerPort) + 11.84764524;
+        //launchSpeed = Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
       }
