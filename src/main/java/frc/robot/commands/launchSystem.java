@@ -56,7 +56,7 @@ public class launchSystem extends CommandBase {
   public void execute() 
   {
     double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
-    if((launcher.GetLauncherSpeed() - 0) >= Constants.launchMaxVelocity*.52)
+    if((launcher.GetLauncherSpeed() - 10) >= Constants.launchMaxVelocity*SmartDashboard.getNumber("Manual Launch Power", .5))
       {
         launcher.feed(Constants.feedNEOSpeed);
       }
