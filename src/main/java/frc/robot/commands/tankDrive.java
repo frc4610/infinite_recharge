@@ -34,7 +34,7 @@ public class tankDrive extends CommandBase {
   @Override
   public void execute() {
     double joyValueL = -RobotContainer.driver.getRawAxis(1);
-    double joyValueR = -RobotContainer.driver.getRawAxis(3);
+    double joyValueR = -RobotContainer.driver.getRawAxis(5);
     if(RobotContainer.isSlow())
     {
       joyValueL /= 2;

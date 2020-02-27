@@ -31,7 +31,14 @@ public class climb extends CommandBase {
   @Override
   public void execute() {
     double joyValueL = RobotContainer.operator.getRawAxis(1);
+    if(Math.abs(joyValueL) > .02)
+    {
     climber.set(joyValueL);
+    }
+    else
+    {
+      climber.set(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -54,7 +54,7 @@ public class launchSystem extends CommandBase {
   public void execute() {
     if(timer.get() > Constants.feedDelay)
     {
-      if(RobotContainer.stateOfFeed() && !previousState)
+      /*if(RobotContainer.stateOfFeed() && !previousState)
       {
         feedTimer.start();
       }
@@ -76,13 +76,21 @@ public class launchSystem extends CommandBase {
       else
       {
         launcher.feed(0);
-      }
+      }*/
 
       launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
-
-     launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
+    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
+    if(launchTriggerValue > .02)
+    {
+      launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
+    }
+    else
+    {
+      launcher.stopLaunching();
+      timer.reset();
+    }
   }
 
   // Called once the command ends or is interrupted.

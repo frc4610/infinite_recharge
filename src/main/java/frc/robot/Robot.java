@@ -117,6 +117,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     RobotContainer.startTankDrive();
     RobotContainer.startClimb();
+    RobotContainer.startManualLaunch();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
