@@ -10,7 +10,6 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
@@ -22,7 +21,7 @@ public class leftencoderMovement extends CommandBase {
   private double rcw;
   private encoder EncoderPair;
   private double error;
-  private double yaw;
+  private double setpoint;
   private DriveBase driveBase;
 
   /**
@@ -33,10 +32,10 @@ public class leftencoderMovement extends CommandBase {
    * 
    * 
    */
-  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, double gyro) {
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, double distance) {
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
-    yaw = gyro;
+    setpoint = distance;
     addRequirements(tempDrive);
     addRequirements(Encoder);
     addRequirements(gyro);
@@ -56,8 +55,8 @@ public class leftencoderMovement extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    target = navX.getYaw();
-    error = (gyro - target)/360;
+    target = EncoderPair.getDistanceLeft();
+    error = (setpoint - target);
     this.rcw = (P *error);
     double Lspeed = rcw;
     driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
