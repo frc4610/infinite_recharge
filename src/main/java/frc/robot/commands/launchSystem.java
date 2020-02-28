@@ -72,6 +72,10 @@ public class launchSystem extends CommandBase {
     {
       launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
     }
+    else if(isAuto)
+    {
+      launcher.launch(.48);
+    }
     else
     {
       launcher.stopLaunching();
@@ -94,7 +98,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      return timer.get() > 3;
+      return timer.get() > 6;
     }
   }
 }

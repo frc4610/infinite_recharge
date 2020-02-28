@@ -45,7 +45,7 @@ public class navXTurn extends CommandBase {
   }
 
   public void PID() {
-    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
+    double error = setpoint - navX.getYaw(); // Error = Target - Actual
     this.rcw = (P * error); //Equation for power(rcw = power)
   }
 

@@ -124,10 +124,12 @@ public class visionTarget extends CommandBase {
     if(!isAuto)
     {
       RobotContainer.startTankDrive();
+      RobotContainer.startManualLaunch();
     }
-    limeL.vLEDoff();
-    launcher.stopLaunching();
-    RobotContainer.startManualLaunch();
+    else{
+      limeL.vLEDoff();
+      launcher.stopLaunching();
+    }
   }
 
   // Returns true when the command should end.
