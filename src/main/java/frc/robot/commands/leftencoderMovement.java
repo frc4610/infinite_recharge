@@ -12,10 +12,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
-import frc.robot.subsystems.navX;
 
 public class leftencoderMovement extends CommandBase {
-  private double gyro;
   private double target;
   private double P = .01;
   private double rcw;
@@ -23,7 +21,6 @@ public class leftencoderMovement extends CommandBase {
   private double error;
   private double setpoint;
   private DriveBase driveBase;
-
   /**
    * Creates a new encoderMovement.
    * 
@@ -38,13 +35,8 @@ public class leftencoderMovement extends CommandBase {
     setpoint = distance;
     addRequirements(tempDrive);
     addRequirements(Encoder);
-    addRequirements(gyro);
   }
    
-
-    private void addRequirements(double gyro) {
-  }
-
   // Use addRequirements() here to declare subsystem dependencies.
   // Called when the command is initially scheduled.
   @Override
@@ -59,7 +51,7 @@ public class leftencoderMovement extends CommandBase {
     error = (setpoint - target);
     this.rcw = (P *error);
     double Lspeed = rcw;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
+    driveBase.move(ControlMode.PercentOutput, Lspeed, .15);
     
   }
   // Called once the command ends or is interrupted.
@@ -72,7 +64,7 @@ public class leftencoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 1){
+    if(Math.abs(error) <= 10){
       return true;
     }
     else{
