@@ -35,8 +35,11 @@ public class feedUnjam extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(RobotContainer.operatorAButton.get())
+    {
     launcher.feed(-Constants.feedNEOSpeed);
     launcher.index(-.4);
+    }
     intake.intakeCells(-.8);
   }
 
@@ -51,6 +54,6 @@ public class feedUnjam extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.operatorAButton.get();
+    return (!RobotContainer.operatorAButton.get() && !RobotContainer.operatorBButton.get());
   }
 }

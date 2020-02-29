@@ -24,6 +24,7 @@ public class visionTarget extends CommandBase {
   private DriveBase driveBase;
   private Launcher launcher;
   private Timer timer;
+  private Timer autoTimer;
   private navX gyro;
 
   private double distanceToPowerPort;
@@ -55,6 +56,10 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(isAuto)
+    {
+      autoTimer.start();
+    }
     timer.start();
   }
 
@@ -84,7 +89,7 @@ public class visionTarget extends CommandBase {
     {
       if(distanceToPowerPort < 196)
       {
-        launchSpeed = ((.03573762578441*distanceToPowerPort) + 44.595453195203)/100;
+        launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
         //launchSpeed = Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
@@ -140,7 +145,7 @@ public class visionTarget extends CommandBase {
     {
       return true;
     }
-    else if(isAuto && timer.get() >= Constants.autoLaunchDelay)
+    else if(isAuto && autoTimer.get() >= Constants.autoLaunchDelay)
     {
       return true;
     }
