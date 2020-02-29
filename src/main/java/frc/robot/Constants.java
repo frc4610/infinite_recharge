@@ -27,7 +27,7 @@ public final class Constants {
     public static double windSpeedNEO = .06;//increases by this proportion, max*wind,  once per 20ms
     public static double feedDelay = 1.9;
     public static double autoLaunchDelay = 5;
-    public static double feedNEOSpeed = .80;
+    public static double feedNEOSpeed = .90;
     public static double baselineLaunchSpeedLower = .44;
     public static double baselineLaunchSpeedHigher = .214;
     public static double launchNEOSpeed = .74;

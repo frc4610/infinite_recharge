@@ -84,14 +84,14 @@ public class visionTarget extends CommandBase {
     {
       if(distanceToPowerPort < 196)
       {
-        launchSpeed = (.03573762578441*distanceToPowerPort) + 44.595453195203;
+        launchSpeed = ((.03573762578441*distanceToPowerPort) + 44.595453195203)/100;
         //launchSpeed = Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
       }
       else
       {
-        launchSpeed = (.202377876*distanceToPowerPort) + 11.84764524;
+        launchSpeed = ((.202377876*distanceToPowerPort) + 11.84764524)/100;
         //launchSpeed = Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
@@ -99,7 +99,7 @@ public class visionTarget extends CommandBase {
       if(timer.get() >= Constants.feedDelay)
       {
         launcher.index(Constants.indexNEOSpeed);
-        if((launcher.GetLauncherSpeed() - 10) >= Constants.launchMaxVelocity*launchSpeed)
+        if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*launchSpeed)
         {
           launcher.feed(Constants.feedNEOSpeed);
         }
@@ -121,6 +121,7 @@ public class visionTarget extends CommandBase {
   public void end(boolean interrupted) {
     timer.stop();
     timer.reset();
+    limeL.vLEDoff();
     if(!isAuto)
     {
       RobotContainer.startTankDrive();
