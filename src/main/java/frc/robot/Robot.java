@@ -44,11 +44,12 @@ public class Robot extends TimedRobot {
     goal.addOption("Drive Forward", "df");
     goal.setDefaultOption("Drive Forward", "df");
     goal.addOption("Launch from current pos", "Launch from current pos");
-    goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
+    goal.addOption("Launch from current pos, back", "Launch from current pos, back");
+    //goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
     goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
-    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
-    goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
-    goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
+    //goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    //goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
+    //goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     CameraServer.getInstance().startAutomaticCapture();
