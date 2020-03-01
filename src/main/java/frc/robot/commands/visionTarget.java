@@ -46,6 +46,7 @@ public class visionTarget extends CommandBase {
     launcher = tLauncher;
     timer = new Timer();
     isAuto = Auto;
+    autoTimer = new Timer();
     addRequirements(tLauncher);
     addRequirements(plimeL);
     launchSpeed = 0;
@@ -56,10 +57,7 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(isAuto)
-    {
-      autoTimer.start();
-    }
+    autoTimer.start();
     timer.start();
   }
 

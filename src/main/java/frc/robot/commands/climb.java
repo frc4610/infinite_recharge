@@ -36,9 +36,9 @@ public class climb extends CommandBase {
     {
       climber.set(trigValueL);
     }
-    else if(Math.abs(trigValueL) > .02)
+    else if(Math.abs(trigValueR) > .02)
     {
-      climber.set(trigValueR);
+      climber.set(-trigValueR);
     }
     else
     {
