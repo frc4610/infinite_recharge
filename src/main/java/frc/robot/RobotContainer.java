@@ -159,6 +159,7 @@ public class RobotContainer {
       new intakeCells(intake, 0, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
       new leftencoderMovement(driveBase, mainEncoders, 144),
+      new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
@@ -174,10 +175,11 @@ public class RobotContainer {
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
       new navXTurn(gyro, driveBase, 180, true),
-      new intakeCells(intake, .5, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
+      new intakeCells(intake, 1, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
       new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, 76),
+      new leftencoderMovement(driveBase, mainEncoders, 144),
+      new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
