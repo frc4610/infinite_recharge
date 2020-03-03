@@ -94,7 +94,7 @@ public class visionTarget extends CommandBase {
       }
       else
       {
-        launchSpeed = ((.202377876*distanceToPowerPort) + 11.84764524)/100;
+        launchSpeed = ((.202377876*distanceToPowerPort) + 12.04764524)/100;
         //launchSpeed = Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277);
         launcher.launch(launchSpeed);
         SmartDashboard.putNumber("Power Launch", launchSpeed);
