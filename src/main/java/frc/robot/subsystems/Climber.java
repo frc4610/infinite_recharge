@@ -33,6 +33,7 @@ public class Climber extends SubsystemBase {
     climbPID.setI(.0);
     climbPID.setD(.0);
     climbPID.setOutputRange(-1, 1);
+    climbEncoder.setPosition(-100);//safety measure to prevent the climb from shattering everything
   }
 
   public void set(double speed)
