@@ -35,7 +35,7 @@ public class navX extends SubsystemBase {
    * @return Returns yaw (z-axis) of gyro in degree. Note that this is a true
    *         value, and can be above 360
    */
-  public static double getYaw() {
+  public double getYaw() {
     return gyro.getAngle();
   }
 
