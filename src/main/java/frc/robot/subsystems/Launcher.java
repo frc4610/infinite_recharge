@@ -32,10 +32,6 @@ public class Launcher extends SubsystemBase {
   private final CANPIDController PIDcontrollerR;
   private final CANEncoder encoderL;
   private final CANEncoder encoderR;
-  
-  
-    
-  
   /**
    * Creates a new Launcher.
    * 
