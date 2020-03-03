@@ -83,39 +83,28 @@ public class visionTarget extends CommandBase {
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }*/
     driveBase.move(ControlMode.PercentOutput , error, -error);
-    if(Math.abs(xValueOff) <= 3.5)
+    if(distanceToPowerPort < 196)
     {
-      if(distanceToPowerPort < 196)
-      {
-        launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
-        //launchSpeed = Constants.baselineLaunchSpeedLower + (distanceToPowerPort / 2400);
-        launcher.launch(launchSpeed);
-        SmartDashboard.putNumber("Power Launch", launchSpeed);
-      }
-      else
-      {
-        launchSpeed = ((.202377876*distanceToPowerPort) + 12.04764524)/100;
-        //launchSpeed = Constants.baselineLaunchSpeedHigher + (distanceToPowerPort / 677.277);
-        launcher.launch(launchSpeed);
-        SmartDashboard.putNumber("Power Launch", launchSpeed);
-      }
-      if(timer.get() >= Constants.feedDelay)
-      {
-        launcher.index(Constants.indexNEOSpeed);
-        if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*launchSpeed)
-        {
-          launcher.feed(Constants.feedNEOSpeed);
-        }
-        else 
-        {
-          launcher.feed(0);
-        }
-      }
+      launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
+      launcher.launch(launchSpeed);
+      SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
     else
     {
-      timer.reset();
-      launcher.stopLaunching();
+      launchSpeed = ((.202377876*distanceToPowerPort) + 12.04764524)/100;
+      launcher.launch(launchSpeed);
+      SmartDashboard.putNumber("Power Launch", launchSpeed);
+    }
+
+    if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*launchSpeed && Math.abs(xValueOff) <= 3.5)
+    {
+      launcher.feed(Constants.feedNEOSpeed);
+      launcher.index(Constants.indexNEOSpeed);
+    }
+    else 
+    {
+      launcher.feed(0);
+      launcher.index(0);
     }
   }
 
