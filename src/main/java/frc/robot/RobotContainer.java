@@ -65,7 +65,7 @@ public class RobotContainer {
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
   public final static climb mainClimb = new climb(climber);
-  public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, false);
+  public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, false);
 
   private static boolean slow;
 
@@ -152,7 +152,7 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       //new vLED(visionSensor, true),
-      new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, true),
+      new launchSystem(launcher, Constants.indexNEOSpeed, true),
       //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new leftencoderMovement(driveBase, mainEncoders, 144),
       new intakeCells(intake, 1, true),
