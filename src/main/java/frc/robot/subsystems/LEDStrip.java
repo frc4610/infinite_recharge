@@ -18,6 +18,8 @@ public class LEDStrip extends SubsystemBase {
   private int pulseFirstPixel;
   private int hue;
   private int pixel;
+  private int bounceBackCounter;
+  private boolean backwards;
   /**
    * Creates a new LEDStrip.
    */
@@ -29,6 +31,7 @@ public class LEDStrip extends SubsystemBase {
     led.setLength(ledBuffer.getLength());
     led.setData(ledBuffer);
     led.start();
+    backwards = false;
   }
 
 /**
@@ -79,6 +82,32 @@ public void setLEDRainbow()
   rainbowFirstPixel += 1;
   rainbowFirstPixel %= 180;
 }
+
+public void setLEDRainbowBounceBack()
+{
+  for (var i = 0; i < ledBuffer.getLength(); i++) 
+  {
+    hue = (int) ((rainbowFirstPixel + (i *180 / ledBuffer.getLength())) % 180);
+    if(backwards)
+    {
+      ledBuffer.setHSV((180 - i), hue, 255, 100);
+    }
+    else
+    {
+      ledBuffer.setHSV(i, hue, 255, 100);
+    }
+  }
+  led.setData(ledBuffer);
+  rainbowFirstPixel += 1;
+  rainbowFirstPixel %= 180;
+  bounceBackCounter++;
+  if(bounceBackCounter == 180)
+  {
+    backwards = !backwards;
+  }
+  bounceBackCounter %= 180;
+}
+
 
   @Override
   public void periodic() {
