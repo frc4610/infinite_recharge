@@ -12,25 +12,24 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.encoder;
-import frc.robot.subsystems.navX;
 
 public class leftencoderMovement extends CommandBase {
-  private double setpoint;
   private double target;
-  private  double P = .03;
+  private double P = .01;
   private double rcw;
   private encoder EncoderPair;
   private double error;
+  private double setpoint;
   private DriveBase driveBase;
-
   /**
    * Creates a new encoderMovement.
- * @param EncoderL 
- * @param EncoderR 
+   * 
+   * @param EncoderL
+   * @param EncoderR
    * 
    * 
    */
-  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double distance){
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, double distance) {
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
     setpoint = distance;
@@ -38,9 +37,7 @@ public class leftencoderMovement extends CommandBase {
     addRequirements(Encoder);
   }
    
-
-    // Use addRequirements() here to declare subsystem dependencies.
-
+  // Use addRequirements() here to declare subsystem dependencies.
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -51,16 +48,15 @@ public class leftencoderMovement extends CommandBase {
   @Override
   public void execute() {
     target = EncoderPair.getDistanceLeft();
-    error = setpoint - target;
+    error = (setpoint - target);
     this.rcw = (P *error);
     double Lspeed = rcw;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
+    driveBase.move(ControlMode.PercentOutput, Lspeed, .15);
     
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveBase.move(ControlMode.PercentOutput, 0, 0);
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
   }
@@ -68,7 +64,7 @@ public class leftencoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(error <= .5){
+    if(Math.abs(error) <= 10){
       return true;
     }
     else{

@@ -8,30 +8,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Launcher;
+
+
 
 public class launchSystem extends CommandBase {
   private Launcher launcher;
-  private double launcherSpeed;
   private double indexSpeed;
   private double feedSpeed;
-  private double maxSpeed;
-  private double windSpeed;
   private Timer timer;
   private boolean isAuto;
+  private boolean previousState;
+  private Timer feedTimer;
+  private double currentSpeed;
   /**
    * Creates a new launchSystem.
    */
-  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, double launchSpeed, boolean auto) {
+  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, boolean auto) {
     launcher = tLauncher;
     indexSpeed = IndexSpeed;
     feedSpeed = FeedSpeed;
-    maxSpeed = launchSpeed;
-    windSpeed = Constants.windSpeedNEO;
     timer = new Timer();
+    previousState = false;
     isAuto = auto;
+    feedTimer = new Timer();
+    currentSpeed = launcher.GetLauncherSpeed();
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -39,23 +44,43 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(!RobotContainer.stateOfFeed())
+    {
+      previousState = true;
+    }
     timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() 
+  {
+    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
+    if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*SmartDashboard.getNumber("Manual Launch Power", .5))
+      {
+        launcher.feed(Constants.feedNEOSpeed);
+      }
+    else 
+      {
+        launcher.feed(0);
+      }
     if(timer.get() > Constants.feedDelay)
     {
-      launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
-    
-    if(launcherSpeed < maxSpeed)
-     {
-        launcherSpeed += windSpeed*maxSpeed;//slowly increase the power to the shooter
-     }
-     launcher.launch(Constants.launchNEOSpeed);
+    if(launchTriggerValue > .02)
+    {
+      launcher.launch(SmartDashboard.getNumber("Manual Launch Power", .5));
+    }
+    else if(isAuto)
+    {
+      launcher.launch(.48);
+    }
+    else
+    {
+      launcher.stopLaunching();
+      timer.reset();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -73,7 +98,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      return timer.get() > 3;
+      return timer.get() > 6;
     }
   }
 }

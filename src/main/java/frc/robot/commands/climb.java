@@ -8,17 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
 
 public class climb extends CommandBase {
   private Climber climber;
-  private double speed;
   /**
    * Creates a new climb.
    */
-  public climb(Climber tClimb, double Speed) {
+  public climb(Climber tClimb) {
     climber = tClimb;
-    speed = Speed;
     addRequirements(tClimb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -31,7 +30,20 @@ public class climb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.set(speed);
+    double trigValueL = RobotContainer.operator.getRawAxis(2);
+    double trigValueR = RobotContainer.operator.getRawAxis(3);
+    if(Math.abs(trigValueL) > .02)
+    {
+      climber.set(trigValueL);
+    }
+    else if(Math.abs(trigValueR) > .02)
+    {
+      climber.set(-trigValueR);
+    }
+    else
+    {
+      climber.set(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

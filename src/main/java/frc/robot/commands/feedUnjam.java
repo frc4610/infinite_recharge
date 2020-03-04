@@ -7,51 +7,53 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
 
-public class tankDrive extends CommandBase {
-  private DriveBase tDrivebase;
+public class feedUnjam extends CommandBase {
+  private Launcher launcher;
+  private Intake intake;
   /**
-   * Creates a new tankDrive.
+   * Creates a new feedUnjam.
    */
-  public tankDrive(DriveBase drivebase) {
-    tDrivebase = drivebase;
-    addRequirements(drivebase);
+  public feedUnjam(Launcher tLauncher, Intake tIntake) {
+    launcher = tLauncher;
+    intake = tIntake;
+    addRequirements(tLauncher);
+    addRequirements(tIntake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double joyValueL = -RobotContainer.driver.getRawAxis(1);
-    double joyValueR = -RobotContainer.driver.getRawAxis(5);
-    if(RobotContainer.isSlow())
+    if(RobotContainer.operatorAButton.get())
     {
-      joyValueL /= 2;
-      joyValueR /= 2;
+    launcher.feed(-Constants.feedNEOSpeed);
+    launcher.index(-.4);
     }
-    tDrivebase.move(ControlMode.PercentOutput, joyValueL, joyValueR);
+    intake.intakeCells(-.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    tDrivebase.move(ControlMode.PercentOutput, 0, 0);
+    launcher.feed(0);
+    launcher.stopLaunching();
+    intake.intakeCells(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (!RobotContainer.operatorAButton.get() && !RobotContainer.operatorBButton.get());
   }
 }

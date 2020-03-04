@@ -42,11 +42,10 @@ public class navXTurn extends CommandBase {
   @Override
   public void initialize() {
     timer.start();
-    gyro.resetGyro();
   }
 
   public void PID() {
-    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
+    double error = setpoint - navX.getYaw(); // Error = Target - Actual
     this.rcw = (P * error); //Equation for power(rcw = power)
   }
 
@@ -62,19 +61,18 @@ public class navXTurn extends CommandBase {
   public void end(boolean interrupted) {
     timer.reset();
     timer.stop();
-    gyro.resetGyro();
     RobotContainer.startTankDrive();
   }
   
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((!RobotContainer.driverXButton.get()||!RobotContainer.driverYButton.get()||!RobotContainer.driverBButton.get()) && !isAuto){
+    if((!RobotContainer.driverXButton.get()&&!RobotContainer.driverYButton.get()&&!RobotContainer.driverBButton.get()) && !isAuto){
       return true;
     }
     else
     {
-      return timer.get() > 3;
+      return timer.get() > 1;
     }
   }
 }
