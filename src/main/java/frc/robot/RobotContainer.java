@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climb;
@@ -130,7 +131,7 @@ public class RobotContainer {
     if(Robot.goal.getSelected().equals("Launch from current pos"))
     {
       return new SequentialCommandGroup(new delay(0),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      //new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
@@ -140,29 +141,32 @@ public class RobotContainer {
     else if(Robot.goal.getSelected().equals("Launch from current pos, back"))
     {
       return new SequentialCommandGroup(new delay(0),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -48),
+      //new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, -48));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(0),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
-      //new vLED(visionSensor, true),
       new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, true),
-      //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new leftencoderMovement(driveBase, mainEncoders, 144),
-      new intakeCells(intake, 1, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
+      new ParallelCommandGroup(
+        new leftencoderMovement(driveBase, mainEncoders, 144),
+        new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true)
+        ),
+      new ParallelCommandGroup(
+        new intakeCells(intake, 1, true),
+        new encoderMovement(driveBase, mainEncoders, gyro, 180, 240)
+        ),
       new intakeCells(intake, 0, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
       new leftencoderMovement(driveBase, mainEncoders, 144),
-      new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
-      new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new vLED(visionSensor, false));
+      new ParallelCommandGroup( 
+        new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
+        new vLED(visionSensor, true),
+        new visionTarget(visionSensor, driveBase, launcher, gyro, true)
+        ));
+     
       /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
       The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 
       power cells, conduct one more left sweeping turn, and fire.
