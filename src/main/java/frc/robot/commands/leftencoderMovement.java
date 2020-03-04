@@ -51,7 +51,7 @@ public class leftencoderMovement extends CommandBase {
     error = (setpoint - target);
     this.rcw = (P *error);
     double Lspeed = rcw;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, .15);
+    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
     
   }
   // Called once the command ends or is interrupted.

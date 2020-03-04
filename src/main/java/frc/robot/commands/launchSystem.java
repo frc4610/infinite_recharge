@@ -86,7 +86,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      return timer.get() > 6;
+      return timer.get() > 5;
     }
   }
 }
