@@ -7,7 +7,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -15,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
   private CANSparkMax climber;
+  private CANPIDController climbPID;
+  private CANEncoder climbEncoder;
   /**
    * Creates a new Climber.
    */
@@ -22,11 +27,28 @@ public class Climber extends SubsystemBase {
     climber = new CANSparkMax(5, MotorType.kBrushless);
     climber.setIdleMode(IdleMode.kBrake);
     climber.burnFlash();
+    climbPID = climber.getPIDController();
+    climbEncoder = climber.getEncoder();
+    climbPID.setP(.05);
+    climbPID.setI(.0);
+    climbPID.setD(.0);
+    climbPID.setOutputRange(-1, 1);
+    climbEncoder.setPosition(-100);//safety measure to prevent the climb from shattering everything
   }
 
   public void set(double speed)
   {
     climber.set(speed);
+  }
+
+  public double getEnc()
+  {
+    return climbEncoder.getPosition();
+  }
+
+  public void setEnc(double position)
+  {
+    climbPID.setReference(position, ControlType.kPosition);
   }
 
   @Override

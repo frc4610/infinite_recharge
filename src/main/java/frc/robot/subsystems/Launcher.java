@@ -19,7 +19,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Launcher extends SubsystemBase {
   private final VictorSPX indexLeft;
@@ -32,10 +31,6 @@ public class Launcher extends SubsystemBase {
   private final CANPIDController PIDcontrollerR;
   private final CANEncoder encoderL;
   private final CANEncoder encoderR;
-  
-  
-    
-  
   /**
    * Creates a new Launcher.
    * 

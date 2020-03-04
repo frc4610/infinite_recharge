@@ -66,7 +66,7 @@ public class RobotContainer {
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final static tankDrive mainDrive = new tankDrive(driveBase);
   public final static climb mainClimb = new climb(climber);
-  public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, false);
+  public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, false);
 
   private static boolean slow;
 
@@ -101,12 +101,13 @@ public class RobotContainer {
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
-    driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, navX.getYaw(), 60), false);
+    ///driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, navX.getYaw(), 60), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, gyro, false), false);
     driverLeftJoyButton.whenPressed(new slowMode());
-    driverLeftJoyButton.whenPressed(new slowMode());
+    //driverLeftJoyButton.whenPressed(new slowMode());
     operatorAButton.whenPressed(new feedUnjam(launcher, intake), false);
     operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
+    operatorBButton.whenPressed(new feedUnjam(launcher, intake), false);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     configureButtonBindings();
@@ -135,7 +136,7 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, 48));
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 58));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch from current pos, back"))
@@ -145,12 +146,13 @@ public class RobotContainer {
       //new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, -48));
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -58));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(0),
-      new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, true),
+      new launchSystem(launcher, Constants.indexNEOSpeed, true),
       new ParallelCommandGroup(
         new leftencoderMovement(driveBase, mainEncoders, 144),
         new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true)

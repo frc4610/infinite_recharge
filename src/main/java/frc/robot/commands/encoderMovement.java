@@ -21,7 +21,7 @@ public class encoderMovement extends CommandBase {
   private  double P = .005;
   private double rcw;
   private encoder EncoderPair;
-  private navX TurnCorrection;
+  private navX turnCorrection;
   private double Straighten;
   private double error;
   private double desiredangle;
@@ -38,7 +38,7 @@ public class encoderMovement extends CommandBase {
   public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double anglewanted, double distance){
     driveBase = tempDrive;
     this.EncoderPair = Encoder;
-    TurnCorrection = driveCorrection;
+    turnCorrection = driveCorrection;
     setpoint = distance;
     desiredangle = anglewanted;
     timer = new Timer();
@@ -62,7 +62,7 @@ public class encoderMovement extends CommandBase {
   @Override
   public void execute() {
     averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
-    Straighten = (navX.getYaw() - desiredangle) * 0.02;
+    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.02;
     error = setpoint - averageEncoder;
     this.rcw = (P *error);
     double Lspeed = (rcw - Straighten)/2;

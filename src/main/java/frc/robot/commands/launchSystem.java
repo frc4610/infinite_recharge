@@ -19,24 +19,16 @@ import frc.robot.subsystems.Launcher;
 public class launchSystem extends CommandBase {
   private Launcher launcher;
   private double indexSpeed;
-  private double feedSpeed;
   private Timer timer;
   private boolean isAuto;
-  private boolean previousState;
-  private Timer feedTimer;
-  private double currentSpeed;
   /**
    * Creates a new launchSystem.
    */
-  public launchSystem(Launcher tLauncher, double IndexSpeed, double FeedSpeed, boolean auto) {
+  public launchSystem(Launcher tLauncher, double IndexSpeed, boolean auto) {
     launcher = tLauncher;
     indexSpeed = IndexSpeed;
-    feedSpeed = FeedSpeed;
     timer = new Timer();
-    previousState = false;
     isAuto = auto;
-    feedTimer = new Timer();
-    currentSpeed = launcher.GetLauncherSpeed();
     addRequirements(tLauncher);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -44,10 +36,6 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(!RobotContainer.stateOfFeed())
-    {
-      previousState = true;
-    }
     timer.start();
   }
 
