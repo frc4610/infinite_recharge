@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     goal.addOption("Launch from current pos, back", "Launch from current pos, back");
     //goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
     goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
-    //goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
     //goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
     //goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
@@ -70,10 +70,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //RobotContainer.lights.setLEDPulse(0, 5);
-    RobotContainer.lights.setLEDRainbow();
+    RobotContainer.lights.setLEDRainbowBounceBack();
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("Climb Position", RobotContainer.climber.getEnc());
+    SmartDashboard.putNumber("Encoder L", RobotContainer.mainEncoders.getDistanceLeft());
+    SmartDashboard.putNumber("Encoder R", RobotContainer.mainEncoders.getDistanceRight());
     //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
