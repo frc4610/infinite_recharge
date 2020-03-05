@@ -153,19 +153,18 @@ public class RobotContainer {
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(0),
         new launchSystem(launcher, Constants.indexNEOSpeed, true),
-      new ParallelCommandGroup(
-        new leftencoderMovement(driveBase, mainEncoders, 144),
-        new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true)
+        new ParallelCommandGroup(
+          new leftencoderMovement(driveBase, gyro, 180),
+          new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true)
         ),
         new intakeCells(intake, 1, true),
         new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
-        new intakeCells(intake, 1, true),
         new intakeCells(intake, 0, true),
-        new leftencoderMovement(driveBase, mainEncoders, 196),
+        new leftencoderMovement(driveBase, gyro, 360),
         new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
         new vLED(visionSensor, true),
-        new visionTarget(visionSensor, driveBase, launcher, gyro, true));
-     
+        new visionTarget(visionSensor, driveBase, launcher, gyro, true)
+        );
       /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
       The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 
       power cells, conduct one more left sweeping turn, and fire.
@@ -181,7 +180,7 @@ public class RobotContainer {
       new intakeCells(intake, 1, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
       new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, 144),
+      new leftencoderMovement(driveBase, gyro, 360),
       new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),

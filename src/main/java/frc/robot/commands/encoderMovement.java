@@ -62,13 +62,12 @@ public class encoderMovement extends CommandBase {
   @Override
   public void execute() {
     averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
-    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.02;
+    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.01;
     error = setpoint - averageEncoder;
     this.rcw = (P *error);
-    double Lspeed = (rcw - Straighten)/2;
-    double Rspeed = (rcw + Straighten)/2;
+    double Lspeed = ((rcw - Straighten)/2) + 0.075;
+    double Rspeed = ((rcw + Straighten)/2) + 0.075;
     driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
-    
   }
   // Called once the command ends or is interrupted.
   @Override
