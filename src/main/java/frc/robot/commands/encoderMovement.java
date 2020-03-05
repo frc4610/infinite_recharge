@@ -19,8 +19,8 @@ public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
   private double P = .005;//max p before oscillation of period T is ku. Use .6 Ku
-  private double I = .000001;//use 1.2Ku/T
-  private double D = .05;//use 3KuT/40
+  private double I = .00000;//use 1.2Ku/T
+  private double D = .0;//use 3KuT/40
   private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
   private navX turnCorrection;
