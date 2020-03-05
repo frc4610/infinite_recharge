@@ -33,13 +33,14 @@ public class leftencoderMovement extends CommandBase {
    * 
    * 
    */
-  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, double desiredAngle) {
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double desiredAngle) {
     driveBase = tempDrive;
     EncoderPair = Encoder;
     setpoint = desiredAngle;
+    gyro = Gyro;
     addRequirements(tempDrive);
     addRequirements(Encoder);
-    //require gyro
+    addRequirements(Gyro);
   }
    
   // Use addRequirements() here to declare subsystem dependencies.
@@ -65,6 +66,7 @@ public class leftencoderMovement extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveBase.move(ControlMode.PercentOutput, 0, 0);
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
   }
