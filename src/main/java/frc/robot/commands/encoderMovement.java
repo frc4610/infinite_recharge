@@ -77,7 +77,7 @@ public class encoderMovement extends CommandBase {
     speedR = speedL;
     speedL -= Straighten;
     speedR += Straighten;
-    driveBase.hardSet(ControlMode.PercentOutput, speedL, speedR);
+    driveBase.move(ControlMode.PercentOutput, speedL, speedR);
     priorError = error;
   }
   // Called once the command ends or is interrupted.
@@ -90,7 +90,7 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 10||timer.get() >= 7){
+    if(Math.abs(error) <= 10||timer.get() >= 17){
       return true;
     }
     else{
