@@ -115,6 +115,28 @@ public class DriveBase extends SubsystemBase {
   }
 
   /**
+   * 
+   * @param speedL
+   * @param speedR
+   */
+  public void hardSet(ControlMode mode, double speedL, double speedR)
+  {
+    setOpenLoopRamp(0);
+    leftLeadTalon.set(mode, speedL);
+    righLeadTalon.set(mode, speedR);
+  }
+
+  /**
+   * 
+   * @param seconds
+   */
+  public void setOpenLoopRamp(double seconds)
+  {
+    leftLeadTalon.configOpenloopRamp(seconds);
+    righLeadTalon.configOpenloopRamp(seconds);
+  }
+
+  /**
    * Stops the drivebase entirely
    */
   public void stopDrivebase()
