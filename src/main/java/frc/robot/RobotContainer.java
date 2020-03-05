@@ -168,25 +168,6 @@ public class RobotContainer {
       power cells, conduct one more left sweeping turn, and fire.
       */
     } 
-    else if(Robot.goal.getSelected().equals("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch")){
-      return new SequentialCommandGroup(new delay(0),
-      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
-      new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new vLED(visionSensor, false),
-      new navXTurn(gyro, driveBase, 180, true),
-      new intakeCells(intake, .5, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
-      new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
-      new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new vLED(visionSensor, false));
-      /*This Auto Goal is to be chosen when parallel with the trench, facing in the direction of the Power Port.
-      The code will auto aim, launch 3 power cells, turn towards the 3 power cells, picking up the 3 power cells, 
-      doing a left sweeping turn, and firing.
-      */
-    }
     else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
