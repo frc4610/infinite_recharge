@@ -57,6 +57,7 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    limeL.vLEDon();
     autoTimer.start();
     timer.start();
   }
@@ -128,7 +129,7 @@ public class visionTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get())) && !isAuto)
+    if((!RobotContainer.driverRightBumper.get()) && !isAuto)
     {
       return true;
     }
