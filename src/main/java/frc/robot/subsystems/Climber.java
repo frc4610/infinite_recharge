@@ -41,7 +41,7 @@ public class Climber extends SubsystemBase {
 
   public void set(double speed)
   {
-    if(!limitState() && speed > 0)
+    if(limitState() && speed > 0)
     climber.set(speed);
   }
 
