@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  double P = 0.0075;
+  double P = 0.005;
   double setpoint;
   navX gyro;
   DriveBase driveBase;
@@ -61,7 +61,9 @@ public class navXTurn extends CommandBase {
   public void end(boolean interrupted) {
     timer.reset();
     timer.stop();
-    RobotContainer.startTankDrive();
+    if(!isAuto){
+      RobotContainer.startTankDrive();
+    }
   }
   
   // Returns true when the command should end.
@@ -72,7 +74,7 @@ public class navXTurn extends CommandBase {
     }
     else
     {
-      return timer.get() > 1;
+      return timer.get() > 2;
     }
   }
 }

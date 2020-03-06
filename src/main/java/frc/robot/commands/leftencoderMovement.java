@@ -9,8 +9,11 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 
 public class leftencoderMovement extends CommandBase {
@@ -18,6 +21,7 @@ public class leftencoderMovement extends CommandBase {
   private double P = .005;
   private double rcw;
   private navX gyro;
+  private encoder EncoderPair;
   private double error;
   private double setpoint;
   private DriveBase driveBase;
@@ -32,6 +36,7 @@ public class leftencoderMovement extends CommandBase {
     driveBase = tempDrive;
     gyro = gyroscope;
     setpoint = angle;
+    EncoderPair = RobotContainer.mainEncoders;
     addRequirements(tempDrive);
     addRequirements(gyroscope);
   }
@@ -50,19 +55,19 @@ public class leftencoderMovement extends CommandBase {
     error = (setpoint - target);
     this.rcw = (P *error);
     double Lspeed = rcw;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, 0);
-    
+    driveBase.move(ControlMode.PercentOutput, Lspeed + 0.025, (Lspeed/2.25) + 0.025);
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    EncoderPair.resetencoderL();
+    EncoderPair.resetencoderR();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 2){
+    if(Math.abs(error) <= 4){
       return true;
     }
     else{

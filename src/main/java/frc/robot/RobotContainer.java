@@ -153,15 +153,13 @@ public class RobotContainer {
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
       return new SequentialCommandGroup(new delay(0),
         new launchSystem(launcher, Constants.indexNEOSpeed, true),
-        new ParallelCommandGroup(
-          new leftencoderMovement(driveBase, gyro, 180),
-          new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true)
-        ),
+        new leftencoderMovement(driveBase, gyro, 180),
+        new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
         new intakeCells(intake, 1, true),
         new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
         new intakeCells(intake, 0, true),
-        new leftencoderMovement(driveBase, gyro, 360),
-        new encoderMovement(driveBase, mainEncoders, gyro, 360, 240),
+        new navXTurn(gyro, driveBase, 360, true),
+        new encoderMovement(driveBase, mainEncoders, gyro, 360, 244),
         new vLED(visionSensor, true),
         new visionTarget(visionSensor, driveBase, launcher, gyro, true)
         );
@@ -193,10 +191,10 @@ public class RobotContainer {
     else if(Robot.goal.getSelected().equals("Steal, Launch 5 Power Cells")){
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
-      new intakeCells(intake, .5, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24),
+      new intakeCells(intake, 1, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 48),
       new intakeCells(intake, 0, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -48),
       new navXTurn(gyro, driveBase, -90, true),
       new encoderMovement(driveBase, mainEncoders, gyro, -90, 24),
       new navXTurn(gyro, driveBase, -180, true),
