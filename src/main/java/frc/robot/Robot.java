@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotContainer.intake.neutralMotors();
     RobotContainer.driveBase.setOpenLoopRamp(.75);
     RobotContainer.startTankDrive();
     RobotContainer.startClimb();
