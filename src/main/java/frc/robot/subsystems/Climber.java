@@ -26,9 +26,10 @@ public class Climber extends SubsystemBase {
    * Creates a new Climber.
    */
   public Climber() {
-    limitSwitch = new DigitalInput(0);
+    limitSwitch = new DigitalInput(5);
     climber = new CANSparkMax(5, MotorType.kBrushless);
     climber.setIdleMode(IdleMode.kBrake);
+    climber.setInverted(true);
     climber.burnFlash();
     climbPID = climber.getPIDController();
     climbEncoder = climber.getEncoder();
@@ -41,8 +42,14 @@ public class Climber extends SubsystemBase {
 
   public void set(double speed)
   {
-    if(limitState() && speed > 0)
-    climber.set(speed);
+    if(!(limitState() && speed < 0))
+    {
+      climber.set(speed);
+    }
+    else
+    {
+      climber.set(0);
+    }
   }
 
   public boolean limitState()

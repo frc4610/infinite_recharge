@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Limit", RobotContainer.climber.limitState());
     //RobotContainer.lights.setLEDPulse(0, 5);
-    RobotContainer.lights.setLEDRainbowBounceBack();
+    RobotContainer.lights.setLEDRainbow();
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("Climb Position", RobotContainer.climber.getEnc());

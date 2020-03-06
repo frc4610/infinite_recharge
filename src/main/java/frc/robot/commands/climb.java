@@ -34,11 +34,11 @@ public class climb extends CommandBase {
     double trigValueR = RobotContainer.operator.getRawAxis(3);
     if(Math.abs(trigValueL) > .02)
     {
-      climber.set(trigValueL);
+      climber.set(-trigValueL);
     }
     else if(Math.abs(trigValueR) > .02)
     {
-      climber.set(-trigValueR);
+      climber.set(trigValueR);
     }
     else
     {
