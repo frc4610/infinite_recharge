@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.lang.annotation.Target;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
@@ -71,8 +73,10 @@ public class Launcher extends SubsystemBase {
     PIDcontrollerR =  launcherRight.getPIDController();
     encoderL = launcherLeft.getEncoder();
     encoderR = launcherRight.getEncoder();
-    PIDcontrollerL.setP(1);
-    PIDcontrollerR.setP(1);
+    PIDcontrollerL.setFF(.00000481);
+    PIDcontrollerR.setFF(.00000481);
+    PIDcontrollerL.setP(0);
+    PIDcontrollerR.setP(0);
     PIDcontrollerL.setOutputRange(-1, 1);
     PIDcontrollerR.setOutputRange(-1, 1);
   }
@@ -84,11 +88,11 @@ public class Launcher extends SubsystemBase {
 
   public void feed(final double speed) {
     feedController.set(ControlMode.PercentOutput, speed);
-  }
+  } 
 
   public void launch(final double Speed) {
-    PIDcontrollerL.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
-    PIDcontrollerR.setReference(Speed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    PIDcontrollerL.setReference(Constants.launchNEOSpeed * Constants.launchMaxVelocity, ControlType.kVelocity);
+    PIDcontrollerR.setReference(Constants.launchNEOSpeed * Constants.launchMaxVelocity, ControlType.kVelocity);
   }
 
   public void stopLaunching() {
@@ -115,5 +119,9 @@ public class Launcher extends SubsystemBase {
     return launcherLeft.getEncoder().getVelocity();
 
   }
- 
+ public void maxSpeed(double MaxSpeed)
+ {
+  PIDcontrollerL.setOutputRange(-1, MaxSpeed);
+  PIDcontrollerR.setOutputRange(-1, MaxSpeed);
+ }
 }

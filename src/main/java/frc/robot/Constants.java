@@ -30,7 +30,7 @@ public final class Constants {
     public static double feedNEOSpeed = .80;
     public static double baselineLaunchSpeedLower = .44;
     public static double baselineLaunchSpeedHigher = .214;
-    public static double launchNEOSpeed = .74;
+    public static double launchNEOSpeed = .50;
     public static double indexNEOSpeed = .8;
     public static double kp = .02;
     public static double minPower = .04;

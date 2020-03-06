@@ -16,6 +16,7 @@ import frc.robot.subsystems.Launcher;
 
 
 
+
 public class launchSystem extends CommandBase {
   private Launcher launcher;
   private double indexSpeed;
@@ -25,6 +26,7 @@ public class launchSystem extends CommandBase {
   private boolean previousState;
   private Timer feedTimer;
   private double currentSpeed;
+  
   /**
    * Creates a new launchSystem.
    */
@@ -55,7 +57,7 @@ public class launchSystem extends CommandBase {
   @Override
   public void execute() 
   {
-    if((launcher.GetLauncherSpeed() - 5) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
+    if((launcher.GetLauncherSpeed() -5 ) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
       {
         launcher.feed(Constants.feedNEOSpeed);
       }
@@ -88,14 +90,12 @@ public class launchSystem extends CommandBase {
       {
         launcher.feed(0);
       }*/
-
-      launcher.feed(feedSpeed);
       launcher.index(indexSpeed);
     }
     double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
     if(launchTriggerValue > .02)
     {
-      launcher.launch(launchTriggerValue);
+      launcher.launch(Constants.launchNEOSpeed);
     }
     else
     {

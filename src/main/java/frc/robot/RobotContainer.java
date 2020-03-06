@@ -290,7 +290,7 @@ public double launcher()
 {
   return 0;
 }
-  public static boolean stateOfFeed(){
+  /*public static boolean stateOfFeed(){
   if(launcher.GetIR() <= 15)
    {
       return true;
@@ -299,6 +299,6 @@ public double launcher()
     {
       return false;
     }
-  } 
+  } */
 
 }
