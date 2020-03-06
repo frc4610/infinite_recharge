@@ -92,7 +92,6 @@ public class launchSystem extends CommandBase {
       }*/
       launcher.index(indexSpeed);
     }
-    double launchTriggerValue = RobotContainer.driver.getRawAxis(3);
     if(launchTriggerValue > .02)
     {
       launcher.launch(Constants.launchNEOSpeed);
@@ -119,7 +118,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      return timer.get() > 3;
+      return timer.get() > 6;
     }
   }
 }

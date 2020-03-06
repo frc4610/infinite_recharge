@@ -100,10 +100,13 @@ public class RobotContainer {
     // Configure the button bindings
     driverLeftBumper.whenPressed(new vLED(visionSensor, true), false);
     driverLeftBumper.whenReleased(new vLED(visionSensor, false), false);
+    ///driverAButton.whenPressed(new encoderMovement(driveBase, mainEncoders, gyro, navX.getYaw(), 60), false);
     driverRightBumper.whenPressed(new visionTarget(visionSensor, driveBase, launcher, gyro, false), false);
     driverLeftJoyButton.whenPressed(new slowMode());
+    //driverLeftJoyButton.whenPressed(new slowMode());
     operatorAButton.whenPressed(new feedUnjam(launcher, intake), false);
     operatorYButton.whenPressed(new intakeCells(intake, .8, false), true);
+    operatorBButton.whenPressed(new feedUnjam(launcher, intake), false);
     operatorLeftBumper.whenPressed(new intakePivot(intake, Constants.bottomIntakeEncoderPosition, false), true);
     operatorRightBumper.whenPressed(new intakePivot(intake, Constants.middleIntakeEncoderPosition, false), true);
     configureButtonBindings();
@@ -132,20 +135,31 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 58));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
-    else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
+    else if(Robot.goal.getSelected().equals("Launch from current pos, back"))
+    {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
-      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
-      new intakeCells(intake, .5, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -58));
+      //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
+    }
+    else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
+      return new SequentialCommandGroup(new delay(0),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      //new vLED(visionSensor, true),
+      new launchSystem(launcher, Constants.indexNEOSpeed, Constants.feedNEOSpeed, true),
+      //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
+      new leftencoderMovement(driveBase, mainEncoders, 144),
+      new intakeCells(intake, 1, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, 240),
       new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, gyro, 116),
+      new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
+      new leftencoderMovement(driveBase, mainEncoders, 144),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
@@ -164,7 +178,7 @@ public class RobotContainer {
       new intakeCells(intake, .5, true),
       new encoderMovement(driveBase, mainEncoders, gyro, 180, 72),
       new intakeCells(intake, 0, true),
-      new leftencoderMovement(driveBase, mainEncoders, gyro, 76),
+      new leftencoderMovement(driveBase, mainEncoders, 76),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
@@ -195,7 +209,6 @@ public class RobotContainer {
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true),
-      new vLED(visionSensor, false),
       new encoderMovement(driveBase, mainEncoders, gyro, 0, -24),
       new navXTurn(gyro, driveBase, -90, true),
       new intakeCells(intake, .5, true),
@@ -224,7 +237,7 @@ public class RobotContainer {
     else
     {
       return new SequentialCommandGroup(new delay(0),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, 24));
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, 48));
     }
   } 
 
@@ -240,7 +253,7 @@ public class RobotContainer {
 
   public static void startManualLaunch()
   {
-    manualLaunch.schedule(false);
+    manualLaunch.schedule(true);
   }
   public static boolean tankOverride()
   {

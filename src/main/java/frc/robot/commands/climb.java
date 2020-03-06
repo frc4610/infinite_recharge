@@ -30,10 +30,15 @@ public class climb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double joyValueL = RobotContainer.operator.getRawAxis(1);
-    if(Math.abs(joyValueL) > .02)
+    double trigValueL = RobotContainer.operator.getRawAxis(2);
+    double trigValueR = RobotContainer.operator.getRawAxis(3);
+    if(Math.abs(trigValueL) > .02)
     {
-    climber.set(joyValueL);
+      climber.set(trigValueL);
+    }
+    else if(Math.abs(trigValueR) > .02)
+    {
+      climber.set(-trigValueR);
     }
     else
     {
