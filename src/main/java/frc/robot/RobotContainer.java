@@ -152,15 +152,15 @@ public class RobotContainer {
       return new SequentialCommandGroup(new delay(0),
       new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
+      //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new navXTurn(gyro, driveBase, -180, true),
       new intakeCells(intake, 1, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, 180, 120),
+      new encoderMovement(driveBase, mainEncoders, gyro, -180, 208),
       new intakeCells(intake, 0, true),
       //new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
       new navXTurn(gyro, driveBase, 0, true),
       new vLED(visionSensor, true),
-      new visionTarget(visionSensor, driveBase, launcher, gyro, true),
+      //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));
       /*This Auto Goal is to be chosen when directly in front of the Power Port, facing it, flushly.
       The code will Launch 3 power cells, conduct a left sweeping turn 180, drive forward, grabbing 3 more 

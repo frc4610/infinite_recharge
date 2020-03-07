@@ -16,19 +16,22 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 public class navXTurn extends CommandBase {
-  double P = 0.005;
-  double setpoint;
-  navX gyro;
-  DriveBase driveBase;
-  private double rcw;
+  private double P = 0.00555;
+  private double I = .00000555;
+  private double integral = 0;
+  private double setpoint;
+  private double speed;
+  private double error;
+  private navX gyro;
+  private DriveBase driveBase;
   private Timer timer;
   private boolean isAuto;
 
   /**
    * Creates a new navXTurn.
    */
-  public navXTurn(navX gyro, DriveBase tempdrive, double Setpoint, boolean auto){
-    this.gyro = (navX) gyro;
+  public navXTurn(navX Gyro, DriveBase tempdrive, double Setpoint, boolean auto){
+    gyro = Gyro;
     driveBase = tempdrive;
     timer = new Timer();
     setpoint = Setpoint;
@@ -41,19 +44,18 @@ public class navXTurn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = 0;
+    integral = 0;
     timer.start();
-  }
-
-  public void PID() {
-    double error = setpoint - gyro.getYaw(); // Error = Target - Actual
-    this.rcw = (P * error); //Equation for power(rcw = power)
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PID();
-    driveBase.move(ControlMode.PercentOutput, rcw, -rcw);
+    error = setpoint - gyro.getYaw(); // Error = Target - Actual
+    integral += (error * .02);
+    speed = (P * error) + (I * integral); //Equation for power(rcw = power)
+    driveBase.move(ControlMode.PercentOutput, speed, -speed);
   }
 
   // Called once the command ends or is interrupted.+
@@ -75,7 +77,7 @@ public class navXTurn extends CommandBase {
     }
     else
     {
-      return timer.get() > 2;
+      return timer.get() > 3;
     }
   }
 }

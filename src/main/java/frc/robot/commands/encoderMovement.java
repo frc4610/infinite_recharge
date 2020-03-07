@@ -18,9 +18,9 @@ import frc.robot.subsystems.navX;
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private double P = .4;//max p before oscillation of period T is ku. Use .45 Ku --- Ku = .04, T ~= .5
-  private double I = .000;//use .54Ku/T
-  private double D = .00;//use 3KuT/40
+  private double P = .02;//max p before oscillation of period T is ku. Use .6 Ku --- Ku = .04, T ~= .5
+  private double I = .00002;//use 1.2Ku/T
+  private double D = .000;//use 3KuT/40
   private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
   private navX turnCorrection;
@@ -57,6 +57,7 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = 0;
     priorError = 0;
     integral = 0;
     derivative = 0;
@@ -77,7 +78,7 @@ public class encoderMovement extends CommandBase {
     speedR = speedL;
     speedL -= Straighten;
     speedR += Straighten;
-    driveBase.hardSet(ControlMode.PercentOutput, speedL, speedR);
+    driveBase.move(ControlMode.PercentOutput, speedL, speedR);
     priorError = error;
   }
   // Called once the command ends or is interrupted.
@@ -90,8 +91,8 @@ public class encoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 10||timer.get() >= 7){
-      return false;
+    if(Math.abs(error) <= 3||timer.get() >= 5){
+      return true;
     }
     else{
       return false;
