@@ -47,7 +47,7 @@ public class feedUnjam extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     launcher.feed(0);
-    launcher.stopLaunching();
+    launcher.stopLaunching(true);
     intake.intakeCells(0);
   }
 

@@ -90,7 +90,7 @@ public void setLEDRainbowBounceBack()
     hue = (int) ((rainbowFirstPixel + (i *180 / ledBuffer.getLength())) % 180);
     if(backwards)
     {
-      ledBuffer.setHSV((180 - i), hue, 255, 100);
+      ledBuffer.setHSV((50 - i), hue, 255, 100);
     }
     else
     {

@@ -45,7 +45,14 @@ public class climb extends CommandBase {
     }
     else
     {
-      climber.set(0);
+      if((!climber.limitState()) && RobotContainer.isAuto())
+      {
+        climber.set(-.1);
+      }
+      else
+      {
+        climber.set(0);
+      }
     }
   }
 

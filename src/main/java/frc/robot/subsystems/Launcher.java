@@ -88,11 +88,14 @@ public class Launcher extends SubsystemBase {
     launcherLeft.set(Speed);
   }
 
-  public void stopLaunching() {
+  public void stopLaunching(boolean stopFlywheel) {
     indexRight.set(ControlMode.PercentOutput, 0);
     indexLeft.set(ControlMode.PercentOutput, 0);
-    launcherLeft.set(0);
-    launcherRight.set(0);
+    if(stopFlywheel)
+    {
+      launcherLeft.set(0);
+      launcherRight.set(0);
+    }
     feedController.set(ControlMode.PercentOutput, 0);
   }
    

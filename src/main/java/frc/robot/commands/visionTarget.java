@@ -32,20 +32,22 @@ public class visionTarget extends CommandBase {
   private double launchSpeed;
   private double moveSpeed;
   private double error;
-  private double P = 0.015;
-  private double I = .0000015;
+  private double P = 0.0212;
+  private double I = .000212;
   private double integral = 0;
   private double setpoint;
 
   private boolean isAuto;
+  private boolean stopLaunch;
 
   /**
    * Creates a new visionTarget.
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto, boolean stopFlywheel) 
   {
+    stopLaunch = stopFlywheel;
     gyro = tGyro;
     driveBase = tdriveBase;
     limeL = plimeL;
@@ -82,26 +84,28 @@ public class visionTarget extends CommandBase {
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
-    /*if(Math.abs(xValueOff) > 2)
+    if(Math.abs(xValueOff) < 3 && Math.abs(xValueOff) > .8)
       {
-        leftSpeed = Constants.kp*xValueOff;
-        rightSpeed = -Constants.kp*xValueOff;
+        if(moveSpeed > 0)
+        {
+          moveSpeed += .02;
+        }
+        else
+        {
+          moveSpeed -= .02;
+        }
+        
       }
-    else if(Math.abs(xValueOff) <= 2)
-      {
-        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
-      }*/
     driveBase.move(ControlMode.PercentOutput , moveSpeed, -moveSpeed);
-    if(distanceToPowerPort < 196)
+    if(distanceToPowerPort < 125)
     {
-      launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
+      launchSpeed = .5;
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
     else
     {
-      launchSpeed = ((.202377876*distanceToPowerPort) + 12.04764524)/100;
+      launchSpeed = ((.0011043603*distanceToPowerPort) + .354096);
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
@@ -131,7 +135,7 @@ public class visionTarget extends CommandBase {
     }
     else{
       limeL.vLEDoff();
-      launcher.stopLaunching();
+      launcher.stopLaunching(stopLaunch);
     }
   }
 

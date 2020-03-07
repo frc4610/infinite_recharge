@@ -17,7 +17,7 @@ package frc.robot;
  */
 public final class Constants {
     public static double middleIntakeEncoderPosition = -1205;
-    public static double bottomIntakeEncoderPosition = -1350;
+    public static double bottomIntakeEncoderPosition = -1375;
     public static double groundToPowerPortIn = 98.25;
     public static double groundToLimeLensIn = 18.75;
     public static double groundToLimeLensDeg = 16.641;

@@ -100,6 +100,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    RobotContainer.startClimb();
+    RobotContainer.isAuto(true);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     RobotContainer.gyro.resetGyro();
@@ -119,11 +121,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotContainer.isAuto(false);
+    RobotContainer.startClimb();
     RobotContainer.startClimbTimer();
     RobotContainer.intake.neutralMotors();
     RobotContainer.driveBase.setOpenLoopRamp(.75);
     RobotContainer.startTankDrive();
-    RobotContainer.startClimb();
     RobotContainer.startManualLaunch();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // This makes sure that the autonomous stops running when
