@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -67,6 +68,8 @@ public class RobotContainer {
   public final static climb mainClimb = new climb(climber);
   public final static launchSystem manualLaunch = new launchSystem(launcher, Constants.indexNEOSpeed, false);
 
+  //Misc
+  private static Timer climbTimer;
   private static boolean slow;
 
   //OI Devices
@@ -95,6 +98,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    climbTimer = new Timer();
     slow = true;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // Configure the button bindings
@@ -261,6 +265,21 @@ public class RobotContainer {
   public static double pivotEncoder()
   {
     return intake.getPivotEncoderVaule();
+  }
+
+  public static void startClimbTimer()
+  {
+    climbTimer.start();
+  }
+
+  public static double getClimbTimer()
+  {
+    return climbTimer.get();
+  }
+
+  public static void stopClimbTimer()
+  {
+    climbTimer.stop();
   }
 
   public static void initMotor(TalonSRX motor, double peak)

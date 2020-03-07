@@ -29,8 +29,6 @@ public class Robot extends TimedRobot {
 
   public RobotContainer m_robotContainer;
   public static SendableChooser<String> goal = new SendableChooser<>();
-  private double DistanceL;
-  private double DistanceR;
   private double Straighten;
 
 
@@ -40,6 +38,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    RobotContainer.climber.limitSetup(false);
     PortForwarder.add(5801, "limelight.local", 5801);
     SmartDashboard.putNumber("Delay", 0);
     SmartDashboard.putNumber("Manual Launch Power", .5);
@@ -75,9 +74,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("Climb Position", RobotContainer.climber.getEnc());
-    SmartDashboard.putNumber("Encoder L", RobotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("Encoder R", RobotContainer.mainEncoders.getDistanceRight());
-    //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
+    SmartDashboard.putNumber("Pivot", RobotContainer.intake.getPivotEncoderVaule());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -122,6 +119,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotContainer.startClimbTimer();
     RobotContainer.intake.neutralMotors();
     RobotContainer.driveBase.setOpenLoopRamp(.75);
     RobotContainer.startTankDrive();
@@ -142,8 +140,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("DistanceL", DistanceL);
-    SmartDashboard.putNumber("DistanceR", DistanceR);
     SmartDashboard.putNumber("Gyro", Straighten);
   }
 
