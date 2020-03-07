@@ -30,6 +30,12 @@ public class visionTarget extends CommandBase {
   private double distanceToPowerPort;
   private double xValueOff;
   private double launchSpeed;
+  private double moveSpeed;
+  private double error;
+  private double P = 0.015;
+  private double I = .0000015;
+  private double integral = 0;
+  private double setpoint;
 
   private boolean isAuto;
 
@@ -57,6 +63,8 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = 0;
+    integral = 0;
     limeL.vLEDon();
     autoTimer.start();
     timer.start();
@@ -68,8 +76,9 @@ public class visionTarget extends CommandBase {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
     xValueOff = limeL.getXValueOff();
-    double error = xValueOff;
-    error *=  Constants.kp;
+    error = xValueOff;
+    integral += (error * .02);
+    moveSpeed = (error * P) + (integral * I);
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
@@ -83,7 +92,7 @@ public class visionTarget extends CommandBase {
         leftSpeed = Constants.kp*xValueOff + Constants.minPower;
         rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
       }*/
-    driveBase.move(ControlMode.PercentOutput , error, -error);
+    driveBase.move(ControlMode.PercentOutput , moveSpeed, -moveSpeed);
     if(distanceToPowerPort < 196)
     {
       launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
@@ -97,7 +106,7 @@ public class visionTarget extends CommandBase {
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
 
-    if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*launchSpeed && Math.abs(xValueOff) <= 3.5)
+    if((launcher.GetLauncherSpeed() + 200) >= Constants.launchMaxVelocity*launchSpeed && Math.abs(xValueOff) <= 4)
     {
       launcher.feed(Constants.feedNEOSpeed);
       launcher.index(Constants.indexNEOSpeed);
