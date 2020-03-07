@@ -121,7 +121,8 @@ public class DriveBase extends SubsystemBase {
    */
   public void hardSet(ControlMode mode, double speedL, double speedR)
   {
-    setOpenLoopRamp(0);
+    leftLeadTalon.configOpenloopRamp(0);
+    righLeadTalon.configOpenloopRamp(0);
     leftLeadTalon.set(mode, speedL);
     righLeadTalon.set(mode, speedR);
   }
