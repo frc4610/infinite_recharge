@@ -145,7 +145,7 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false),
-      new encoderMovement(driveBase, mainEncoders, gyro, 0, -30));
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -100));
       //This Auto Goal Launches 3 Power Cells, and drives forward, off the initiation line
     }
     else if(Robot.goal.getSelected().equals("Launch directly facing port, Regrab Trench, Launch")){
@@ -155,10 +155,11 @@ public class RobotContainer {
       //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new navXTurn(gyro, driveBase, -180, true),
       new intakeCells(intake, 1, true),
-      new encoderMovement(driveBase, mainEncoders, gyro, -180, 208),
-      new intakeCells(intake, 0, true),
+      new encoderMovement(driveBase, mainEncoders, gyro, -180, 100),
+      new encoderMovement(driveBase, mainEncoders, gyro, -180, 100),
       //new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
       new navXTurn(gyro, driveBase, 0, true),
+      new intakeCells(intake, 0, true),
       new vLED(visionSensor, true),
       //new visionTarget(visionSensor, driveBase, launcher, gyro, true),
       new vLED(visionSensor, false));

@@ -18,8 +18,8 @@ import frc.robot.subsystems.navX;
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private double P = .02;//max p before oscillation of period T is ku. Use .6 Ku --- Ku = .04, T ~= .5
-  private double I = .00002;//use 1.2Ku/T
+  private double P = .0068;//max p before oscillation of period T is ku. Use .6 Ku --- Ku = .04, T ~= .5
+  private double I = .0000068;//use 1.2Ku/T
   private double D = .000;//use 3KuT/40
   private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
@@ -70,7 +70,7 @@ public class encoderMovement extends CommandBase {
   @Override
   public void execute() {
     averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
-    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.02;
+    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.005;
     error = setpoint - averageEncoder;
     integral += (error * .02);//.02 is for time in seconds
     derivative = (error - priorError)/ .02;
@@ -86,12 +86,13 @@ public class encoderMovement extends CommandBase {
   public void end(boolean interrupted) {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
+    driveBase.move(ControlMode.PercentOutput, 0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 3||timer.get() >= 5){
+    if(Math.abs(error) <= 10||timer.get() >= 5){
       return true;
     }
     else{
