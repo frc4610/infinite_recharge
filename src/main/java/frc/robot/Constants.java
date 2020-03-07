@@ -30,7 +30,7 @@ public final class Constants {
     public static double feedNEOSpeed = .90;
     public static double baselineLaunchSpeedLower = .44;
     public static double baselineLaunchSpeedHigher = .214;
-    public static double launchNEOSpeed = .50;
+    public static double launchNEOSpeed = .5;
     public static double indexNEOSpeed = .8;
     public static double kp = .02;
     public static double minPower = .04;
@@ -43,4 +43,9 @@ public final class Constants {
     public static double maxFalconVelocity = 22040;
     public static double launchMaxVelocity = 5650;
     public static double overheatValue = 50;
+    
+    public static double launchF = .0000;
+    public static double launchP = 0;
+    public static double launchD = 0;
+    public static double launchI = 0;
 }

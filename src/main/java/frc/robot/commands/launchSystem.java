@@ -18,6 +18,7 @@ import frc.robot.subsystems.Launcher;
 
 
 public class launchSystem extends CommandBase {
+  private double launchTriggerValue;
   private Launcher launcher;
   private double indexSpeed;
   private double feedSpeed;
@@ -46,24 +47,22 @@ public class launchSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(!RobotContainer.stateOfFeed())
-    {
-      previousState = true;
-    }
-    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    if((launcher.GetLauncherSpeed() -5 ) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
+    launchTriggerValue = RobotContainer.driver.getRawAxis(3);
+       if((launcher.GetLauncherSpeed() -5 ) >= Constants.launchMaxVelocity*Constants.launchNEOSpeed)
       {
         launcher.feed(Constants.feedNEOSpeed);
+        launcher.index(Constants.indexNEOSpeed);
       }
     else 
       {
         launcher.feed(0);
+        launcher.stopIndex();
       }
     if(timer.get() > Constants.feedDelay)
     {

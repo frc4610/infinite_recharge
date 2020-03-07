@@ -14,24 +14,23 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ControlType;
+import com.revrobotics.SparkMax;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Launcher extends SubsystemBase {
-  private final VictorSPX indexLeft;
-  private final VictorSPX indexRight;
-  private final VictorSPX feedController;
-  private final CANSparkMax launcherLeft;
-  private final CANSparkMax launcherRight;
-  private final ColorSensorV3 ColorSensor;
-  private final CANPIDController PIDcontrollerL;
-  private final CANPIDController PIDcontrollerR;
-  private final CANEncoder encoderL;
-  private final CANEncoder encoderR;
+  private  VictorSPX indexLeft;
+  private  VictorSPX indexRight;
+  private  VictorSPX feedController;
+  private  CANSparkMax launcherLeft;
+  private  CANSparkMax launcherRight;
+  private  CANPIDController PIDcontrollerL;
+  private  CANPIDController PIDcontrollerR;
+  private  CANEncoder encoderL;
+  private  CANEncoder encoderR;
   
   
     
@@ -66,17 +65,20 @@ public class Launcher extends SubsystemBase {
     launcherLeft.burnFlash();
     launcherRight.burnFlash();
 
-    ColorSensor = new ColorSensorV3(I2C.Port.kOnboard); 
     PIDcontrollerL =  launcherLeft.getPIDController();
     PIDcontrollerR =  launcherRight.getPIDController();
     encoderL = launcherLeft.getEncoder();
     encoderR = launcherRight.getEncoder();
-    PIDcontrollerL.setFF(.00000481);
-    PIDcontrollerR.setFF(.00000481);
-    PIDcontrollerL.setP(0);
-    PIDcontrollerR.setP(0);
-    PIDcontrollerL.setOutputRange(-1, 1);
-    PIDcontrollerR.setOutputRange(-1, 1);
+    PIDcontrollerL.setFF(Constants.launchF);
+    PIDcontrollerR.setFF(Constants.launchF);
+    PIDcontrollerL.setP(Constants.launchP);//Ku.45
+    PIDcontrollerR.setP(Constants.launchP);
+    PIDcontrollerL.setD(Constants.launchD);
+    PIDcontrollerR.setD(Constants.launchD);
+    PIDcontrollerL.setI(Constants.launchI);//.54Ku/T
+    PIDcontrollerR.setI(Constants.launchI);
+    PIDcontrollerL.setOutputRange(0, .8);
+    PIDcontrollerR.setOutputRange(0, .8);
   }
 
   public void index(final double speed) {
@@ -105,12 +107,7 @@ public class Launcher extends SubsystemBase {
   public void periodic() 
   {
 
-  }
-
-  public int GetIR()
-  {
-    return ColorSensor.getIR();
-  }
+  } 
 
   public double GetLauncherSpeed()
   {
@@ -121,5 +118,10 @@ public class Launcher extends SubsystemBase {
  {
   PIDcontrollerL.setOutputRange(-1, MaxSpeed);
   PIDcontrollerR.setOutputRange(-1, MaxSpeed);
+ }
+ public void stopIndex()
+ {
+  indexRight.set(ControlMode.PercentOutput, 0);
+  indexLeft.set(ControlMode.PercentOutput, 0);
  }
 }
