@@ -18,8 +18,10 @@ import frc.robot.subsystems.navX;
 public class encoderMovement extends CommandBase {
   private double setpoint;
   private double averageEncoder;
-  private  double P = .005;
-  private double rcw;
+  private double P = .0068;//max p before oscillation of period T is ku. Use .6 Ku --- Ku = .04, T ~= .5
+  private double I = .0000068;//use 1.2Ku/T
+  private double D = .000;//use 3KuT/40
+  private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
   private navX turnCorrection;
   private double Straighten;
@@ -27,6 +29,8 @@ public class encoderMovement extends CommandBase {
   private double desiredangle;
   private DriveBase driveBase;
   private Timer timer;
+  private double speedL;
+  private double speedR;
 
   /**
    * Creates a new encoderMovement.
@@ -37,7 +41,7 @@ public class encoderMovement extends CommandBase {
    */
   public encoderMovement(DriveBase tempDrive, encoder Encoder, navX driveCorrection, double anglewanted, double distance){
     driveBase = tempDrive;
-    this.EncoderPair = Encoder;
+    EncoderPair = Encoder;
     turnCorrection = driveCorrection;
     setpoint = distance;
     desiredangle = anglewanted;
@@ -53,6 +57,10 @@ public class encoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = 0;
+    priorError = 0;
+    integral = 0;
+    derivative = 0;
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
     timer.start();
@@ -62,25 +70,29 @@ public class encoderMovement extends CommandBase {
   @Override
   public void execute() {
     averageEncoder = (EncoderPair.getDistanceLeft() + EncoderPair.getDistanceRight())/2;
-    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.02;
+    Straighten = (turnCorrection.getYaw() - desiredangle) * 0.005;
     error = setpoint - averageEncoder;
-    this.rcw = (P *error);
-    double Lspeed = (rcw - Straighten)/2;
-    double Rspeed = (rcw + Straighten)/2;
-    driveBase.move(ControlMode.PercentOutput, Lspeed, Rspeed);
-    
+    integral += (error * .02);//.02 is for time in seconds
+    derivative = (error - priorError)/ .02;
+    speedL = (P * error) + (I*integral) + (D*derivative);
+    speedR = speedL;
+    speedL -= Straighten;
+    speedR += Straighten;
+    driveBase.move(ControlMode.PercentOutput, speedL, speedR);
+    priorError = error;
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
+    driveBase.move(ControlMode.PercentOutput, 0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(error) <= 10||timer.get() >= 7){
+    if(Math.abs(error) <= 10||timer.get() >= 5){
       return true;
     }
     else{

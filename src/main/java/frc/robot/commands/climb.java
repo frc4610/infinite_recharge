@@ -13,6 +13,7 @@ import frc.robot.subsystems.Climber;
 
 public class climb extends CommandBase {
   private Climber climber;
+  private boolean climbValid;
   /**
    * Creates a new climb.
    */
@@ -25,6 +26,7 @@ public class climb extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    climbValid = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,17 +34,25 @@ public class climb extends CommandBase {
   public void execute() {
     double trigValueL = RobotContainer.operator.getRawAxis(2);
     double trigValueR = RobotContainer.operator.getRawAxis(3);
+    climbValid = RobotContainer.getClimbTimer() >= 110 || climber.getEnc() < 25;
     if(Math.abs(trigValueL) > .02)
     {
-      climber.set(trigValueL);
+      climber.set(-trigValueL);
     }
-    else if(Math.abs(trigValueR) > .02)
+    else if(Math.abs(trigValueR) > .02 && climbValid)
     {
-      climber.set(-trigValueR);
+      climber.set(trigValueR);
     }
     else
     {
-      climber.set(0);
+      if((!climber.limitState()) && RobotContainer.isAuto())
+      {
+        climber.set(-.15);
+      }
+      else
+      {
+        climber.set(0);
+      }
     }
   }
 

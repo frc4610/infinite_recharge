@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
@@ -49,7 +48,7 @@ public class DriveBase extends SubsystemBase {
   }
 
   /**
-   * 
+   * Sets speed of drive motors, ramping up and not down
    * @param mode Control mode to control drivebase
    * @param speedL Input, usually speed, of left side of drivebase
    * @param speedR Input, usually speed, of right side of drivebase
@@ -112,6 +111,30 @@ public class DriveBase extends SubsystemBase {
     previousRSpeed = speedR;
     leftLeadTalon.set(mode, speedL);
     righLeadTalon.set(mode, speedR);
+  }
+
+  /**
+   * Hard sets the speed of motors, ignoring the ramp up safeties
+   * @param mode Control mode to control drivebase
+   * @param speedL Input, usually speed, of left side of drivebase
+   * @param speedR Input, usually speed, of right side of drivebase
+   */
+  public void hardSet(ControlMode mode, double speedL, double speedR)
+  {
+    leftLeadTalon.configOpenloopRamp(0);
+    righLeadTalon.configOpenloopRamp(0);
+    leftLeadTalon.set(mode, speedL);
+    righLeadTalon.set(mode, speedR);
+  }
+
+  /**
+   * Sets the open loop ramp rate, mainly for safety after using hard set function
+   * @param seconds Seconds from neutral to full
+   */
+  public void setOpenLoopRamp(double seconds)
+  {
+    leftLeadTalon.configOpenloopRamp(seconds);
+    righLeadTalon.configOpenloopRamp(seconds);
   }
 
   /**
