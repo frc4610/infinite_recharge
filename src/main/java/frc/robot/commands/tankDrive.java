@@ -35,10 +35,15 @@ public class tankDrive extends CommandBase {
   public void execute() {
     double joyValueL = -RobotContainer.driver.getRawAxis(1);
     double joyValueR = -RobotContainer.driver.getRawAxis(5);
-    if(RobotContainer.isSlow())
+    if(RobotContainer.driver.getRawAxis(2) < .02)
     {
       joyValueL /= 2;
       joyValueR /= 2;
+    }
+    else
+    {
+      joyValueL *= .8;
+      joyValueR *= .8;
     }
     tDrivebase.move(ControlMode.PercentOutput, joyValueL, joyValueR);
   }
