@@ -77,6 +77,11 @@ public class Launcher extends SubsystemBase {
     indexRight.set(ControlMode.PercentOutput, speed);
   }
 
+  public void stopIndex() {
+    indexLeft.set(ControlMode.PercentOutput, 0);
+    indexRight.set(ControlMode.PercentOutput, 0);
+  }
+
   public void feed(final double speed) {
     feedController.set(ControlMode.PercentOutput, speed);
   }
