@@ -97,7 +97,7 @@ public class visionTarget extends CommandBase {
         
       }
     driveBase.move(ControlMode.PercentOutput , moveSpeed, -moveSpeed);
-    if(distanceToPowerPort < 125)
+    if(distanceToPowerPort < 90)
     {
       launchSpeed = .5;
       launcher.launch(launchSpeed);
@@ -105,7 +105,7 @@ public class visionTarget extends CommandBase {
     }
     else
     {
-      launchSpeed = ((.0011043603*distanceToPowerPort) + .354096);
+      launchSpeed = ((.00090843*distanceToPowerPort) + .384702);
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
