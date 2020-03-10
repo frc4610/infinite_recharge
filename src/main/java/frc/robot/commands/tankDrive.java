@@ -42,8 +42,8 @@ public class tankDrive extends CommandBase {
     }
     else
     {
-      joyValueL *= .8;
-      joyValueR *= .8;
+      joyValueL *= .9;
+      joyValueR *= .9;
     }
     tDrivebase.move(ControlMode.PercentOutput, joyValueL, joyValueR);
   }
