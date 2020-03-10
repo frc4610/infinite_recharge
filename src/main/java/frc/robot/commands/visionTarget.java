@@ -88,11 +88,11 @@ public class visionTarget extends CommandBase {
       {
         if(moveSpeed > 0)
         {
-          moveSpeed += .015;
+          moveSpeed += .0175;
         }
         else
         {
-          moveSpeed -= .015;
+          moveSpeed -= .0175;
         }
         
       }
@@ -105,7 +105,7 @@ public class visionTarget extends CommandBase {
     }
     else
     {
-      launchSpeed = ((.00090843*distanceToPowerPort) + .392202);
+      launchSpeed = ((.00094843*distanceToPowerPort) + .384702);
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
