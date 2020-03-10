@@ -74,7 +74,7 @@ public class navXTurn extends CommandBase {
     }
     else
     {
-      return timer.get() > 2;
+      return timer.get() > 3;
     }
   }
 }

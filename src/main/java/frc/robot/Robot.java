@@ -73,6 +73,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("Climb Position", RobotContainer.climber.getEnc());
     SmartDashboard.putNumber("Gyro", RobotContainer.gyro.getYaw());
+    SmartDashboard.putNumber("EncoderL", RobotContainer.mainEncoders.getDistanceLeft());
+    SmartDashboard.putNumber("EncoderR", RobotContainer.mainEncoders.getDistanceRight());
     //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
