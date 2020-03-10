@@ -25,7 +25,6 @@ public class visionTarget extends CommandBase {
   private Launcher launcher;
   private Timer timer;
   private Timer autoTimer;
-  private navX gyro;
 
   private double distanceToPowerPort;
   private double xValueOff;
@@ -45,10 +44,9 @@ public class visionTarget extends CommandBase {
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto, boolean stopFlywheel) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, boolean Auto, boolean stopFlywheel) 
   {
     stopLaunch = stopFlywheel;
-    gyro = tGyro;
     driveBase = tdriveBase;
     limeL = plimeL;
     launcher = tLauncher;
