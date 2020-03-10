@@ -160,7 +160,7 @@ public class RobotContainer {
       new vLED(visionSensor, true),
       new visionTarget(visionSensor, driveBase, launcher, gyro, true, false),
       new navXTurn(gyro, driveBase, -180, true),
-      new intakeCells(intake, 1, true),
+      new intakeCells(intake, .8, true),
       new encoderMovement(driveBase, mainEncoders, gyro, -180, 100),
       new encoderMovement(driveBase, mainEncoders, gyro, -180, 100),
       //new encoderMovement(driveBase, mainEncoders, gyro, 180, -48),
@@ -192,6 +192,19 @@ public class RobotContainer {
       /*This code is to be chosen when the robot is positioned directly in front of opponents
       trench  
       */
+    }
+    else if(Robot.goal.getSelected().equals("Helped Drop, Same position")){
+      return new SequentialCommandGroup(new delay(3),
+      new vLED(visionSensor, true),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true, false),
+      new intakePivot(intake, Constants.bottomIntakeEncoderPosition, true),
+      new intakeCells(intake, .8, true),
+      new vLED(visionSensor, true),
+      //new visionTarget(visionSensor, driveBase, launcher, gyro, true, false),
+      new visionTarget(visionSensor, driveBase, launcher, gyro, true, true),
+      new intakeCells(intake, 0, true),
+      new vLED(visionSensor, false),
+      new encoderMovement(driveBase, mainEncoders, gyro, 0, -48));
     }
     else
     {

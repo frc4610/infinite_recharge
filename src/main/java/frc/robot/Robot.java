@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
     //goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
     goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
     goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    goal.addOption("Helped Drop, Same position", "Helped Drop, Same position");
     //goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
     //goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
