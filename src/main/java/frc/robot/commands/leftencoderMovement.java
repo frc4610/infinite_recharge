@@ -16,23 +16,16 @@ import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 
 public class leftencoderMovement extends CommandBase {
-  private double currentangle;
-  private double currentL;
-  private double currentR;
-  private double P = .00678;
-  private double I = .0000678;
-  private double D = 0;
-  private double power;
-  private navX gyro;
+  private double P = .0005;//max p before oscillation of period T is ku. Use .6 Ku
+  private double I = .00000;//use 1.2Ku/T
+  private double D = .0;//use 3KuT/40
+  private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
-  private double errorangle;
-  private double errorL;
-  private double errorR;
-  private double integralangle;
-  private double setpointangle;
-  private double setpointL;
-  private double setpointR;
+  private navX gyro;
+  private double error;
+  private double setpoint;
   private DriveBase driveBase;
+  private double speedL;
   /**
    * Creates a new encoderMovement.
    * 
@@ -40,46 +33,40 @@ public class leftencoderMovement extends CommandBase {
    * 
    * 
    */
-  public leftencoderMovement(DriveBase tempDrive, navX gyroscope, encoder Encoder, double angle, double DistanceL, double DistanceR) {
+  public leftencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double desiredAngle) {
     driveBase = tempDrive;
-    gyro = gyroscope;
     EncoderPair = Encoder;
-    setpointangle = angle;
-    setpointL = DistanceL;
-    setpointR = DistanceR;
-    EncoderPair = RobotContainer.mainEncoders;
+    setpoint = desiredAngle;
+    gyro = Gyro;
     addRequirements(tempDrive);
-    addRequirements(gyroscope);
     addRequirements(Encoder);
+    addRequirements(Gyro);
   }
    
   // Use addRequirements() here to declare subsystem dependencies.
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    priorError = 0;
+    integral = 0;
+    derivative = 0;
+    EncoderPair.resetencoderL();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentangle = gyro.getYaw();
-    currentL = EncoderPair.getDistanceLeft();
-    currentR = EncoderPair.getDistanceRight();
-    errorangle = (setpointangle - currentangle);
-    errorL = (setpointL - currentL);
-    errorR = (setpointR - currentR);
-    //integralL += (errorL * .02);
-    //integralR += (errorR * .02);
-    integralangle += (errorangle * .02);
-    this.power = (P * errorangle) + (I * integralangle);
-    double speed = power;
-
-    driveBase.move(ControlMode.PercentOutput, (speed)/1.5, (speed * .42)/1.5);
+    error = setpoint - gyro.getYaw();
+    integral += (error * .02);//.02 is for time in seconds
+    derivative = (error - priorError)/ .02;
+    speedL = (P * error) + (I*integral) + (D*derivative);
+    driveBase.move(ControlMode.PercentOutput, speedL, 0);
+    
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveBase.move(ControlMode.PercentOutput, 0, 0);
     EncoderPair.resetencoderL();
     EncoderPair.resetencoderR();
   }
@@ -87,7 +74,7 @@ public class leftencoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(errorangle) <= 2){
+    if(Math.abs(error) <= 2){
       return true;
     }
     else{

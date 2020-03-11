@@ -15,13 +15,16 @@ import frc.robot.subsystems.encoder;
 import frc.robot.subsystems.navX;
 
 public class rightencoderMovement extends CommandBase {
-  private double setpoint;
-  private double target;
-  private  double P = .01;
-  private double rcw;
+  private double P = .0005;//max p before oscillation of period T is ku. Use .6 Ku
+  private double I = .00000;//use 1.2Ku/T
+  private double D = .0;//use 3KuT/40
+  private double integral, derivative, priorError = 0;
   private encoder EncoderPair;
+  private navX gyro;
   private double error;
+  private double setpoint;
   private DriveBase driveBase;
+  private double speedR;
 
   /**
    * Creates a new encoderMovement.
@@ -30,12 +33,14 @@ public class rightencoderMovement extends CommandBase {
    * 
    * 
    */
-  public rightencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double distance){
+  public rightencoderMovement(DriveBase tempDrive, encoder Encoder, navX Gyro, double desiredAngle){
     driveBase = tempDrive;
-    this.EncoderPair = Encoder;
-    setpoint = distance;
+    EncoderPair = Encoder;
+    setpoint = desiredAngle;
+    gyro = Gyro;
     addRequirements(tempDrive);
     addRequirements(Encoder);
+    addRequirements(Gyro);
   }
    
 
@@ -44,17 +49,17 @@ public class rightencoderMovement extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    EncoderPair.resetencoderL();
+    EncoderPair.resetencoderR();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    target = EncoderPair.getDistanceLeft();
-    error = setpoint - target;
-    this.rcw = (P *error);
-    double Rspeed = rcw;
-    driveBase.move(ControlMode.PercentOutput, 0, Rspeed);
+    error = setpoint - gyro.getYaw();
+    integral += (error * .02);//.02 is for time in seconds
+    derivative = (error - priorError)/ .02;
+    speedR = (P * error) + (I*integral) + (D*derivative);
+    driveBase.move(ControlMode.PercentOutput, 0, speedR);
     
   }
   // Called once the command ends or is interrupted.
@@ -68,7 +73,7 @@ public class rightencoderMovement extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(error <= .5){
+    if(Math.abs(error) <= 10){
       return true;
     }
     else{

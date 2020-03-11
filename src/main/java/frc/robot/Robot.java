@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpiutil.net.PortForwarder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,8 +29,6 @@ public class Robot extends TimedRobot {
 
   public RobotContainer m_robotContainer;
   public static SendableChooser<String> goal = new SendableChooser<>();
-  private double DistanceL;
-  private double DistanceR;
   private double Straighten;
 
 
@@ -39,6 +38,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    RobotContainer.climber.limitSetup(false);
+    PortForwarder.add(5801, "limelight.local", 5801);
     SmartDashboard.putNumber("Delay", 0);
     SmartDashboard.putNumber("Manual Launch Power", .5);
     goal.addOption("Drive Forward", "df");
@@ -47,7 +48,7 @@ public class Robot extends TimedRobot {
     goal.addOption("Launch from current pos, back", "Launch from current pos, back");
     //goal.addOption("Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch", "Launch Directly in front, facing 180 from Trench, Regrab Trench, Launch");
     goal.addOption("Launch directly facing port, Regrab Trench, Launch", "Launch directly facing port, Regrab Trench, Launch");
-    //goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
+    goal.addOption("Steal, Launch 5 Power Cells", "Steal, Launch 5 Power Cells");
     //goal.addOption("Launch, grab Sheild Generator", "Launch, grab Sheild Generator");
     //goal.addOption("Grab Sheild Generator, Launch", "Grab Sheild Generator, Launch");
     SmartDashboard.putData("Auto Goal", goal);
@@ -67,15 +68,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putBoolean("Limit", RobotContainer.climber.limitState());
     //RobotContainer.lights.setLEDPulse(0, 5);
     RobotContainer.lights.setLEDRainbow();
     SmartDashboard.putData("Auto Goal", goal);
     SmartDashboard.putBoolean("Is Slow", RobotContainer.isSlow());
     SmartDashboard.putNumber("Climb Position", RobotContainer.climber.getEnc());
-    SmartDashboard.putNumber("Gyro", RobotContainer.gyro.getYaw());
-    SmartDashboard.putNumber("EncoderL", RobotContainer.mainEncoders.getDistanceLeft());
-    SmartDashboard.putNumber("EncoderR", RobotContainer.mainEncoders.getDistanceRight());
-    //SmartDashboard.putNumber("Pivot", RobotContainer.pivotEncoder());
+    SmartDashboard.putNumber("Pivot", RobotContainer.intake.getPivotEncoderVaule());
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -101,6 +100,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    RobotContainer.startClimb();
+    RobotContainer.isAuto(true);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     RobotContainer.gyro.resetGyro();
@@ -120,8 +121,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    RobotContainer.startTankDrive();
+    RobotContainer.isAuto(false);
     RobotContainer.startClimb();
+    RobotContainer.startClimbTimer();
+    RobotContainer.intake.neutralMotors();
+    RobotContainer.driveBase.setOpenLoopRamp(.75);
+    RobotContainer.startTankDrive();
     RobotContainer.startManualLaunch();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     // This makes sure that the autonomous stops running when
@@ -138,8 +143,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("DistanceL", DistanceL);
-    SmartDashboard.putNumber("DistanceR", DistanceR);
     SmartDashboard.putNumber("Gyro", Straighten);
   }
 

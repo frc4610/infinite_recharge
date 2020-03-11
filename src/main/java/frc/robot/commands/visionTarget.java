@@ -30,16 +30,24 @@ public class visionTarget extends CommandBase {
   private double distanceToPowerPort;
   private double xValueOff;
   private double launchSpeed;
+  private double moveSpeed;
+  private double error;
+  private double P = 0.0212;
+  private double I = .000212;
+  private double integral = 0;
+  private double setpoint;
 
   private boolean isAuto;
+  private boolean stopLaunch;
 
   /**
    * Creates a new visionTarget.
    * 
    * @param plimeL The limeLight to pass to this command
    */
-  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto) 
+  public visionTarget(limeLight plimeL, DriveBase tdriveBase, Launcher tLauncher, navX tGyro, boolean Auto, boolean stopFlywheel) 
   {
+    stopLaunch = stopFlywheel;
     gyro = tGyro;
     driveBase = tdriveBase;
     limeL = plimeL;
@@ -57,6 +65,9 @@ public class visionTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    error = 0;
+    integral = 0;
+    limeL.vLEDon();
     autoTimer.start();
     timer.start();
   }
@@ -67,36 +78,39 @@ public class visionTarget extends CommandBase {
     limeL.visionStoreValues();
     distanceToPowerPort = limeL.getDistance(Constants.groundToLimeLensIn, Constants.groundToPowerPortIn, Constants.groundToLimeLensRad);
     xValueOff = limeL.getXValueOff();
-    double error = xValueOff;
-    error *=  Constants.kp;
+    error = xValueOff;
+    integral += (error * .02);
+    moveSpeed = (error * P) + (integral * I);
     SmartDashboard.putNumber("Distance to power port", distanceToPowerPort);
     SmartDashboard.putNumber("Vector to inner port", xValueOff);
 
-    /*if(Math.abs(xValueOff) > 2)
+    if(Math.abs(xValueOff) < 3.5 && Math.abs(xValueOff) > .8)
       {
-        leftSpeed = Constants.kp*xValueOff;
-        rightSpeed = -Constants.kp*xValueOff;
+        if(moveSpeed > 0)
+        {
+          moveSpeed += .0175;
+        }
+        else
+        {
+          moveSpeed -= .0175;
+        }
+        
       }
-    else if(Math.abs(xValueOff) <= 2)
-      {
-        leftSpeed = Constants.kp*xValueOff + Constants.minPower;
-        rightSpeed = -Constants.kp*xValueOff - Constants.minPower;
-      }*/
-    driveBase.move(ControlMode.PercentOutput , error, -error);
-    if(distanceToPowerPort < 196)
+    driveBase.move(ControlMode.PercentOutput , moveSpeed, -moveSpeed);
+    if(distanceToPowerPort < 90)
     {
-      launchSpeed = ((.03573762578441*distanceToPowerPort) + 43.595453195203)/100;
+      launchSpeed = .5;
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
     else
     {
-      launchSpeed = ((.202377876*distanceToPowerPort) + 12.04764524)/100;
+      launchSpeed = ((.00094843*distanceToPowerPort) + .384702);
       launcher.launch(launchSpeed);
       SmartDashboard.putNumber("Power Launch", launchSpeed);
     }
 
-    if((launcher.GetLauncherSpeed() + 175) >= Constants.launchMaxVelocity*launchSpeed && Math.abs(xValueOff) <= 3.5)
+    if((launcher.GetLauncherSpeed() + 200) >= Constants.launchMaxVelocity*launchSpeed && Math.abs(xValueOff) <= 4)
     {
       launcher.feed(Constants.feedNEOSpeed);
       launcher.index(Constants.indexNEOSpeed);
@@ -104,7 +118,7 @@ public class visionTarget extends CommandBase {
     else 
     {
       launcher.feed(0);
-      launcher.index(0);
+      launcher.stopIndex();
     }
   }
 
@@ -121,14 +135,14 @@ public class visionTarget extends CommandBase {
     }
     else{
       limeL.vLEDoff();
-      launcher.stopLaunching();
+      launcher.stopLaunching(stopLaunch);
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(((!RobotContainer.driverLeftBumper.get())||(!RobotContainer.driverRightBumper.get())) && !isAuto)
+    if((!RobotContainer.driverRightBumper.get()) && !isAuto)
     {
       return true;
     }

@@ -66,7 +66,7 @@ public class launchSystem extends CommandBase {
     }
     else
     {
-      launcher.stopLaunching();
+      launcher.stopLaunching(true);
       timer.reset();
     }
   }
@@ -74,7 +74,7 @@ public class launchSystem extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    launcher.stopLaunching();
+    launcher.stopLaunching(true);
   }
 
   // Returns true when the command should end.
